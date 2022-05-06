@@ -36,6 +36,7 @@
 
 6. if there is an error the user must be informed
 
+NOTE: from here on the actors are always assumed to be the user
 ## USE CASE 1: selection of sorting
 
 - pre-condition: a user opens the program or returns to the initial page
@@ -46,7 +47,7 @@
   - the user visualizes the list of possible sorting algorithms (currently by country or by type)
   - the user selects only one of the possible sortings
 
-## USE CASE 2: selection of items
+## USE CASE 2: selection of items(generalized for providers, countries and types)
 
 - precondition: the user is given a list of items
 
@@ -77,3 +78,6 @@
 
 actions:
     -the user selects to change the sorting
+
+>Aggiungere grafico UML
+>Aggiungerne altri?
