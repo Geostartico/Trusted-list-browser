@@ -11,13 +11,13 @@
     -"**types** of trusted services"
 - **Selectioning/Deselectioning** from a list one or more:
   - countries
-  - provider
+  - **provider**
   - types of services
   - countries of a service
 - when a selection is done, the next selections must show a list of only the available selections(alias when i'm done selecting the categories the providers/services shown are only the available ones)
 - Creating a query based on the items currently selectioned, returning a list of services
 
-## Suggested
+### Suggested
 
 - returning the query of services to a file
 - showing a list of selectioned items
@@ -37,6 +37,7 @@
 6. if there is an error the user must be informed
 
 NOTE: from here on the actors are always assumed to be the user
+
 ## USE CASE 1: selection of sorting
 
 - pre-condition: a user opens the program or returns to the initial page
@@ -76,8 +77,9 @@ NOTE: from here on the actors are always assumed to be the user
 
 - side effect: the previously selected items are discarded
 
-actions:
-    -the user selects to change the sorting
+- actions:
+  - the user selects to change the sorting
 
 >Aggiungere grafico UML
+>chidere a cosa si riferisce per template per gli use-cases
 >Aggiungerne altri?
