@@ -38,21 +38,21 @@
 
 NOTE: from here on the actors are always assumed to be the user
 
-## USE CASE 1: selection of sorting
+## USE CASE 1: visualising the list of Countries or types of services
 
 - pre-condition: a user opens the program or returns to the initial page
 
-- postcondition: the program sorts the services based on the selected way and shows the list
+- postcondition: the program shows the selected list
 
 - actions:
   - the user visualizes the list of possible sorting algorithms (currently by country or by type)
   - the user selects only one of the possible sortings
 
-## USE CASE 2: selection of items(generalized for providers, countries and types)
+## USE CASE 2: filtering services by items(generalized for providers, countries, types, state)
 
 - precondition: the user is given a list of items
 
-- postcondition: the user is given a filtered list of sub-items or a list of services if the previous was a list of providers
+- postcondition: the user is given a filtered list of sub-items
 
 - actions:
 
@@ -60,25 +60,22 @@ NOTE: from here on the actors are always assumed to be the user
 
   - the user selects to query the list of items selected items (if there aren't any items in the selected list a error is shown)
 
-## USE CASE 3: viewing the services
+## USE CASE 3: viewing a service
 
-- precondition: providers were selected
+- precondition: the list shows services
 
-- postcondition: none
-
-- actions:
-  - the user can view the selected services with their informations attached
-
-## USE CASE 4: Changing the sorting algorithm:
-
-- precondition: a sorting algorithm was selected
-
-- postconditon: the sorting has changed
-
-- side effect: the previously selected items are discarded
+- postcondition: the details of the service are shown
 
 - actions:
-  - the user selects to change the sorting
+  - the user selects a service
+
+## USE CASE 4: Showing only relevant items
+
+- precondition: the user has already filtered the items by a criteria
+- postcondition: the user is only shown items relevant to the previous selections
+- actions:
+  - the user has finalises a selection and the list is updated
+side effect: non-relevant items are hidden from the user
 
 >Aggiungere grafico UML
 >chidere a cosa si riferisce per template per gli use-cases

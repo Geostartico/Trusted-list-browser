@@ -13,13 +13,14 @@
 
 ## Description
 
-- the interface shows the current selectable items
-- the query gives the selectable items given the previously selected categories of items
-- the query contains the selected items and the selectable items
-- Provider contains its services
+- the application shows the current selectable items, when selection is done logs them in the query
+- the query gives the selectable items given the previously selected categories of items from the application
+- the query contains the previously selected items and the currently selectable items based on previous choices
+- Provider contains its services, coyntry and type
 - Country contains providers and types
-- Service contains the state, type and country
-- State contains a description of the state
-- Application contains the selected and the selectable items
-
+- Service contains the state, type and country, and provider
+- State contains a description of itself
+- TODO:
+  - list of countries: the list containing all possible countries for the services
+  - list of types: the list containing all possible countries for the services
 ![Alt text](./Domain_diagram.svg)
