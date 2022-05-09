@@ -1,0 +1,20 @@
+@startuml
+
+'Created with https://plantuml-editor.kkeisuke.dev/
+
+activate "User Interface"
+activate "Fetcher"
+"User Interface" --> "Fetcher": call trust service info fetching
+activate "Decoder"
+"Fetcher" -> "Decoder": send raw json
+activate "Filtering System"
+"Decoder" -> "Filtering System": send decoded objects
+deactivate "Decoder"
+deactivate "Fetcher"
+
+"Filtering System" -> "User Interface": send selectable items
+
+"User Interface" -> "Filtering System": send selection
+deactivate "Filtering System"
+
+@enduml
