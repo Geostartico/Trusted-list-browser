@@ -1,0 +1,11 @@
+-- Created with https://plantuml-editor.kkeisuke.dev/
+
+@startuml
+
+!theme black-knight
+
+[User Interface]..>[Filtering System]
+[Filtering System]..>[Fetcher]
+
+
+@enduml
