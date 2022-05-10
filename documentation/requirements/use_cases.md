@@ -2,8 +2,6 @@
 
 ## Requirements
 
->non ho sinceramente capito se un provider può essere condiviso tra più paesi oppure no
-
 ### Mandatory
 
 - Presenting a list of:
@@ -77,6 +75,6 @@ NOTE: from here on the actors are always assumed to be the user
   - the user has finalises a selection and the list is updated
 side effect: non-relevant items are hidden from the user
 
->Aggiungere grafico UML
+![Alt text](./use_cases_diagram.svg)
 >chidere a cosa si riferisce per template per gli use-cases
 >Aggiungerne altri?

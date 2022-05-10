@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="382px" preserveAspectRatio="none" style="width:842px;height:382px;background:#FFFFFF;" version="1.1" viewBox="0 0 842 382" width="842px" zoomAndPan="magnify"><defs/><g><rect fill="#FFFFFF" height="292.3281" style="stroke:#181818;stroke-width:1.0;" width="10" x="55" y="46.2969"/><rect fill="#FFFFFF" height="292.3281" style="stroke:#181818;stroke-width:1.0;" width="10" x="364" y="46.2969"/><rect fill="#FFFFFF" height="58.2656" style="stroke:#181818;stroke-width:1.0;" width="10" x="581" y="67.4297"/><rect fill="#FFFFFF" height="58.2656" style="stroke:#181818;stroke-width:1.0;" width="10" x="661.5" y="125.6953"/><rect fill="#FFFFFF" height="87.3984" style="stroke:#181818;stroke-width:1.0;" width="10" x="770" y="242.2266"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="60" x2="60" y1="36.2969" y2="347.625"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="368.5" x2="368.5" y1="36.2969" y2="347.625"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="585.5" x2="585.5" y1="36.2969" y2="347.625"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="666.5" x2="666.5" y1="36.2969" y2="347.625"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="774.5" x2="774.5" y1="36.2969" y2="347.625"/><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="110" x="5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="12" y="24.9951">User Interface</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="110" x="5" y="346.625"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="12" y="366.6201">User Interface</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="75" x="331.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61" x="338.5" y="24.9951">Backend</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="75" x="331.5" y="346.625"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61" x="338.5" y="366.6201">Backend</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="67" x="552.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53" x="559.5" y="24.9951">Fetcher</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="67" x="552.5" y="346.625"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53" x="559.5" y="366.6201">Fetcher</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="74" x="629.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="636.5" y="24.9951">Decoder</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="74" x="629.5" y="346.625"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="636.5" y="366.6201">Decoder</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="123" x="713.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="720.5" y="24.9951">Filtering System</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="123" x="713.5" y="346.625"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="720.5" y="366.6201">Filtering System</text><rect fill="#FFFFFF" height="292.3281" style="stroke:#181818;stroke-width:1.0;" width="10" x="55" y="46.2969"/><rect fill="#FFFFFF" height="292.3281" style="stroke:#181818;stroke-width:1.0;" width="10" x="364" y="46.2969"/><rect fill="#FFFFFF" height="58.2656" style="stroke:#181818;stroke-width:1.0;" width="10" x="581" y="67.4297"/><rect fill="#FFFFFF" height="58.2656" style="stroke:#181818;stroke-width:1.0;" width="10" x="661.5" y="125.6953"/><rect fill="#FFFFFF" height="87.3984" style="stroke:#181818;stroke-width:1.0;" width="10" x="770" y="242.2266"/><polygon fill="#181818" points="352,63.4297,362,67.4297,352,71.4297,356,67.4297" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="65" x2="358" y1="67.4297" y2="67.4297"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="275" x="72" y="62.3638">request countries, types and providers lists</text><polygon fill="#181818" points="569,92.5625,579,96.5625,569,100.5625,573,96.5625" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="374" x2="575" y1="96.5625" y2="96.5625"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="183" x="381" y="91.4966">call trust service json fetcher</text><polygon fill="#181818" points="385,121.6953,375,125.6953,385,129.6953,381,125.6953" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="379" x2="585" y1="125.6953" y2="125.6953"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="87" x="391" y="120.6294">send raw json</text><polygon fill="#181818" points="649.5,150.8281,659.5,154.8281,649.5,158.8281,653.5,154.8281" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="374" x2="655.5" y1="154.8281" y2="154.8281"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="120" x="381" y="149.7622">send encoded json</text><polygon fill="#181818" points="385,179.9609,375,183.9609,385,187.9609,381,183.9609" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="379" x2="665.5" y1="183.9609" y2="183.9609"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="102" x="391" y="178.895">send service list</text><polygon fill="#181818" points="76,209.0938,66,213.0938,76,217.0938,72,213.0938" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="70" x2="363" y1="213.0938" y2="213.0938"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="140" x="82" y="208.0278">send selectable items</text><polygon fill="#181818" points="352,238.2266,362,242.2266,352,246.2266,356,242.2266" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="65" x2="358" y1="242.2266" y2="242.2266"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="92" x="72" y="237.1606">send selection</text><polygon fill="#181818" points="758,267.3594,768,271.3594,758,275.3594,762,271.3594" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="374" x2="764" y1="271.3594" y2="271.3594"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="210" x="381" y="266.2935">send service list and filter criteria</text><polygon fill="#181818" points="385,296.4922,375,300.4922,385,304.4922,381,300.4922" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="379" x2="769" y1="300.4922" y2="300.4922"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="150" x="391" y="295.4263">send filtered service list</text><polygon fill="#181818" points="76,325.625,66,329.625,76,333.625,72,329.625" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="70" x2="363" y1="329.625" y2="329.625"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="140" x="82" y="324.5591">send selectable items</text><!--MD5=[fcabb1c5d586a4712f3fa7870c076425]
+@startuml
+'Created with https://plantuml-editor.kkeisuke.dev/
+
+activate "User Interface"
+activate "Backend"
+"User Interface" - -> "Backend": request countries, types and providers lists
+activate "Fetcher"
+"Backend" - -> "Fetcher": call trust service json fetcher
+"Fetcher" -> "Backend": send raw json
+deactivate "Fetcher"
+activate "Decoder"
+"Backend" -> "Decoder": send encoded json
+"Decoder" -> "Backend": send service list
+deactivate "Decoder"
+
+"Backend" -> "User Interface": send selectable items
+"User Interface" -> "Backend": send selection
+activate "Filtering System"
+"Backend" -> "Filtering System": send service list and filter criteria
+"Filtering System" -> "Backend": send filtered service list
+"Backend" -> "User Interface": send selectable items
+deactivate "Filtering System"
+@enduml
+
+@startuml
+
+activate "User Interface"
+activate "Backend"
+"User Interface" - -> "Backend": request countries, types and providers lists
+activate "Fetcher"
+"Backend" - -> "Fetcher": call trust service json fetcher
+"Fetcher" -> "Backend": send raw json
+deactivate "Fetcher"
+activate "Decoder"
+"Backend" -> "Decoder": send encoded json
+"Decoder" -> "Backend": send service list
+deactivate "Decoder"
+
+"Backend" -> "User Interface": send selectable items
+"User Interface" -> "Backend": send selection
+activate "Filtering System"
+"Backend" -> "Filtering System": send service list and filter criteria
+"Filtering System" -> "Backend": send filtered service list
+"Backend" -> "User Interface": send selectable items
+deactivate "Filtering System"
+@enduml
+
+PlantUML version 1.2022.4(Sat Apr 09 13:29:17 UTC 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
