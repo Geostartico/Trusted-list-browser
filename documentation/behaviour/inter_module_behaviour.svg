@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="237px" preserveAspectRatio="none" style="width:642px;height:237px;background:#FFFFFF;" version="1.1" viewBox="0 0 642 237" width="642px" zoomAndPan="magnify"><defs/><g><rect fill="#FFFFFF" height="146.6641" style="stroke:#181818;stroke-width:1.0;" width="10" x="55" y="46.2969"/><rect fill="#FFFFFF" height="79.3984" style="stroke:#181818;stroke-width:1.0;" width="10" x="275" y="46.2969"/><rect fill="#FFFFFF" height="58.2656" style="stroke:#181818;stroke-width:1.0;" width="10" x="396" y="67.4297"/><rect fill="#FFFFFF" height="87.3984" style="stroke:#181818;stroke-width:1.0;" width="10" x="570" y="96.5625"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="60" x2="60" y1="36.2969" y2="201.9609"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="279.5" x2="279.5" y1="36.2969" y2="201.9609"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="401" x2="401" y1="36.2969" y2="201.9609"/><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="574.5" x2="574.5" y1="36.2969" y2="201.9609"/><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="110" x="5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="12" y="24.9951">User Interface</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="110" x="5" y="200.9609"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="12" y="220.9561">User Interface</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="67" x="246.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53" x="253.5" y="24.9951">Fetcher</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="67" x="246.5" y="200.9609"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53" x="253.5" y="220.9561">Fetcher</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="74" x="364" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="371" y="24.9951">Decoder</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="74" x="364" y="200.9609"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="371" y="220.9561">Decoder</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="123" x="513.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="520.5" y="24.9951">Filtering System</text><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="123" x="513.5" y="200.9609"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="520.5" y="220.9561">Filtering System</text><rect fill="#FFFFFF" height="146.6641" style="stroke:#181818;stroke-width:1.0;" width="10" x="55" y="46.2969"/><rect fill="#FFFFFF" height="79.3984" style="stroke:#181818;stroke-width:1.0;" width="10" x="275" y="46.2969"/><rect fill="#FFFFFF" height="58.2656" style="stroke:#181818;stroke-width:1.0;" width="10" x="396" y="67.4297"/><rect fill="#FFFFFF" height="87.3984" style="stroke:#181818;stroke-width:1.0;" width="10" x="570" y="96.5625"/><polygon fill="#181818" points="263,63.4297,273,67.4297,263,71.4297,267,67.4297" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="65" x2="269" y1="67.4297" y2="67.4297"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="186" x="72" y="62.3638">call trust service info fetching</text><polygon fill="#181818" points="384,92.5625,394,96.5625,384,100.5625,388,96.5625" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="285" x2="390" y1="96.5625" y2="96.5625"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="87" x="292" y="91.4966">send raw json</text><polygon fill="#181818" points="558,121.6953,568,125.6953,558,129.6953,562,125.6953" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="401" x2="564" y1="125.6953" y2="125.6953"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="140" x="408" y="120.6294">send decoded objects</text><polygon fill="#181818" points="76,150.8281,66,154.8281,76,158.8281,72,154.8281" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="70" x2="569" y1="154.8281" y2="154.8281"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="140" x="82" y="149.7622">send selectable items</text><polygon fill="#181818" points="563,179.9609,573,183.9609,563,187.9609,567,183.9609" style="stroke:#181818;stroke-width:1.0;"/><line style="stroke:#181818;stroke-width:1.0;" x1="65" x2="569" y1="183.9609" y2="183.9609"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="92" x="72" y="178.895">send selection</text><!--MD5=[5ea3b9bcd9bf3ecf86e09277b631ed8b]
+@startuml
+'Created with https://plantuml-editor.kkeisuke.dev/
+
+activate "User Interface"
+activate "Fetcher"
+"User Interface" - -> "Fetcher": call trust service info fetching
+activate "Decoder"
+"Fetcher" -> "Decoder": send raw json
+activate "Filtering System"
+"Decoder" -> "Filtering System": send decoded objects
+deactivate "Decoder"
+deactivate "Fetcher"
+
+"Filtering System" -> "User Interface": send selectable items
+
+"User Interface" -> "Filtering System": send selection
+deactivate "Filtering System"
+@enduml
+
+@startuml
+
+activate "User Interface"
+activate "Fetcher"
+"User Interface" - -> "Fetcher": call trust service info fetching
+activate "Decoder"
+"Fetcher" -> "Decoder": send raw json
+activate "Filtering System"
+"Decoder" -> "Filtering System": send decoded objects
+deactivate "Decoder"
+deactivate "Fetcher"
+
+"Filtering System" -> "User Interface": send selectable items
+
+"User Interface" -> "Filtering System": send selection
+deactivate "Filtering System"
+@enduml
+
+PlantUML version 1.2022.4(Sat Apr 09 13:29:17 UTC 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
