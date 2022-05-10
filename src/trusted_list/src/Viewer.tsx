@@ -18,7 +18,9 @@ class Viewer extends Component<ViewerProps, ViewerState> {
 
         return (
           <>
-            <h1>Qui dovrebbe esserci il visualizer</h1>
+            <div className = 'viewer'>
+                <h1>Qui dovrebbe esserci il visualizer</h1>
+            </div>
           </>
         );
 
