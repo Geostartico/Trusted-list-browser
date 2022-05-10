@@ -1,0 +1,25 @@
+@startuml
+
+'Created with https://plantuml-editor.kkeisuke.dev/
+
+activate "User Interface"
+activate "Backend"
+"User Interface" --> "Backend": request countries, types and providers lists
+activate "Fetcher"
+"Backend" --> "Fetcher": call trust service json fetcher
+"Fetcher" -> "Backend": send raw json
+deactivate "Fetcher"
+activate "Decoder"
+"Backend" -> "Decoder": send encoded json
+"Decoder" -> "Backend": send service list
+deactivate "Decoder"
+
+"Backend" -> "User Interface": send selectable items
+"User Interface" -> "Backend": send selection
+activate "Filtering System"
+"Backend" -> "Filtering System": send service list and filter criteria
+"Filtering System" -> "Backend": send filtered service list
+"Backend" -> "User Interface": send selectable items
+deactivate "Filtering System"
+
+@enduml
