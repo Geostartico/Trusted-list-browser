@@ -14,7 +14,8 @@ class Header extends Component<HeaderProps, HeaderState> {
         title: 'Coutries',  
     };
 
-    constructor(props: HeaderProps) {  super(props);
+    constructor(props: HeaderProps) {  
+        super(props);
         this.state = {
             advanced: false,
         };

@@ -12,6 +12,12 @@ root.render(
     <Header />
     <div className = 'mainContainer'>
 
+        <div className = 'viewer'>
+        </div>
+
+        <div className = 'filtersContainer'>
+        </div>
+
     </div>
   </React.StrictMode>
 );

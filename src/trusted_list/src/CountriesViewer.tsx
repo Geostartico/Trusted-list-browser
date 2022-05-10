@@ -1,22 +1,16 @@
 import React, { Component } from 'react';
 
-interface CountriesProps {
-    title: string;
+interface ViewerProps {
 }
 
-interface CountriesState {  
-    advanced: boolean
+interface ViewerState {  
 }
 
-class Header extends Component<HeaderProps, HeaderState> {
+class Viewer extends Component<ViewerProps, ViewerState> {
 
-    public static defaultProps = {    
-        title: 'Coutries',  
-    };
-
-    constructor(props: HeaderProps) {  super(props);
+    constructor(props: ViewerProps) {  
+        super(props);
         this.state = {
-            advanced: false,
         };
     }
 
@@ -24,9 +18,7 @@ class Header extends Component<HeaderProps, HeaderState> {
 
         return (
           <>
-            <div className = 'header'>
-              <h1 className = 'title' >{this.props.title}</h1>
-            </div>
+            <h1>Qui dovrebbe esserci il visualizer</h1>
           </>
         );
 
@@ -34,4 +26,4 @@ class Header extends Component<HeaderProps, HeaderState> {
 
 }
 
-export default Header;
+export default Viewer;
