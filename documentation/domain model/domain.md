@@ -20,8 +20,4 @@
 - Country contains providers and types
 - Service contains the state, type and country, and provider
 - State contains a description of itself
-- TODO:
-  - list of countries: the list containing all possible countries for the services
-  - list of types: the list containing all possible countries for the services
-  - aggiungere da selectable a application
 ![Alt text](./Domain_diagram.svg)
