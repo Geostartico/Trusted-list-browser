@@ -15,9 +15,12 @@ code {
     monospace;
 }
 
+div {
+    background-color: var(--main-bg-color);
+}
+
 .header {
     height: 10vh;
-    background-color: var(--main-bg-color);
     color: white;
     display: flex;
 }
@@ -27,6 +30,15 @@ code {
 }
 
 .mainContainer {
-    background-color: var(--main-bg-color);
     height: 90vh;
+    display: flex;
+}
+
+.viewer {
+    width: 50vw;
+}
+
+.filtersContainer {
+    width: 50vw;
+    background-color: #555555;
 }
