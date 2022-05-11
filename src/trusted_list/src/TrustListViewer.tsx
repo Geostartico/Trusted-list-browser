@@ -28,22 +28,25 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
     }
 
     render() {
-        console.log("Starting render");
         return (
           <>
-            <Header
-                title = {this.props.appTitle}
-                onChangeFilter = {this.onChangeFilter}
-                selectedFilter = {this.state.activeFilter}
-            />
-            <div className = 'mainContainer'>
-
-                <Viewer />
-                <FilterContainer
+            <header>
+                <Header
+                    title = {this.props.appTitle}
+                    onChangeFilter = {this.onChangeFilter}
                     selectedFilter = {this.state.activeFilter}
                 />
+            </header>
+            <body>
+                <div className = 'mainContainer'>
 
-            </div>
+                    <Viewer />
+                    <FilterContainer
+                        selectedFilter = {this.state.activeFilter}
+                    />
+
+                </div>
+            </body>
           </>
         );
 
@@ -52,3 +55,6 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
 }
 
 export default TrustListViewer;
+
+/*
+ * */

@@ -1,5 +1,6 @@
 :root {
     --main-bg-color: #262626;
+    --main-text-color: #D4D4D4;
 }
 body {
   margin: 0;
@@ -21,13 +22,37 @@ div {
 
 .header {
     height: 10vh;
-    color: white;
+    color: var(--main-text-color);
     display: flex;
+    justify-content: space-between;
 }
 
 .title {
     margin-left: 2vw;
 }
+
+.tabs {
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttonFilter {
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    border: 0;
+    width: 10vw;
+}
+
+.buttonFilter:hover {
+    background-color: var(--main-text-color);
+    color: var(--main-bg-color);
+}
+
+.selectedButtonFilter {
+    background-color: var(--main-text-color);
+    color: var(--main-bg-color);
+}
+
 
 .mainContainer {
     height: 90vh;
@@ -40,5 +65,5 @@ div {
 
 .filtersContainer {
     width: 50vw;
-    background-color: #555555;
+    background-color: var(--main-text-color);
 }

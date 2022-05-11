@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import {FilterType} from './Enums';
+import {FilterTypes} from './Enums';
+import FilterCountry from './FilterCountry';
+import FilterState from './FilterState';
+import FilterType from './FilterType';
 
 interface FilterProps {
      selectedFilter: number;
 }
 
-interface FilterState {  
+interface FilterStateInerface {  
 }
 
-class FilterContainer extends Component<FilterProps, FilterState> {
+class FilterContainer extends Component<FilterProps, FilterStateInerface> {
 
     constructor(props: FilterProps) {  
         super(props);
@@ -21,7 +24,17 @@ class FilterContainer extends Component<FilterProps, FilterState> {
         return (
           <>
             <div className = 'filtersContainer'>
-                <h1>Qui dovrebbe esserci il filtro per: {FilterType[this.props.selectedFilter]}</h1>
+                 
+                {this.props.selectedFilter == 0 &&
+                    <FilterCountry/>
+                }
+                {this.props.selectedFilter == 1 &&
+                    <FilterType/>
+                }
+                {this.props.selectedFilter == 2 &&
+                    <FilterState/>
+                }
+
             </div>
           </>
         );

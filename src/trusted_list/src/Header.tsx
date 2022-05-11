@@ -32,9 +32,9 @@ class Header extends Component<HeaderProps, HeaderState> {
 
               <div className = 'tabs' >
 
-              <button onClick={this.props.onChangeFilter(0)}>Country</button>
-              <button onClick={this.props.onChangeFilter(1)}>Type</button>
-              <button onClick={this.props.onChangeFilter(2)}>State</button>
+              <button onClick={() => this.props.onChangeFilter(0)} className = {'buttonFilter ' + (this.props.selectedFilter == 0 ? 'selectedButtonFilter' : '')}>Country</button>
+              <button onClick={() => this.props.onChangeFilter(1)} className = {'buttonFilter ' + (this.props.selectedFilter == 1 ? 'selectedButtonFilter' : '')}>Type</button>
+              <button onClick={() => this.props.onChangeFilter(2)} className = {'buttonFilter ' + (this.props.selectedFilter == 2 ? 'selectedButtonFilter' : '')}>State</button>
 
               </div>
             </div>

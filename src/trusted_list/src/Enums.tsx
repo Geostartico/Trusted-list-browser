@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export const FilterType = [
+export const FilterTypes = [
     'Country',
     'Type',
     'State'
