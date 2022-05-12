@@ -7,6 +7,7 @@ class Service{
     private type : string;
     private tspId : number;
     private tob : string;
+    private country : Country;
     constructor(aName: string, aServiceId: number, aServiceTypes: string[], pr : Provider, aStatus : string, aType : string, aTspId : number, aTob : string){
         this.name = aName;
         this.serviceId = aServiceId;
@@ -34,21 +35,31 @@ class Service{
     getStatus(){
         return this.status;
     }
+
     getType(){
         return this.type;
     }
+
     getTspId(){
         return this.tspId;
     }
+
     getTob(){
         return this.tob;
     }
 
+    getCountry(){
+        return this.country;
+    }
+    addCountry(aCountry : Country){
+        this.country = aCountry;
+    }
 }
 
 class Provider{
     private name: string;
     private tspId: number;
+    private country : Country;
     private trustMark : string;
     private serviceTypes: Set<string>;
     private possibleStatus : Set<string>;
@@ -87,6 +98,11 @@ class Provider{
     getTrustMark(){
         return this.trustMark;
     }
+    
+    getCountry(){
+        return this.country;
+    }
+    
     private addType(type : string){
         this.serviceTypes.add(type);
     }
@@ -99,6 +115,10 @@ class Provider{
         this.services.push(aService);
         aService.getServiceTypes().forEach((str) => this.addType(str));
         this.addStatus(aService.getStatus());
+    }
+    addCountry(aCountry : Country){
+        this.country = aCountry;
+        this.services.forEach((elem) => elem.addCountry(this.country));
     }
 
 }
@@ -147,6 +167,7 @@ class Country{
         this.possibleServiceTypes.add(serviceType);
     }
     addProvider(provider : Provider){
+        provider.addCountry(this);
         this.providers.push(provider);
         provider.getServiceTypes().forEach(element => {
             this.addServiceType(element);
