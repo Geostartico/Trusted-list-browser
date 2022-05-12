@@ -78,3 +78,4 @@ side effect: non-relevant items are hidden from the user
 ![Alt text](./use_cases_diagram.svg)
 >chidere a cosa si riferisce per template per gli use-cases
 >Aggiungerne altri?
+>Aggiungere server come attore

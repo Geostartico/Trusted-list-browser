@@ -6,28 +6,21 @@ Country{
     string countryCode;
     static unordered_map<string, Country> codeToObject;
     static getCountry(string code);
-    set<Type> possibleTypes;
-    set<Status> possibleStatus;
-    set<Provider> providers[];
+    set<string> possibleTypes;
+    set<string> possibleStatus;
+    Provider providers[];
     initdict(List<countryCode, countryName>);
     Country(string);
     getCountryName(){
         ...
     }
     //getters...
-    addType(type);
-    addStatus(status);
+    addType(string);
+    addStatus(string);
     addprovider(provider);
-    removeType(type);
-    removeStatus(status);
+    removeType(string);
+    removeStatus(string);
     removeprovider(provider);
-}
-```
-
-```js
-Status{
-    string link;
-    string code;
 }
 ```
 
