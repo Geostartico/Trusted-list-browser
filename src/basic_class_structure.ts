@@ -1,6 +1,13 @@
+function mapCheckAndSet<T>(value: T, map: Map<T, number>){
+    if(map.has(value)){
+        map.set(value, map.get(value)+1);
+    }
+    else{
+        map.set(value, 1);
+    }
+}
+
 class Service{
-    private static idCount = 0;
-    private readonly _id: number;
     readonly provider: Provider;
     readonly type: string;
     readonly name: string;
@@ -8,39 +15,35 @@ class Service{
     readonly description: string;
 
     constructor(name: string, description: string, type: string, status: string, provider: Provider){
-        this._id = Service.idCount++;
         this.provider = provider;
         this.type = type;
         this.name = name;
         this.description = description;
 
         provider._services.add(this);
-        provider._possibleStatus.add(status);
-        provider._possibleTypes.add(type);
-        provider.country._possibleStatus.add(status);
-        provider.country._possibleTypes.add(type);
+        mapCheckAndSet(status, provider._possibleStatus);
+        mapCheckAndSet(type, provider._possibleTypes);
+        mapCheckAndSet(status, provider.country._possibleStatus);
+        mapCheckAndSet(type, provider.country._possibleTypes);
     }
 }
 
 
 class Provider{
-    private static idCount = 0;
-    private readonly _id: number;
     readonly country: Country;
     readonly trustMark: string;
     readonly name: string;
-    _possibleTypes: Set<string>;
-    _possibleStatus: Set<string>;
+    _possibleTypes: Map<string, number>;
+    _possibleStatus: Map<string, number>;
     _services: Set<Service>;
 
     constructor(name: string, trustMark: string, country: Country){
-        this._id = Provider.idCount++;
         this.country = country;
         this.name = name;
         this.trustMark = trustMark;
         this._services = new Set<Service>();
-        this._possibleStatus = new Set<string>();
-        this._possibleTypes = new Set<string>();
+        this._possibleStatus = new Map<string, number>();
+        this._possibleTypes = new Map<string, number>();
 
         country._providers.add(this);
     }
@@ -48,22 +51,19 @@ class Provider{
 
 
 class Country{
-    private static idCount = 0;
     static codeToName: Record<string, string>;
     static codeToCountry: Record<string, Country>;
-    private readonly _id: number;
     readonly name: string;
     readonly countryCode: string;
-    _possibleTypes: Set<string>;
-    _possibleStatus: Set<string>;
+    _possibleTypes: Map<string, number>;
+    _possibleStatus: Map<string, number>;
     _providers: Set<Provider>;
 
     constructor(name: string, countryCode: string){
-        this._id = Country.idCount++;
         this.name = name;
         this.countryCode = countryCode;
-        this._possibleStatus = new Set<string>();
-        this._possibleTypes = new Set<string>();
+        this._possibleStatus = new Map<string, number>();
+        this._possibleTypes = new Map<string, number>();
         this._providers = new Set();
 
         Country.codeToCountry[countryCode] = this;
