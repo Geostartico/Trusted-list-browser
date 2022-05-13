@@ -5,15 +5,9 @@ function objectify(ctodict, jsondict){
     console.log(Country.getCountry("IT"));
     let iterProv = (elem) => {
         let curCountry = Country.getCountry(elem["countryCode"]);
-        console.log(elem["name"]);
-        console.log(elem["tspId"]);
-        console.log(elem["trustmark"]);
-        console.log(elem["qServiceTypes"]);
         let curProv = new Provider(elem["name"], elem["tspId"], elem["trustmark"], elem["qServiceTypes"]);
-        
         elem["services"].forEach((serdict) => {
             let ser = new Service(serdict["serviceName"], serdict["serviceId"], serdict["qServiceTypes"], curProv, serdict["currentStatus"], serdict["type"], serdict["tspId"], serdict["tob"]);
-            ser.addCountry(curCountry);
             curProv.addService(ser);
         })
         curCountry.addProvider(curProv);

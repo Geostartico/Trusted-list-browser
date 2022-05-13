@@ -1,12 +1,12 @@
 export class Service{
-    private name : string;
-    private serviceId : number;
+    readonly name : string;
+    readonly serviceId : number;
     private serviceTypes : Set<string>;
     private provider : Provider;
-    private status : string;
-    private type : string;
-    private tspId : number;
-    private tob : string;
+    readonly status : string;
+    readonly type : string;
+    readonly tspId : number;
+    readonly tob : string;
     private country : Country;
     constructor(aName: string, aServiceId: number, aServiceTypes: string[], pr : Provider, aStatus : string, aType : string, aTspId : number, aTob : string){
         this.name = aName;
@@ -19,35 +19,12 @@ export class Service{
         this.tspId = aTspId;
         this.tob = aTob;
     }
-
-    getName(){
-        return this.name;
+    getProvider(){
+        return this.provider;
     }
-
-    getServiceId(){
-        return this.serviceId;
-    }
-
     getServiceTypes(){
         return this.serviceTypes;
     }
-
-    getStatus(){
-        return this.status;
-    }
-
-    getType(){
-        return this.type;
-    }
-
-    getTspId(){
-        return this.tspId;
-    }
-
-    getTob(){
-        return this.tob;
-    }
-
     getCountry(){
         return this.country;
     }
@@ -61,18 +38,18 @@ export class Provider{
     private tspId: number;
     private country : Country;
     private trustMark : string;
-    private serviceTypes: Set<string>;
-    private possibleStatus : Set<string>;
+    private serviceTypes: Map<string, number>;
+    private possibleStatus : Map<string, number>;
     private services: Service[];
 
     constructor(aName: string, aTspId: number, aTrustMark : string, aServiceTypes : string[]){
         this.name = aName;
         this.tspId = aTspId;
         this.trustMark = aTrustMark;
-        this.serviceTypes = new Set<string>();
-        aServiceTypes.forEach((str) => this.serviceTypes.add(str));
+        this.serviceTypes = new Map<string, number>();
+        aServiceTypes.forEach((str) => this.serviceTypes.set(str, 0));
         this.services = new Array<Service>();
-        this.possibleStatus = new Set<string>();
+        this.possibleStatus = new Map<string, number>();
     }
 
     getName(){
@@ -104,17 +81,22 @@ export class Provider{
     }
     
     private addType(type : string){
-        this.serviceTypes.add(type);
+        this.serviceTypes.set(type, this.serviceTypes.get(type));
     }
 
     private addStatus(status : string){
-        this.possibleStatus.add(status);
+        if(this.possibleStatus.has(status)){
+            this.possibleStatus.set(status, this.possibleStatus.get(status));
+        }
+        else{
+            this.possibleStatus.set(status, 1);
+        }
     }
 
     addService(aService : Service){
         this.services.push(aService);
         aService.getServiceTypes().forEach((str) => this.addType(str));
-        this.addStatus(aService.getStatus());
+        this.addStatus(aService.status);
     }
     addCountry(aCountry : Country){
         this.country = aCountry;
@@ -136,19 +118,16 @@ export class Country{
         this.codeToObject = new Map<string, Country>();
         arr.forEach((el) => Country.codeToObject.set(el.countryCode, new Country(el.countryCode)))
     }
-    private countryCode : string;
-    private possibleServiceTypes : Set<string>;
-    private possibleStatus : Set<string>;
+    readonly countryCode : string;
+    private possibleServiceTypes : Map<string, number>;
+    private possibleStatus : Map<string, number>;
     private providers : Provider[];
 
     constructor(code: string){
         this.countryCode = code;
-        this.possibleStatus = new Set<string>();
-        this.possibleServiceTypes = new Set<string>();
+        this.possibleStatus = new Map<string, number>();
+        this.possibleServiceTypes = new Map<string, number>();
         this.providers = new Array<Provider>();
-    }
-    getCountryCode(){
-        return this.countryCode;
     }
     getPossibleServiceTypes(){
         return this.possibleServiceTypes;
@@ -160,20 +139,30 @@ export class Country{
         return this.providers;
     }
     private addStatus(status : string){
-        this.possibleStatus.add(status);
+        if(this.possibleStatus.has(status)){
+            this.possibleStatus.set(status, this.possibleStatus.get(status));
+        }
+        else{
+            this.possibleStatus.set(status, 1);
+        };
     }
 
     private addServiceType(serviceType : string){
-        this.possibleServiceTypes.add(serviceType);
+        if(this.possibleStatus.has(serviceType)){
+            this.possibleStatus.set(serviceType, this.possibleStatus.get(serviceType));
+        }
+        else{
+            this.possibleStatus.set(serviceType, 1);
+        };
     }
     addProvider(provider : Provider){
         provider.addCountry(this);
         this.providers.push(provider);
-        provider.getServiceTypes().forEach(element => {
-            this.addServiceType(element);
+        provider.getServiceTypes().forEach((num: number, str : string) => {
+            this.addServiceType(str);
         });
-        provider.getPossibleStatus().forEach(element => {
-            this.addStatus(element);
+        provider.getPossibleStatus().forEach((num: number, str : string) => {
+            this.addStatus(str);
         });
     }
 }
