@@ -34,49 +34,62 @@
 
 6. if there is an error the user must be informed
 
+## USE CASE 1: visualising a list of a certain category
 
-## USE CASE 1: visualising the list of items
+- description: the user is able to change to choose which category of items to visualise via the interface, thus making able to select items from different categories. In particular, if no selections were made, no filtering was done, therefore all the elements in the provider list must be shown.
 
-- description: the user is able to view the list of items given the selected cathegory. If no selections were made the user views all the possible items
+- actors:user, trusted-list server
 
-- pre-condition: none
+- pre-condition: no selections were made
 
-- acceptance criteria: 
+- acceptance criteria: the program shows the selected list of all the elements of a specific criteria
+
+- Possible errors: unable to connect to the trusted service
+actors: user, trusted list server
 
 - actions:
-  - the user visualizes the list of possible sorting algorithms (currently by country or by type)
-  - the user selects only one of the possible sortings
+  - the user selects a category
 
 ## USE CASE 2: filtering services by items(generalized for providers, countries, types, state)
 
-- precondition: the user is given a list of items
+- description: In order to view only specific items the user must have the possibility to filter the items using the given criteria, by selecting items related to the search.
 
-- postcondition: the user is given a filtered list of sub-items
+- precondition: the user selects an item
 
-- actions:
+- acceptance criteria: the interface shows only the available selectables given the previous selections
 
-  - the user selects the items on the list (one or more)
-
-  - the user selects to query the list of items selected items (if there aren't any items in the selected list a error is shown)
-
-## USE CASE 3: viewing a service
-
-- precondition: the list shows services
-
-- postcondition: the details of the service are shown
+- actors:user, trusted-list server
 
 - actions:
-  - the user selects a service
 
-## USE CASE 4: Showing only relevant items
+  - the user selects the items on the list
+
+  - items non-related to the selection are removed
+
+## USE CASE 3: viewing the services
+
+- description: the user is able to visualize the services given the filtered criteria they have chosen, therefore getting the infrmation relating to the item.
+- actors:user, trusted-list server
+
+- precondition: none
+
+- acceptance criteria: the services (eventually filtered given the criteria) are shown
+
+- actions:
+  - either none (the interface always shows the services) or the interface is given a listener to show only the services
+
+## USE CASE 4: Remove selection from selected items
+
+- description: the user must be able to remove a filtering item a in order to show the items that do not fit the specific criteria, therefore re-adding the removed items from the list
+
+- actors:user, trusted-list server
 
 - precondition: the user has already filtered the items by a criteria
-- postcondition: the user is only shown items relevant to the previous selections
+
+- acceptance criteria: the previously hidden items are now visible again
+
 - actions:
-  - the user has finalises a selection and the list is updated
-side effect: non-relevant items are hidden from the user
+  - via the interface the user is able to remove the selection from a specific item
 
 ![Alt text](./use_cases_diagram.svg)
->chidere a cosa si riferisce per template per gli use-cases
->Aggiungerne altri?
 >Aggiungere server come attore
