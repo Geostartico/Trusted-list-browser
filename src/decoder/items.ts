@@ -34,10 +34,10 @@ export class Service{
 }
 
 export class Provider{
-    private name: string;
-    private tspId: number;
+    readonly name: string;
+    readonly tspId: number;
     private country : Country;
-    private trustMark : string;
+    readonly trustMark : string;
     private serviceTypes: Map<string, number>;
     private possibleStatus : Map<string, number>;
     private services: Service[];
@@ -51,15 +51,6 @@ export class Provider{
         this.services = new Array<Service>();
         this.possibleStatus = new Map<string, number>();
     }
-
-    getName(){
-        return this.name;
-    }
-
-    getTspId(){
-        return this.tspId;
-    }
-
     getServiceTypes(){
         return this.serviceTypes;
     }
@@ -70,10 +61,6 @@ export class Provider{
 
     getPossibleStatus(){
         return this.possibleStatus;
-    }
-
-    getTrustMark(){
-        return this.trustMark;
     }
     
     getCountry(){
