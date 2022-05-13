@@ -1,5 +1,6 @@
 # Raw json structure
 
+```ts
 [
   {
     "countryCode": "string",
@@ -8,7 +9,7 @@
             "string"
         ],
     "trustmark": "string",
-    "tspId": 0
+    "tspId": 0,
     "services": [
         {
             "countryCode": "string",
@@ -26,3 +27,4 @@
   }
   ...
 ]
+```

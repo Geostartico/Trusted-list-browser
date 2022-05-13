@@ -1,6 +1,6 @@
 # Formatted json map structure
 
-```js
+```ts
 Country{
     static unordered_map<string, string> codeToString;
     string countryCode;
@@ -24,23 +24,28 @@ Country{
 }
 ```
 
-```js
+```ts
 Service{
     string name;
     number serviceId;
+    string tob;
     Country country;
     Provider provider;
-    string type;
+    string status;
+    string[] sericeTypes;
+    string type
 }
 ```
 
-```js
+```ts
 Provider{
     string name;
     string trustMark;
-    number serviceId;
+    number tspId;
     Country country;
-    set<Service> services;
+    string trustMark;
+    Service[] services;
+    Set<string> possibleStatus;
     set<string> types;
 }
 ```

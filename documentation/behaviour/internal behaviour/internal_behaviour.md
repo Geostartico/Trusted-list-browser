@@ -13,9 +13,3 @@
 
 ![Alt text](./internal_behaviour.svg)
 
-## TODO
-
-- add filter interaction diagram
-- cambia nome da item a component
-- gui non interagisce con filter direttamente
-- cambiare da send a ingrandisci

@@ -34,13 +34,14 @@
 
 6. if there is an error the user must be informed
 
-NOTE: from here on the actors are always assumed to be the user
 
-## USE CASE 1: visualising the list of Countries or types of services
+## USE CASE 1: visualising the list of items
 
-- pre-condition: a user opens the program or returns to the initial page
+- description: the user is able to view the list of items given the selected cathegory. If no selections were made the user views all the possible items
 
-- postcondition: the program shows the selected list
+- pre-condition: none
+
+- acceptance criteria: 
 
 - actions:
   - the user visualizes the list of possible sorting algorithms (currently by country or by type)
