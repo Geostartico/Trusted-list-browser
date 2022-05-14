@@ -87,24 +87,31 @@ export class UnorderedSet {
         });
     }
 }
-class Test {
-    constructor(n1, n2) {
+/*
+class Test implements Settable<Test>{
+    num1 : number;
+    num2 : number;
+    constructor(n1 : number, n2 : number){
         this.num1 = n1;
         this.num2 = n2;
     }
+
     hashCode() {
         return this.num1 + this.num2;
     }
-    isEqual(el) {
+    isEqual(el: Test) {
         return el.num1 === this.num1 && el.num2 == this.num2;
     }
+
 }
-let set = new UnorderedSet(8);
+
+
+let set = new UnorderedSet<Test>(8);
 let t1 = new Test(1, 2);
 let t2 = new Test(1, 2);
 set.add(t1);
 set.add(t2);
-for (let i = 0; i < 11; i++) {
+for(let i = 0; i < 11; i ++){
     set.add(new Test(3, i));
 }
 console.log(set.getSize());
@@ -112,3 +119,4 @@ console.log(set.has(t2));
 console.log(set.has(new Test(4, 5)));
 set.remove(t2);
 set.forEach((elem) => console.log(elem));
+*/ 

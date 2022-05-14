@@ -1,4 +1,17 @@
-export class Service{
+import{Settable, UnorderedSet} from "./UnorderedSet.js"
+
+function stringHash(str : string) {
+    var hash = 0, i, chr;
+    if (str.length === 0) return hash;
+    for (i = 0; i < str.length; i++) {
+      chr   = str.charCodeAt(i);
+      hash  = ((hash << 5) - hash) + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+}
+
+export class Service implements Settable<Service>{
     readonly name : string;
     readonly serviceId : number;
     private serviceTypes : Set<string>;
@@ -19,6 +32,12 @@ export class Service{
         this.tspId = aTspId;
         this.tob = aTob;
     }
+    hashCode() {
+        return stringHash(this.name);
+    }
+    isEqual(el: Service) {
+        return this.name == el.name;
+    }
     getProvider(){
         return this.provider;
     }
@@ -33,14 +52,14 @@ export class Service{
     }
 }
 
-export class Provider{
+export class Provider implements Settable<Provider>{
     readonly name: string;
     readonly tspId: number;
     private country : Country;
     readonly trustMark : string;
     private serviceTypes: Map<string, number>;
     private possibleStatus : Map<string, number>;
-    private services: Service[];
+    private services: UnorderedSet<Service>;
 
     constructor(aName: string, aTspId: number, aTrustMark : string, aServiceTypes : string[]){
         this.name = aName;
@@ -48,8 +67,14 @@ export class Provider{
         this.trustMark = aTrustMark;
         this.serviceTypes = new Map<string, number>();
         aServiceTypes.forEach((str) => this.serviceTypes.set(str, 0));
-        this.services = new Array<Service>();
+        this.services = new UnorderedSet<Service>(10);
         this.possibleStatus = new Map<string, number>();
+    }
+    hashCode() {
+        return stringHash(this.name);
+    }
+    isEqual(el: Provider) {
+        return this.name == el.name;
     }
     getServiceTypes(){
         return this.serviceTypes;
@@ -68,12 +93,16 @@ export class Provider{
     }
     
     private addType(type : string){
-        this.serviceTypes.set(type, this.serviceTypes.get(type));
-    }
+        if(this.serviceTypes.has(type)){
+            this.serviceTypes.set(type, this.serviceTypes.get(type) + 1);
+        }
+        else{
+            this.serviceTypes.set(type, 1);
+        }    }
 
     private addStatus(status : string){
         if(this.possibleStatus.has(status)){
-            this.possibleStatus.set(status, this.possibleStatus.get(status));
+            this.possibleStatus.set(status, this.possibleStatus.get(status) + 1);
         }
         else{
             this.possibleStatus.set(status, 1);
@@ -81,7 +110,7 @@ export class Provider{
     }
 
     addService(aService : Service){
-        this.services.push(aService);
+        this.services.add(aService);
         aService.getServiceTypes().forEach((str) => this.addType(str));
         this.addStatus(aService.status);
     }
@@ -91,7 +120,7 @@ export class Provider{
     }
 
 }
-export class Country{
+export class Country implements Settable<Country>{
     static codeToString : Map<string, string>;
     static codeToObject : Map<string, Country>;
     static getCountry(code : string){
@@ -108,64 +137,77 @@ export class Country{
     readonly countryCode : string;
     private possibleServiceTypes : Map<string, number>;
     private possibleStatus : Map<string, number>;
-    private providers : Provider[];
+    private providers : UnorderedSet<Provider>;
 
     constructor(code: string){
         this.countryCode = code;
         this.possibleStatus = new Map<string, number>();
         this.possibleServiceTypes = new Map<string, number>();
-        this.providers = new Array<Provider>();
+        this.providers = new UnorderedSet<Provider>(10);
     }
-    getPossibleServiceTypes(){
+
+    hashCode() {
+        return stringHash(this.countryCode);
+    }
+
+    isEqual(el: Country) {
+        return this.countryCode == el.countryCode;
+    }
+
+    getPossibleServiceTypes(){   
         return this.possibleServiceTypes;
     }
+
     getPossibleStatus(){
         return this.possibleStatus;
     }
+
     getProviders(){
         return this.providers;
     }
-    private addStatus(status : string){
+
+    private addStatus(status : string, num : number){
         if(this.possibleStatus.has(status)){
-            this.possibleStatus.set(status, this.possibleStatus.get(status));
+            this.possibleStatus.set(status, this.possibleStatus.get(status) + num);
         }
         else{
-            this.possibleStatus.set(status, 1);
+            this.possibleStatus.set(status, num);
         };
     }
 
-    private addServiceType(serviceType : string){
-        if(this.possibleStatus.has(serviceType)){
-            this.possibleStatus.set(serviceType, this.possibleStatus.get(serviceType));
+    private addServiceType(serviceType : string, num : number){
+        if(this.possibleServiceTypes.has(serviceType)){
+            this.possibleServiceTypes.set(serviceType, this.possibleServiceTypes.get(serviceType) + num);
         }
         else{
-            this.possibleStatus.set(serviceType, 1);
+            this.possibleServiceTypes.set(serviceType, num);
         };
     }
+
     addProvider(provider : Provider){
         provider.addCountry(this);
-        this.providers.push(provider);
+        this.providers.add(provider);
         provider.getServiceTypes().forEach((num: number, str : string) => {
-            this.addServiceType(str);
+            this.addServiceType(str, num);
         });
         provider.getPossibleStatus().forEach((num: number, str : string) => {
-            this.addStatus(str);
+            this.addStatus(str, num);
         });
     }
 }
-/*
+
 let prov = new Provider("tu", 22, "fidati", ["no", "si", "forse"]);
 let ser = new Service("IO", 40, ["tante", "persone", "in", "in"], prov, "gone", "ww.google.com", 69, "nonono");
-console.log(ser.getName());
-console.log(ser.getServiceId());
+console.log(ser.name);
+console.log(ser.serviceId);
 ser.getServiceTypes().forEach(element => {
     console.log(element);
 });
 prov.addService(ser);
 prov.addService(new Service("VOI", 40, ["tante", "cani", "in", "in"], prov, "here", "ww.ebay.com", 70, "nono"));
-console.log(prov.getName());
-console.log(prov.getTspId());
-prov.getServiceTypes().forEach((str) => console.log(str));
-prov.getServices().forEach((sr) => {console.log(sr.getName()); console.log(sr.getStatus())});
+console.log(prov.name);
+console.log(prov.tspId);
+prov.getServiceTypes().forEach((num :number, str : string) => console.log(str));
+prov.getServices().forEach((sr) => {console.log(sr.name); console.log(sr.status)});
 let count = new Country("IT");
-count.addProvider(prov);*/
+count.addProvider(prov);

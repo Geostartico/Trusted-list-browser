@@ -103,6 +103,7 @@ export class UnorderedSet<T extends Settable<T>>{
         })
     }
 }
+/*
 class Test implements Settable<Test>{
     num1 : number;
     num2 : number;
@@ -134,3 +135,4 @@ console.log(set.has(t2));
 console.log(set.has(new Test(4, 5)));
 set.remove(t2);
 set.forEach((elem) => console.log(elem));
+*/
