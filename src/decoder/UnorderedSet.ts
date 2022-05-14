@@ -74,15 +74,15 @@ export class UnorderedSet<T extends Settable<T>>{
             }
         }
     }
-    get(el: T){
+    has(el: T){
         let buck = this.buckets[this.getBucket(el)];
         while(buck.getNext() != null && !buck.getNext().getElement().isEqual(el)){
             buck = buck.getNext();
         }
         if(buck.getNext() != null){
-            return buck.getNext().getElement();
+            return true;
         }
-        return null;
+        return false;
     }
 }
 class Test implements Settable<Test>{
@@ -102,7 +102,7 @@ class Test implements Settable<Test>{
 
 }
 
-/*
+
 let set = new UnorderedSet<Test>(8);
 let t1 = new Test(1, 2);
 let t2 = new Test(1, 2);
@@ -112,4 +112,5 @@ for(let i = 0; i < 11; i ++){
     set.addElement(new Test(3, i));
 }
 console.log(set.getSize());
-*/
+console.log(set.has(t2));
+console.log(set.has(new Test(4, 5)));
