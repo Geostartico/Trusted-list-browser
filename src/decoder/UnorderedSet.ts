@@ -49,10 +49,18 @@ export class UnorderedSet<T extends Settable<T>>{
         {
             while(node.getNext() != null){
                 node = node.getNext();
-                this.addElement(node.getElement());
+                this.add(node.getElement());
             }
         })
     }
+    private find(el : T){
+        let buck = this.buckets[this.getBucket(el)];
+        while(buck.getNext() != null && !buck.getNext().getElement().isEqual(el)){
+            buck = buck.getNext();
+        }
+        return buck
+    }
+
     constructor(buckNum : number){
         this.size = 0;
         this.buckets = new Array<Node<T>>(buckNum);
@@ -61,11 +69,8 @@ export class UnorderedSet<T extends Settable<T>>{
         }
         //this.buckets.forEach((element) => element = new Node<T>(null, null));
     }
-    addElement(el : T){
-        let buck = this.buckets[this.getBucket(el)];
-        while(buck.getNext() != null && !buck.getNext().getElement().isEqual(el)){
-            buck = buck.getNext();
-        }
+    add(el : T){
+        let buck = this.find(el);
         if(buck.getNext() == null){
             buck.setNext(new Node<T>(el, null));
             this.size++;
@@ -74,15 +79,28 @@ export class UnorderedSet<T extends Settable<T>>{
             }
         }
     }
-    has(el: T){
-        let buck = this.buckets[this.getBucket(el)];
-        while(buck.getNext() != null && !buck.getNext().getElement().isEqual(el)){
-            buck = buck.getNext();
+    remove(el : T){
+        let buck = this.find(el);
+        if(buck.getNext() != null){
+            buck.setNext(buck.getNext().getNext());
+            return true;
         }
+        return false;
+    }
+    has(el: T){
+        let buck = this.find(el);
         if(buck.getNext() != null){
             return true;
         }
         return false;
+    }
+    forEach(fn) {
+        this.buckets.forEach((elem) => {
+            while(elem.getNext() != null){
+                elem = elem.getNext();
+                fn(elem.getElement());
+            }
+        })
     }
 }
 class Test implements Settable<Test>{
@@ -106,11 +124,13 @@ class Test implements Settable<Test>{
 let set = new UnorderedSet<Test>(8);
 let t1 = new Test(1, 2);
 let t2 = new Test(1, 2);
-set.addElement(t1);
-set.addElement(t2);
+set.add(t1);
+set.add(t2);
 for(let i = 0; i < 11; i ++){
-    set.addElement(new Test(3, i));
+    set.add(new Test(3, i));
 }
 console.log(set.getSize());
 console.log(set.has(t2));
 console.log(set.has(new Test(4, 5)));
+set.remove(t2);
+set.forEach((elem) => console.log(elem));

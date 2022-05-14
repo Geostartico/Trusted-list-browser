@@ -42,15 +42,19 @@ export class UnorderedSet {
         nBuck.forEach((node) => {
             while (node.getNext() != null) {
                 node = node.getNext();
-                this.addElement(node.getElement());
+                this.add(node.getElement());
             }
         });
     }
-    addElement(el) {
+    find(el) {
         let buck = this.buckets[this.getBucket(el)];
         while (buck.getNext() != null && !buck.getNext().getElement().isEqual(el)) {
             buck = buck.getNext();
         }
+        return buck;
+    }
+    add(el) {
+        let buck = this.find(el);
         if (buck.getNext() == null) {
             buck.setNext(new Node(el, null));
             this.size++;
@@ -59,15 +63,28 @@ export class UnorderedSet {
             }
         }
     }
-    has(el) {
-        let buck = this.buckets[this.getBucket(el)];
-        while (buck.getNext() != null && !buck.getNext().getElement().isEqual(el)) {
-            buck = buck.getNext();
+    remove(el) {
+        let buck = this.find(el);
+        if (buck.getNext() != null) {
+            buck.setNext(buck.getNext().getNext());
+            return true;
         }
+        return false;
+    }
+    has(el) {
+        let buck = this.find(el);
         if (buck.getNext() != null) {
             return true;
         }
         return false;
+    }
+    forEach(fn) {
+        this.buckets.forEach((elem) => {
+            while (elem.getNext() != null) {
+                elem = elem.getNext();
+                fn(elem.getElement());
+            }
+        });
     }
 }
 class Test {
@@ -85,11 +102,13 @@ class Test {
 let set = new UnorderedSet(8);
 let t1 = new Test(1, 2);
 let t2 = new Test(1, 2);
-set.addElement(t1);
-set.addElement(t2);
+set.add(t1);
+set.add(t2);
 for (let i = 0; i < 11; i++) {
-    set.addElement(new Test(3, i));
+    set.add(new Test(3, i));
 }
 console.log(set.getSize());
 console.log(set.has(t2));
 console.log(set.has(new Test(4, 5)));
+set.remove(t2);
+set.forEach((elem) => console.log(elem));
