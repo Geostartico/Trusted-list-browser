@@ -16,7 +16,7 @@ function stringHash(str : string): number {
 }
 /**
  * Represents a service
- * 
+ *
  */
 export class Service implements Settable<Service>{
     /**
