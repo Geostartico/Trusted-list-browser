@@ -1,8 +1,12 @@
 import{Country, Provider, Service} from "./items.js"
-
+/**
+ * transforms from json dictionary to objects, which the Countries are contained in the @see Country.codeToObject map
+ * @param ctodict array with elements in the form {countryCode : "string", countryName : "string"}
+ * @param jsondict array of providers in json format
+ */
 function objectify(ctodict, jsondict){
     Country.initCodeToObjectMap(ctodict);
-    console.log(Country.getCountry("IT"));
+    //console.log(Country.getCountry("IT"));
     let iterProv = (elem) => {
         let curCountry = Country.getCountry(elem["countryCode"]);
         let curProv = new Provider(elem["name"], elem["tspId"], elem["trustmark"], elem["qServiceTypes"]);
@@ -14,6 +18,7 @@ function objectify(ctodict, jsondict){
     };
     jsondict.forEach(iterProv);
 }
+/*
 let dict = [
     {
       "countryCode": "IT",
@@ -78,4 +83,4 @@ let dict = [
 let map = [{countryName: "Italia", countryCode: "IT"}, 
            {countryName: "Germania", countryCode: "DE" }]
 objectify(map, dict);
-console.log(Country.codeToObject);
+console.log(Country.codeToObject);*/
