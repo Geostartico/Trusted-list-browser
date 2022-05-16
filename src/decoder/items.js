@@ -212,14 +212,10 @@ export class Country {
         this.providers = new UnorderedSet(10);
     }
     /**
-     * getting the Country object from the country code
-     * @param code the code o the country to get
-     * @returns the country oject corresponding to the country code
+     * map from country code to counry object
      * @static
      */
-    static getCountry(code) {
-        return this.codeToObject.get(code);
-    }
+    //static codeToObject : Map<string, Country>;
     /**
      * initialises the codeToString map
      * @param arr an array with elements in the form {countryCode : "string", countryName : "string"}
@@ -235,8 +231,9 @@ export class Country {
      * @static
      */
     static initCodeToObjectMap(arr) {
-        this.codeToObject = new Map();
-        arr.forEach((el) => Country.codeToObject.set(el.countryCode, new Country(el.countryCode)));
+        let codeToObject = new Map();
+        arr.forEach((el) => codeToObject.set(el.countryCode, new Country(el.countryCode)));
+        return codeToObject;
     }
     /**
      * get the hashcode for the Country

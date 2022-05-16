@@ -48,7 +48,7 @@ export class UnorderedSet {
      * @returns the bucket in which elemetn should reside
      */
     getBucket(element) {
-        return element.hashCode() % this.buckets.length;
+        return Math.abs(element.hashCode() % this.buckets.length);
     }
     /**
      * doubles the number of buckets
@@ -86,6 +86,7 @@ export class UnorderedSet {
      * @param el
      */
     add(el) {
+        console.log(el);
         let buck = this.find(el);
         if (buck.getNext() == null) {
             buck.setNext(new Node(el, null));

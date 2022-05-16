@@ -75,7 +75,7 @@ export class UnorderedSet<T extends Settable<T>>{
      * @returns the bucket in which elemetn should reside
      */
     private getBucket(element : T){
-        return element.hashCode()%this.buckets.length;
+        return Math.abs(element.hashCode()%this.buckets.length);
     }
     /**
      * doubles the number of buckets
@@ -86,7 +86,8 @@ export class UnorderedSet<T extends Settable<T>>{
         this.buckets = new Array<Node<T>>(nBuck.length * 2);
         for(let i = 0; i < this.buckets.length; i ++){
             this.buckets[i] = new Node<T>(null, null);
-        }        this.size = 0;
+        }        
+        this.size = 0;
         nBuck.forEach((node) => 
         {
             while(node.getNext() != null){
@@ -125,6 +126,7 @@ export class UnorderedSet<T extends Settable<T>>{
      * @param el 
      */
     add(el : T){
+        console.log(el);
         let buck = this.find(el);
         if(buck.getNext() == null){
             buck.setNext(new Node<T>(el, null));
