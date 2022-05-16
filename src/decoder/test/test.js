@@ -1,7 +1,7 @@
 //var assert = require('assert');
 import { strict as assert } from 'node:assert';
 //var Service = require('./items').Service;
-import {Service} from "./items.js"
+import Service from '../items'
 describe('Service', function () {
   describe('Constructor', function () {
     it('should construct the object', function () {

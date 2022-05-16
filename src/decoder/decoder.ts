@@ -5,18 +5,20 @@ import{Country, Provider, Service} from "./items.js"
  * @param jsondict array of providers in json format
  */
 function objectify(ctodict, jsondict){
-    Country.initCodeToObjectMap(ctodict);
-    //console.log(Country.getCountry("IT"));
+    let codeToObject = Country.initCodeToObjectMap(ctodict);
+    let ret = new Array<Service>();
     let iterProv = (elem) => {
-        let curCountry = Country.getCountry(elem["countryCode"]);
+        let curCountry = codeToObject.get(elem["countryCode"]);
         let curProv = new Provider(elem["name"], elem["tspId"], elem["trustmark"], elem["qServiceTypes"]);
         elem["services"].forEach((serdict) => {
             let ser = new Service(serdict["serviceName"], serdict["serviceId"], serdict["qServiceTypes"], curProv, serdict["currentStatus"], serdict["type"], serdict["tspId"], serdict["tob"]);
             curProv.addService(ser);
+            ret.push(ser);
         })
         curCountry.addProvider(curProv);
     };
     jsondict.forEach(iterProv);
+    return {"codeToObject": codeToObject, "servicesArray": ret};
 }
 /*
 let dict = [
