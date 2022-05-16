@@ -4,7 +4,7 @@ import{Country, Provider, Service} from "./items.js"
  * @param ctodict array with elements in the form {countryCode : "string", countryName : "string"}
  * @param jsondict array of providers in json format
  */
-function objectify(ctodict, jsondict){
+export function objectify(ctodict, jsondict){
     let codeToObject = Country.initCodeToObjectMap(ctodict);
     let ret = new Array<Service>();
     let iterProv = (elem) => {

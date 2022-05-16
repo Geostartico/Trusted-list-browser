@@ -75,7 +75,9 @@ export class UnorderedSet {
      * @private
      */
     find(el) {
+        console.log(this.buckets);
         let buck = this.buckets[this.getBucket(el)];
+        console.log("this is el: ", el);
         while (buck.getNext() != null && !buck.getNext().getElement().isEqual(el)) {
             buck = buck.getNext();
         }
