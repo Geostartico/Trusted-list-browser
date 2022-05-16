@@ -60,10 +60,13 @@ export class Rule {
  * Filtering class, (it dynamically updates selectable and active objects)
  */
 export class Filter {
-    constructor(all_services) {
+    constructor(service_list) {
+        this.rules = new Set();
+        this.filtered = new Set();
         this.selectables = new Selection();
+        this.all_services = new Set();
         // Initialize variables (no filtering yet)
-        all_services.forEach((service) => {
+        service_list.forEach((service) => {
             // Initialize "all_possible"
             //this.all_possible.services.add(service);
             //this.all_possible.countries.add(service.getCountry());
@@ -73,6 +76,7 @@ export class Filter {
             //    this.all_possible.types.add(type);
             //});
             this.filtered.add(service);
+            console.log(this.filtered);
             this.all_services.add(service);
             // Initialize "filtered" and "selectables" (both with all possible values)
             //mapInsert(service.getCountry(), this.selectables.countries);
@@ -654,4 +658,6 @@ let serviceDict = [
     }
 ];
 let retDict = objectify(countryDict, serviceDict);
-console.log(retDict);
+//console.log(retDict);
+let myFilter = new Filter(retDict.servicesArray);
+console.log(myFilter.getFiltered());

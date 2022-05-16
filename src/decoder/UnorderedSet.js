@@ -75,9 +75,7 @@ export class UnorderedSet {
      * @private
      */
     find(el) {
-        console.log(this.buckets);
         let buck = this.buckets[this.getBucket(el)];
-        console.log("this is el: ", el);
         while (buck.getNext() != null && !buck.getNext().getElement().isEqual(el)) {
             buck = buck.getNext();
         }
@@ -88,7 +86,6 @@ export class UnorderedSet {
      * @param el
      */
     add(el) {
-        console.log(el);
         let buck = this.find(el);
         if (buck.getNext() == null) {
             buck.setNext(new Node(el, null));
@@ -169,4 +166,4 @@ console.log(set.has(t2));
 console.log(set.has(new Test(4, 5)));
 set.remove(t2);
 set.forEach((elem) => console.log(elem));
-*/ 
+*/

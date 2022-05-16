@@ -1,5 +1,6 @@
 import {Country, Provider, Service} from "../decoder/items.js"
 import {objectify} from "../decoder/decoder.js"
+import {UnorderedSet} from "../decoder/UnorderedSet.js"
 
  /**
   * Class that groups a selection of objects and keeps track of how many times
@@ -40,9 +41,9 @@ import {objectify} from "../decoder/decoder.js"
   * Class that groups a selection of objects
   */
 export class Selection{
-    readonly countries: Set<Country>;
-    readonly providers: Set<Provider>;
-    readonly statuses:  Set<string>;
+    readonly countries: UnorderedSet<Country>;
+    readonly providers: UnorderedSet<Provider>;
+    readonly statuses:  UnorderedSet<string>;
     readonly types:     Set<string>;
 
     constructor(
@@ -69,16 +70,17 @@ export class Selection{
     }
 }
 
+export class InputSelection<T>{
+    public readonly selected_object: T;
+    public readonly 
+}
+
 
  /**
-  * Flitering rule class to force function parameter and return types
+  * Flitering rule class
   */
 export class Rule {
-    public readonly rule_function: (service: Service) => boolean;
-
-    constructor(aRuleFunction: (service: Service) => boolean){
-        this.rule_function = aRuleFunction;
-    }
+    readonly Selection;
 }
 
  /**
@@ -94,19 +96,21 @@ export class Filter{
     //    readonly statuses:  Set<string>;
     //}
 
-    private rules:       Set<Rule>;
+    private rules:       Array<Rule>;
     private selectables: Selection;
     private filtered:    Set<Service>;
 
     private readonly all_services: Set<Service>;
 
+    constructor(service_list: Service[]){
 
-    constructor(all_services: Service[]){
-
-        this.selectables = new Selection();
+        this.rules        = new Set<Rule>();
+        this.filtered     = new Set<Service>();
+        this.selectables  = new Selection();
+        this.all_services = new Set<Service>();
 
         // Initialize variables (no filtering yet)
-        all_services.forEach((service: Service) => {
+        service_list.forEach((service: Service) => {
 
             // Initialize "all_possible"
             //this.all_possible.services.add(service);
@@ -118,7 +122,6 @@ export class Filter{
             //});
 
             this.filtered.add(service);
-
             this.all_services.add(service);
 
             // Initialize "filtered" and "selectables" (both with all possible values)
@@ -171,7 +174,7 @@ export class Filter{
 
         for(let service of this.all_services){
             this.rules.forEach((rule) => {
-                if(rule.rule_function(service)){
+                if(!rule.rule_function(service)){
                     filtered.add(service);
                 }
             });
@@ -721,4 +724,8 @@ let serviceDict = [
 
 let retDict = objectify(countryDict, serviceDict);
 
-console.log(retDict);
+//console.log(retDict);
+
+let myFilter = new Filter(retDict.servicesArray);
+
+console.log(myFilter.getFiltered());

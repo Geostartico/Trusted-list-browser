@@ -38,7 +38,7 @@ class Node<T>{
     getElement(){
         return this.element;
     }
-    
+
     setNext(n : Node<T>){
         this.next = n;
     }
@@ -71,7 +71,7 @@ export class UnorderedSet<T extends Settable<T>>{
     }
     /**
      * get the bucket for the item
-     * @param element 
+     * @param element
      * @returns the bucket in which elemetn should reside
      */
     private getBucket(element : T){
@@ -86,9 +86,9 @@ export class UnorderedSet<T extends Settable<T>>{
         this.buckets = new Array<Node<T>>(nBuck.length * 2);
         for(let i = 0; i < this.buckets.length; i ++){
             this.buckets[i] = new Node<T>(null, null);
-        }        
+        }
         this.size = 0;
-        nBuck.forEach((node) => 
+        nBuck.forEach((node) =>
         {
             while(node.getNext() != null){
                 node = node.getNext();
@@ -97,7 +97,7 @@ export class UnorderedSet<T extends Settable<T>>{
         })
     }
     /**
-     * 
+     *
      * @param el
      * @returns the node previous to the one containing the object or the last node of the bucket it should reside in
      * @private
@@ -123,10 +123,9 @@ export class UnorderedSet<T extends Settable<T>>{
     }
     /**
      * add the element to the set if it isn't in the set (if needed resizes the set)
-     * @param el 
+     * @param el
      */
     add(el : T){
-        console.log(el);
         let buck = this.find(el);
         if(buck.getNext() == null){
             buck.setNext(new Node<T>(el, null));
@@ -138,7 +137,7 @@ export class UnorderedSet<T extends Settable<T>>{
     }
     /**
      * removes the elemet from the set
-     * @param el 
+     * @param el
      * @returns true if the element was in the set
      */
     remove(el : T){
@@ -151,8 +150,8 @@ export class UnorderedSet<T extends Settable<T>>{
         return false;
     }
     /**
-     * 
-     * @param el 
+     *
+     * @param el
      * @returns true if el was in the set
      */
     has(el: T){
@@ -166,13 +165,22 @@ export class UnorderedSet<T extends Settable<T>>{
      * iterates over the set calling the given callback function
      * @param fn callback function taking one parameter
      */
-    forEach(fn) {
+    forEach(fn: Function) {
         this.buckets.forEach((elem) => {
             while(elem.getNext() != null){
                 elem = elem.getNext();
                 fn(elem.getElement());
             }
         })
+    }
+
+    /**
+     * @returns Array containing all values of the set
+     */
+    values(): Array<T> {
+        let toReturn: Array<T>;
+        this.forEach((item: T) => toReturn.push(item));
+        return toReturn;
     }
 }
 /*
