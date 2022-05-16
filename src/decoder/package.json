@@ -1,5 +1,7 @@
 {
 
-    "type": "module"
-  
+    "type": "module",
+    "scripts": {
+        "test": "mocha"
+    }
 }

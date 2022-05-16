@@ -306,13 +306,12 @@ export class Country {
         ;
     }
     /**
-     * updates the Provider set adding it to the Country and
+     * updates the Provider set adding it to the Country and updating the service and status map
      * @param provider provider to add
      */
     addProvider(provider) {
         provider.addCountry(this);
         if (this.providers.has(provider)) {
-            console.log("Nooo");
             return;
         }
         this.providers.add(provider);
@@ -324,6 +323,7 @@ export class Country {
         });
     }
 }
+/*
 let prov = new Provider("tu", 22, "fidati", ["no", "si", "forse"]);
 let ser = new Service("IO", 40, ["tante", "persone", "in", "in"], prov, "gone", "ww.google.com", 69, "nonono");
 console.log(ser.name);
@@ -335,7 +335,7 @@ prov.addService(ser);
 prov.addService(new Service("VOI", 40, ["tante", "cani", "in", "in"], prov, "here", "ww.ebay.com", 70, "nono"));
 console.log(prov.name);
 console.log(prov.tspId);
-prov.getServiceTypes().forEach((num, str) => console.log(str));
-prov.getServices().forEach((sr) => { console.log(sr.name); console.log(sr.status); });
+prov.getServiceTypes().forEach((num :number, str : string) => console.log(str));
+prov.getServices().forEach((sr) => {console.log(sr.name); console.log(sr.status)});
 let count = new Country("IT");
-count.addProvider(prov);
+count.addProvider(prov);*/

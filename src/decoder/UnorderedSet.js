@@ -1,3 +1,6 @@
+/**
+ * linked list node
+ */
 class Node {
     constructor(el, aNext) {
         this.element = el;
@@ -16,8 +19,14 @@ class Node {
         this.element = el;
     }
 }
-//very dumb dumb Set by geo
+/**
+ * very dumb dumb Set by geo
+ */
 export class UnorderedSet {
+    /**
+     * constructs the unordered set
+     * @param buckNum number of initial buckets
+     */
     constructor(buckNum) {
         this.size = 0;
         this.buckets = new Array(buckNum);
@@ -26,12 +35,25 @@ export class UnorderedSet {
         }
         //this.buckets.forEach((element) => element = new Node<T>(null, null));
     }
+    /**
+     * get the size
+     * @returns th enumber of items
+     */
     getSize() {
         return this.size;
     }
+    /**
+     * get the bucket for the item
+     * @param element
+     * @returns the bucket in which elemetn should reside
+     */
     getBucket(element) {
         return element.hashCode() % this.buckets.length;
     }
+    /**
+     * doubles the number of buckets
+     * @private
+     */
     resize() {
         let nBuck = this.buckets;
         this.buckets = new Array(nBuck.length * 2);
@@ -46,6 +68,12 @@ export class UnorderedSet {
             }
         });
     }
+    /**
+     *
+     * @param el
+     * @returns the node previous to the one containing the object or the last node of the bucket it should reside in
+     * @private
+     */
     find(el) {
         let buck = this.buckets[this.getBucket(el)];
         while (buck.getNext() != null && !buck.getNext().getElement().isEqual(el)) {
@@ -53,6 +81,10 @@ export class UnorderedSet {
         }
         return buck;
     }
+    /**
+     * add the element to the set if it isn't in the set (if needed resizes the set)
+     * @param el
+     */
     add(el) {
         let buck = this.find(el);
         if (buck.getNext() == null) {
@@ -63,14 +95,25 @@ export class UnorderedSet {
             }
         }
     }
+    /**
+     * removes the elemet from the set
+     * @param el
+     * @returns true if the element was in the set
+     */
     remove(el) {
         let buck = this.find(el);
         if (buck.getNext() != null) {
             buck.setNext(buck.getNext().getNext());
+            this.size--;
             return true;
         }
         return false;
     }
+    /**
+     *
+     * @param el
+     * @returns true if el was in the set
+     */
     has(el) {
         let buck = this.find(el);
         if (buck.getNext() != null) {
@@ -78,6 +121,10 @@ export class UnorderedSet {
         }
         return false;
     }
+    /**
+     * iterates over the set calling the given callback function
+     * @param fn callback function taking one parameter
+     */
     forEach(fn) {
         this.buckets.forEach((elem) => {
             while (elem.getNext() != null) {
