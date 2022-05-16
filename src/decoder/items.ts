@@ -5,7 +5,7 @@ import{Settable, UnorderedSet} from "./UnorderedSet.js"
  * @returns the hash(with ciclyc shift) of str
  */
 function stringHash(str : string): number {
-    var hash = 0, i, chr;
+    var hash = 0, i: number, chr: number;
     if (str.length === 0) return hash;
     for (i = 0; i < str.length; i++) {
       chr   = str.charCodeAt(i);
@@ -14,9 +14,77 @@ function stringHash(str : string): number {
     }
     return hash;
 }
+
+/**
+ * Represents a service type
+ */
+export class Type implements Settable<Type>{
+
+    /**
+     * @readonly
+     */
+    readonly name: string;
+
+    /**
+     * hashcode of the type
+     * @returns the hashcode of the type name
+     * @see Settable
+     */
+    public hashCode(): number{
+        return stringHash(this.name);
+    }
+
+    /**
+     * checks if two types are the same
+     * @param el the second type
+     * @returns if the two names are the same
+     * @see Settable
+     */
+    public isEqual(el: Type): boolean{
+        return this.name == el.name;
+    }
+
+    constructor(name: string){
+        this.name = name;
+    }
+}
+
+/**
+ * Represents a service status
+ */
+export class Status implements Settable<Status>{
+
+    /**
+     * @readonly
+     */
+    readonly name: string;
+
+    /**
+     * hashcode of the status
+     * @returns the hashcode of the status name
+     * @see Settable
+     */
+    public hashCode(): number{
+        return stringHash(this.name);
+    }
+
+    /**
+     * checks if two statuses are the same
+     * @param el the second status
+     * @returns if the two names are the same
+     * @see Settable
+     */
+    public isEqual(el: Status): boolean{
+        return this.name == el.name;
+    }
+
+    constructor(name: string){
+        this.name = name;
+    }
+}
+
 /**
  * Represents a service
- *
  */
 export class Service implements Settable<Service>{
     /**
@@ -33,7 +101,7 @@ export class Service implements Settable<Service>{
      * set of the service types given by the service
      * @private
      */
-    private serviceTypes : Set<string>;
+    private serviceTypes : Set<Type>;
     /**
      * provider of the service
      * @private
@@ -43,12 +111,12 @@ export class Service implements Settable<Service>{
      * url of the status
      * @readonly
      */
-    readonly status : string;
+    readonly status : Status;
     /**
      * url of the type of service
      * @readonly
      */
-    readonly type : string;
+    readonly type : Type;
     /**
      * tspId of the service
      * @readonly
@@ -75,11 +143,11 @@ export class Service implements Settable<Service>{
      * @param aTspId tspId of the server
      * @param aTob tob of the server
      */
-    constructor(aName: string, aServiceId: number, aServiceTypes: string[], pr : Provider, aStatus : string, aType : string, aTspId : number, aTob : string){
+    constructor(aName: string, aServiceId: number, aServiceTypes: Type[], pr : Provider, aStatus : Status, aType : Type, aTspId : number, aTob : string){
         this.name = aName;
         this.serviceId = aServiceId;
-        this.serviceTypes = new Set<string>();
-        aServiceTypes.forEach((str) => {this.serviceTypes.add(str)});
+        this.serviceTypes = new Set<Type>();
+        aServiceTypes.forEach((type) => {this.serviceTypes.add(type)});
         this.provider = pr;
         this.status = aStatus;
         this.type = aType;
@@ -160,12 +228,12 @@ export class Provider implements Settable<Provider>{
      * the map of the serviceTypes and the number of service instances having it
      * @private
      */
-    private serviceTypes: Map<string, number>;
+    private serviceTypes: Map<Type, number>;
     /**
      * the map of the possible status and the number of service instances having it
      * @private
      */
-    private possibleStatus : Map<string, number>;
+    private possibleStatus : Map<Status, number>;
     /**
      * the set of services
      * @see UnorderedSet
@@ -179,14 +247,14 @@ export class Provider implements Settable<Provider>{
      * @param aTrustMark trustmark of the provider
      * @param aServiceTypes servicetypes given by the provider's services
      */
-    constructor(aName: string, aTspId: number, aTrustMark : string, aServiceTypes : string[]){
+    constructor(aName: string, aTspId: number, aTrustMark : string, aServiceTypes : Type[]){
         this.name = aName;
         this.tspId = aTspId;
         this.trustMark = aTrustMark;
-        this.serviceTypes = new Map<string, number>();
+        this.serviceTypes = new Map<Type, number>();
         aServiceTypes.forEach((str) => this.serviceTypes.set(str, 0));
         this.services = new UnorderedSet<Service>(10);
-        this.possibleStatus = new Map<string, number>();
+        this.possibleStatus = new Map<Status, number>();
     }
     /**
      * returns the hashcode of the provider
@@ -238,7 +306,7 @@ export class Provider implements Settable<Provider>{
      * @param type type to add
      * @private
      */
-    private addType(type : string){
+    private addType(type : Type){
         if(this.serviceTypes.has(type)){
             this.serviceTypes.set(type, this.serviceTypes.get(type) + 1);
         }
@@ -250,7 +318,7 @@ export class Provider implements Settable<Provider>{
      * @param status status to add
      * @private
      */
-    private addStatus(status : string){
+    private addStatus(status : Status){
         if(this.possibleStatus.has(status)){
             this.possibleStatus.set(status, this.possibleStatus.get(status) + 1);
         }
@@ -273,7 +341,7 @@ export class Provider implements Settable<Provider>{
      */
     addCountry(aCountry : Country){
         this.country = aCountry;
-        this.services.forEach((elem) => elem.addCountry(this.country));
+        this.services.forEach((provider: Provider) => provider.addCountry(this.country));
     }
 
 }
@@ -320,13 +388,13 @@ export class Country implements Settable<Country>{
      * with the number of instances
      * @private
      */
-    private possibleServiceTypes : Map<string, number>;
+    private possibleServiceTypes : Map<Type, number>;
     /**
      * status of the services given by the coutnry providers,
      * with the number of instances
      * @private
      */
-    private possibleStatus : Map<string, number>;
+    private possibleStatus : Map<Status, number>;
     /**
      * set of providers given by the country
      * @private
@@ -338,8 +406,8 @@ export class Country implements Settable<Country>{
      */
     constructor(code: string){
         this.countryCode = code;
-        this.possibleStatus = new Map<string, number>();
-        this.possibleServiceTypes = new Map<string, number>();
+        this.possibleStatus = new Map<Status, number>();
+        this.possibleServiceTypes = new Map<Type, number>();
         this.providers = new UnorderedSet<Provider>(10);
     }
     /**
@@ -362,7 +430,7 @@ export class Country implements Settable<Country>{
      * get the possible service Types
      * @returns the map of the possibleTypes
      */
-    getPossibleServiceTypes(){   
+    getPossibleServiceTypes(){
         return this.possibleServiceTypes;
     }
     /**
@@ -385,7 +453,7 @@ export class Country implements Settable<Country>{
      * @param num the number of the given instances
      * @private
      */
-    private addStatus(status : string, num : number){
+    private addStatus(status : Status, num : number){
         if(this.possibleStatus.has(status)){
             this.possibleStatus.set(status, this.possibleStatus.get(status) + num);
         }
@@ -399,7 +467,7 @@ export class Country implements Settable<Country>{
      * @param num the number of the given instances
      * @private
      */
-    private addServiceType(serviceType : string, num : number){
+    private addServiceType(serviceType : Type, num : number){
         if(this.possibleServiceTypes.has(serviceType)){
             this.possibleServiceTypes.set(serviceType, this.possibleServiceTypes.get(serviceType) + num);
         }
@@ -417,11 +485,11 @@ export class Country implements Settable<Country>{
             return;
         }
         this.providers.add(provider);
-        provider.getServiceTypes().forEach((num: number, str : string) => {
-            this.addServiceType(str, num);
+        provider.getServiceTypes().forEach((num: number, type : Type) => {
+            this.addServiceType(type, num);
         });
-        provider.getPossibleStatus().forEach((num: number, str : string) => {
-            this.addStatus(str, num);
+        provider.getPossibleStatus().forEach((num: number, status: Status) => {
+            this.addStatus(status, num);
         });
     }
 }

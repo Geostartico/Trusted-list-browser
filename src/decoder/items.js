@@ -16,8 +16,57 @@ function stringHash(str) {
     return hash;
 }
 /**
+ * Represents a service type
+ */
+export class Type {
+    constructor(name) {
+        this.name = name;
+    }
+    /**
+     * hashcode of the type
+     * @returns the hashcode of the type name
+     * @see Settable
+     */
+    hashCode() {
+        return stringHash(this.name);
+    }
+    /**
+     * checks if two types are the same
+     * @param el the second type
+     * @returns if the two names are the same
+     * @see Settable
+     */
+    isEqual(el) {
+        return this.name == el.name;
+    }
+}
+/**
+ * Represents a service status
+ */
+export class Status {
+    constructor(name) {
+        this.name = name;
+    }
+    /**
+     * hashcode of the status
+     * @returns the hashcode of the status name
+     * @see Settable
+     */
+    hashCode() {
+        return stringHash(this.name);
+    }
+    /**
+     * checks if two statuses are the same
+     * @param el the second status
+     * @returns if the two names are the same
+     * @see Settable
+     */
+    isEqual(el) {
+        return this.name == el.name;
+    }
+}
+/**
  * Represents a service
- *
  */
 export class Service {
     /**
@@ -35,7 +84,7 @@ export class Service {
         this.name = aName;
         this.serviceId = aServiceId;
         this.serviceTypes = new Set();
-        aServiceTypes.forEach((str) => { this.serviceTypes.add(str); });
+        aServiceTypes.forEach((type) => { this.serviceTypes.add(type); });
         this.provider = pr;
         this.status = aStatus;
         this.type = aType;
@@ -194,7 +243,7 @@ export class Provider {
      */
     addCountry(aCountry) {
         this.country = aCountry;
-        this.services.forEach((elem) => elem.addCountry(this.country));
+        this.services.forEach((provider) => provider.addCountry(this.country));
     }
 }
 /**
@@ -312,11 +361,11 @@ export class Country {
             return;
         }
         this.providers.add(provider);
-        provider.getServiceTypes().forEach((num, str) => {
-            this.addServiceType(str, num);
+        provider.getServiceTypes().forEach((num, type) => {
+            this.addServiceType(type, num);
         });
-        provider.getPossibleStatus().forEach((num, str) => {
-            this.addStatus(str, num);
+        provider.getPossibleStatus().forEach((num, status) => {
+            this.addStatus(status, num);
         });
     }
 }
