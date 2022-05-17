@@ -55,25 +55,28 @@ export class Rule {
 export class Filter{
 
     // TODO: this should just be rule.filtering_item.getServices()
-    private getFiterdServices(rule: Rule): Map<Service, number>{
+    private getServicesFromRule(rule: Rule): Map<Service, number>{
 
         let ret = new Map<Service, number>();
 
         if(rule.filtering_item instanceof Country){
             rule.filtering_item.getProviders().forEach((provider: Provider) => {
                 provider.getServices().forEach((service: Service) => {
-                    if(service.getCountry() === rule.filtering_item){
-                        ret.set(service, 1);
-                    }
+                    ret.set(service, 1);
                 });
             });
             return ret;
+        }
+        if(rule.filtering_item instanceof Provider){
+            rule.filtering_item.getServices().forEach((service: Service) => {
+                ret.set(service, 1);
+            });
         }
 
         if(rule.filtering_item instanceof Type){
             this.all_services.forEach((service: Service) => {
                 service.getServiceTypes().forEach((type: Type) => {
-                if(service.status === rule.filtering_item){
+                if(type === rule.filtering_item){
                     ret.set(service, 1);
                 }
                 });
@@ -84,8 +87,7 @@ export class Filter{
                 if(service.status === rule.filtering_item){
                     ret.set(service, 1);
                 }
-            }
-
+            });
         }
 
         return ret;
@@ -128,44 +130,65 @@ export class Filter{
      */
     getSelectables(): Selection{
 
-        let selectables = new Selection();
-
-        for(let service of this.getFiltered()){
-            selectables.countries.add(service.getCountry());
-            selectables.types.add(service.type);
-            selectables.statuses.add(service.status);
-            selectables.providers.add(service.getProvider());
-        }
-
-        return selectables;
     }
 
     /**
      * @returns set of filtered services based on the rules
      */
-    getFiltered(): Set<Service>{
+    getFiltered(): Selection{
 
-        let filtered = new Set<Service>();
-
-        for(let service of this.all_services){
-            this.rules.forEach((rule) => {
-                if(!rule.rule_function(service)){
-                    filtered.add(service);
-                }
-            });
-        }
-
-        return filtered;
     }
 }
 
+function mapIntersect(...maps: Array<Map<Service, number>>): UnorderedSet<Service>{
+
+    let ret = new UnorderedSet<Service>(10);
+
+    if(maps.length < 1)
+        return ret;
+    if(maps.length == 1){
+        for(let service of maps[0].keys())
+            ret.add(service);
+        return ret;
+    }
+
+
+    let all_maps_have: boolean;
+    for(let service of maps[0].keys()){
+        all_maps_have = true;
+        for(let map of maps.slice(1)){
+            if(!map.has(service)){
+                all_maps_have = false;
+                break;
+            }
+        }
+        if(all_maps_have)
+            ret.add(service);
+    }
+
+    return ret;
+}
+
+
+function mapUnion(...maps: Array<Map<Service, number>>): Map<Service, number>{
+
+    let ret = new Map<Service, number>();
+
+    for(let map of maps){
+        for(let service of map.keys()){
+            mapIncreaseOrInsert(service, ret);
+        }
+    }
+
+    return ret;
+}
 
  /**
-  * Helper function to insert value in map
-  * @param value: value toinsert
+  * Helper function, self explainatory
+  * @param value: value to update
   * @param map:   map containing the value to be inserted
   */
-function mapInsert<T>(value: T, map: Map<T, number>){
+function mapIncreaseOrInsert<T>(value: T, map: Map<T, number>){
     if(map.has(value)){
         map.set(value, map.get(value)+1);
     }
@@ -175,14 +198,14 @@ function mapInsert<T>(value: T, map: Map<T, number>){
 }
 
  /**
-  * Helper function to remove value from map
+  * Helper function, self explainatory
   * @param value: value to remove
   * @param map:   map containing the value to be removed
   *
   * @throws @link{Error}
   * Thrown if the value is not inserted in the map
   */
-function mapRemove<T>(value: T, map: Map<T, number>){
+function mapDecreaseOrInsert<T>(value: T, map: Map<T, number>){
     if(!map.has(value)){
         throw new Error("Trying to remove an item that does not exist");
     }
