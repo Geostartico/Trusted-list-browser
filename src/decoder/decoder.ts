@@ -96,9 +96,9 @@ let dict = [
   ]
 let map = [{countryName: "Italia", countryCode: "IT"}, 
            {countryName: "Germania", countryCode: "DE" }]
-objectify(map, dict);
-console.log(Country.codeToObject);*/
-/*
+let d = objectify(map, dict);
+console.log(d["servicesArray"]);*/
+
 let countryDict = [
     {
       "countryCode": "AT",
@@ -603,5 +603,4 @@ let countryDict = [
   
   let retDict = objectify(countryDict, serviceDict);
   
-  console.log(retDict);
-*/
+  console.log(retDict["codeToObject"].get("AT").getPossibleServiceTypes().values());

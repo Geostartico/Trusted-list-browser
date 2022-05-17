@@ -1,4 +1,5 @@
 import { UnorderedSet } from "./UnorderedSet.js";
+import { UnorderedMap } from "./UnorderedMap.js";
 /**
  * calculates the hash of a function
  * @param str a string
@@ -78,14 +79,14 @@ export class Service {
      * @param aServiceTypes list of serviceTypes
      * @param pr provider of the server
      * @param aStatus url of the status
-     * @param aType type of the server
+     * @param aType type of the service
      * @param aTspId tspId of the server
      * @param aTob tob of the server
      */
     constructor(aName, aServiceId, aServiceTypes, pr, aStatus, aType, aTspId, aTob) {
         this.name = aName;
         this.serviceId = aServiceId;
-        this.serviceTypes = new Set();
+        this.serviceTypes = new UnorderedSet(10);
         aServiceTypes.forEach((type) => { this.serviceTypes.add(type); });
         this.provider = pr;
         this.status = aStatus;
@@ -154,10 +155,10 @@ export class Provider {
         this.name = aName;
         this.tspId = aTspId;
         this.trustMark = aTrustMark;
-        this.serviceTypes = new Map();
+        this.serviceTypes = new UnorderedMap(10);
         aServiceTypes.forEach((str) => this.serviceTypes.set(str, 0));
         this.services = new UnorderedSet(10);
-        this.possibleStatus = new Map();
+        this.possibleStatus = new UnorderedMap(10);
     }
     /**
      * returns the hashcode of the provider
@@ -245,7 +246,7 @@ export class Provider {
      */
     addCountry(aCountry) {
         this.country = aCountry;
-        this.services.forEach((provider) => provider.addCountry(this.country));
+        this.services.forEach((service) => service.addCountry(this.country));
     }
 }
 /**
@@ -258,8 +259,8 @@ export class Country {
      */
     constructor(code) {
         this.countryCode = code;
-        this.possibleStatus = new Map();
-        this.possibleServiceTypes = new Map();
+        this.possibleStatus = new UnorderedMap(10);
+        this.possibleServiceTypes = new UnorderedMap(10);
         this.providers = new UnorderedSet(10);
     }
     /**
@@ -358,10 +359,10 @@ export class Country {
      * @param provider provider to add
      */
     addProvider(provider) {
-        provider.addCountry(this);
         if (this.providers.has(provider)) {
             return;
         }
+        provider.addCountry(this);
         this.providers.add(provider);
         provider.getServiceTypes().forEach((num, type) => {
             this.addServiceType(type, num);
