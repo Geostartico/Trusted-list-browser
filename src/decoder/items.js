@@ -46,8 +46,8 @@ export class Type {
  * Represents a service status
  */
 export class Status {
-    constructor(name) {
-        this.name = name;
+    constructor(aName) {
+        this.name = aName;
         this.services = new UnorderedSet(10);
     }
     /**

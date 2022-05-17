@@ -85,8 +85,8 @@ export class Status implements Settable<Status>{
         return this.name == el.name;
     }
 
-    constructor(name: string){
-        this.name = name;
+    constructor(aName: string){
+        this.name = aName;
         this.services = new UnorderedSet<Service>(10);
     }
 }

@@ -123,7 +123,7 @@ export class UnorderedSet {
      * @returns Array containing all values of the set
      */
     values() {
-        let toReturn;
+        let toReturn = new Array();
         this.forEach((item) => toReturn.push(item));
         return toReturn;
     }

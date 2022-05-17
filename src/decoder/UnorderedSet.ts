@@ -138,7 +138,7 @@ export class UnorderedSet<T extends Settable<T>>{
      * @returns Array containing all values of the set
      */
     values(): Array<T> {
-        let toReturn: Array<T>;
+        let toReturn: Array<T> = new Array<T>();
         this.forEach((item: T) => toReturn.push(item));
         return toReturn;
     }

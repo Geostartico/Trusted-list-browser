@@ -1,4 +1,6 @@
 import{Country, Provider, Service, Type, Status} from "./items.js"
+import { UnorderedMap } from "./UnorderedMap.js";
+import { UnorderedSet } from "./UnorderedSet.js";
 /**
  * transforms from json dictionary to objects, which the Countries are contained in the @see Country.codeToObject map
  * @param ctodict array with elements in the form {countryCode : "string", countryName : "string"}
@@ -7,30 +9,61 @@ import{Country, Provider, Service, Type, Status} from "./items.js"
  * as keys and as value the country objects, and array contrining services
  */
 export function objectify(ctodict, jsondict){
-    let codeToObject = Country.initCodeToObjectMap(ctodict);
-    let ret = new Array<Service>();
-    let iterProv = (provider) => {
-        let curCountry = codeToObject.get(provider["countryCode"]);
-        let typearr  : Array<Type> = new Array<Type>();
-        provider["qServiceTypes"].forEach((typestr) =>{
-          typearr.push(new Type(typestr));
+  let codeToObject : Map<string, Country>  = Country.initCodeToObjectMap(ctodict);
+  let servicesArray : Array<Service> = new Array<Service>();
+  let stringToStatus : Map<string, Status> = new Map<string, Status>();
+  let statusSet : UnorderedSet<Status> = new UnorderedSet<Status>(10);
+  let stringToType : Map<string, Type> = new Map<string, Type>();
+  let typeSet  : UnorderedSet<Type> = new UnorderedSet<Type>(10);
+  let typearr : Array<Type> = new Array<Type>();
+  jsondict.forEach((provider) => {
+    let curCountry = codeToObject.get(provider["countryCode"]);
+    let typearr = new Array<Type>();
+    provider["qServiceTypes"].forEach((typestr) =>{
+      if(!stringToType.has(typestr)){
+        let t = new Type(typestr);
+        stringToType.set(typestr, t);
+        typeSet.add(t);
+        typearr.push(t);
+      }
+      else{
+        typearr.push(stringToType.get(typestr));
+      }
+    });
+    let curProv = new Provider(provider["name"], provider["tspId"], provider["trustmark"], typearr);
+    provider["services"].forEach((service_dict) => {
+        let serviceTypeArr  : Array<Type> = new Array<Type>();
+        service_dict["qServiceTypes"].forEach((typestr) =>{
+          if(!stringToType.has(typestr)){
+            let t : Type = new Type(typestr);
+            stringToType.set(typestr, t);
+            typeSet.add(t);
+            serviceTypeArr.push(t);
           }
-        );
-        let curProv = new Provider(provider["name"], provider["tspId"], provider["trustmark"], typearr);
-        provider["services"].forEach((service_dict) => {
-            let serviceTypeArr  : Array<Type> = new Array<Type>();
-            service_dict["qServiceTypes"].forEach((typestr) =>{
-              serviceTypeArr.push(new Type(typestr));
-              }
-            );
-            let ser = new Service(service_dict["serviceName"], service_dict["serviceId"], serviceTypeArr, curProv, new Status(service_dict["currentStatus"]), service_dict["type"], service_dict["tspId"], service_dict["tob"]);
-            curProv.addService(ser);
-            ret.push(ser);
-        })
-        curCountry.addProvider(curProv);
-    };
-    jsondict.forEach(iterProv);
-    return {"codeToObject": codeToObject, "servicesArray": ret};
+          else{
+            serviceTypeArr.push(stringToType.get(typestr));
+          }
+        });
+        let statusStr : string = service_dict["currentStatus"];
+        let stat : Status;
+        console.log(statusStr);
+        if(!stringToStatus.has(statusStr)){
+          stat = new Status(statusStr);
+          stringToStatus.set(statusStr, stat);
+          statusSet.add(stat);
+        }
+        else{
+          stat = stringToStatus.get(statusStr);
+        }
+        let ser = new Service(service_dict["serviceName"], service_dict["serviceId"], serviceTypeArr, curProv, stat, service_dict["type"], service_dict["tspId"], service_dict["tob"]);
+        stat.services.add(ser);
+        serviceTypeArr.forEach((elem : Type) => elem.services.add(ser));
+        curProv.addService(ser);
+        servicesArray.push(ser);
+    })
+    curCountry.addProvider(curProv);
+    });
+  return {"codeToObject": codeToObject, "servicesArray": servicesArray, "typeSet" : typeSet, "statusSet" : statusSet};
 }
 /*
 let dict = [
@@ -98,7 +131,6 @@ let map = [{countryName: "Italia", countryCode: "IT"},
            {countryName: "Germania", countryCode: "DE" }]
 let d = objectify(map, dict);
 console.log(d["servicesArray"]);*/
-
 let countryDict = [
     {
       "countryCode": "AT",
@@ -603,4 +635,7 @@ let countryDict = [
   
   let retDict = objectify(countryDict, serviceDict);
   
-  console.log(retDict["codeToObject"].get("AT").getPossibleServiceTypes().values());
+  console.log(retDict["codeToObject"]);
+  console.log(retDict["servicesArray"]);
+  console.log(retDict["statusSet"].values());
+  console.log(retDict["typeSet"].values());
