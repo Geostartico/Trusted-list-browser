@@ -1,4 +1,4 @@
-import{Country, Provider, Service} from "./items.js"
+import{Country, Provider, Service, Type, Status} from "./items.js"
 /**
  * transforms from json dictionary to objects, which the Countries are contained in the @see Country.codeToObject map
  * @param ctodict array with elements in the form {countryCode : "string", countryName : "string"}
@@ -11,9 +11,19 @@ export function objectify(ctodict, jsondict){
     let ret = new Array<Service>();
     let iterProv = (provider) => {
         let curCountry = codeToObject.get(provider["countryCode"]);
-        let curProv = new Provider(provider["name"], provider["tspId"], provider["trustmark"], provider["qServiceTypes"]);
+        let typearr  : Array<Type> = new Array<Type>();
+        provider["qServiceTypes"].forEach((typestr) =>{
+          typearr.push(new Type(typestr));
+          }
+        );
+        let curProv = new Provider(provider["name"], provider["tspId"], provider["trustmark"], typearr);
         provider["services"].forEach((service_dict) => {
-            let ser = new Service(service_dict["serviceName"], service_dict["serviceId"], service_dict["qServiceTypes"], curProv, service_dict["currentStatus"], service_dict["type"], service_dict["tspId"], service_dict["tob"]);
+            let serviceTypeArr  : Array<Type> = new Array<Type>();
+            service_dict["qServiceTypes"].forEach((typestr) =>{
+              serviceTypeArr.push(new Type(typestr));
+              }
+            );
+            let ser = new Service(service_dict["serviceName"], service_dict["serviceId"], serviceTypeArr, curProv, new Status(service_dict["currentStatus"]), service_dict["type"], service_dict["tspId"], service_dict["tob"]);
             curProv.addService(ser);
             ret.push(ser);
         })
