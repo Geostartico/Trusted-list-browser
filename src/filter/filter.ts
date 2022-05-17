@@ -1,41 +1,6 @@
-import {Country, Provider, Service} from "../decoder/items.js"
+import {Country, Provider, Service, Status, Type} from "../decoder/items.js"
 import {objectify} from "../decoder/decoder.js"
 import {UnorderedSet} from "../decoder/UnorderedSet.js"
-
- /**
-  * Class that groups a selection of objects and keeps track of how many times
-  * one object has been selected
-  */
-//export class Selection{
-//    readonly countries: Map<Country,number>;
-//    readonly providers: Map<Provider,number>;
-//    readonly statuses:  Map<string,number>;
-//    readonly types:     Map<string,number>;
-//
-//    /** Note: pass the value "undefined" to every field that you want to omit */
-//    constructor(
-//                countries: Country[]  = new Array<Country>(),
-//                providers: Provider[] = new Array<Provider>(),
-//                statuses:  string[]   = new Array<string>(),
-//                types:     string[]   = new Array<string>()
-//               )
-//    {
-//       countries.forEach((country)  => { mapInsert(country, this.countries)  });
-//       providers.forEach((provider) => { mapInsert(provider, this.providers) });
-//       statuses.forEach((status)    => { mapInsert(status, this.statuses)    });
-//       types.forEach((type)         => { mapInsert(type, this.types)         });
-//    }
-//
-//    /** @return copy of this Selection (no deep copy, but maps are reconstructed) */
-//    copy(){
-//        return new Selection(
-//            Array.from(this.countries.keys()),
-//            Array.from(this.providers.keys()),
-//            Array.from(this.statuses.keys()),
-//            Array.from(this.types.keys())
-//        );
-//    }
-//}
 
  /**
   * Class that groups a selection of objects
@@ -43,14 +8,14 @@ import {UnorderedSet} from "../decoder/UnorderedSet.js"
 export class Selection{
     readonly countries: UnorderedSet<Country>;
     readonly providers: UnorderedSet<Provider>;
-    readonly statuses:  UnorderedSet<string>;
-    readonly types:     Set<string>;
+    readonly statuses:  UnorderedSet<Status>;
+    readonly types:     UnorderedSet<Type>;
 
     constructor(
                 countries: Country[]  = new Array<Country>(),
                 providers: Provider[] = new Array<Provider>(),
-                statuses:  string[]   = new Array<string>(),
-                types:     string[]   = new Array<string>()
+                statuses:  Status[]   = new Array<Status>(),
+                types:     Type[]     = new Array<Type>()
                )
     {
        countries.forEach((country)  => { this.countries.add(country)  });
@@ -70,17 +35,18 @@ export class Selection{
     }
 }
 
-export class InputSelection<T>{
-    public readonly selected_object: T;
-    public readonly 
-}
-
-
  /**
   * Flitering rule class
   */
 export class Rule {
-    readonly Selection;
+    public readonly filtering_item: Type | Status | Provider | Country;
+
+    /**
+     * @param filtering_item: Country, Provider, Type or Status object
+     */
+    constructor(filtering_item: Type | Status | Provider | Country){
+        this.filtering_item = filtering_item;
+    }
 }
 
  /**
@@ -88,50 +54,59 @@ export class Rule {
   */
 export class Filter{
 
-    //private readonly all_possible: {
-    //    readonly services:  Set<Service>;
-    //    readonly countries: Set<Country>;
-    //    readonly providers: Set<Provider>;
-    //    readonly types:     Set<string>;
-    //    readonly statuses:  Set<string>;
-    //}
+    // TODO: this should just be rule.filtering_item.getServices()
+    private getFiterdServices(rule: Rule): Map<Service, number>{
 
-    private rules:       Array<Rule>;
-    private selectables: Selection;
+        let ret = new Map<Service, number>();
+
+        if(rule.filtering_item instanceof Country){
+            rule.filtering_item.getProviders().forEach((provider: Provider) => {
+                provider.getServices().forEach((service: Service) => {
+                    if(service.getCountry() === rule.filtering_item){
+                        ret.set(service, 1);
+                    }
+                });
+            });
+            return ret;
+        }
+
+        if(rule.filtering_item instanceof Type){
+            this.all_services.forEach((service: Service) => {
+                service.getServiceTypes().forEach((type: Type) => {
+                if(service.status === rule.filtering_item){
+                    ret.set(service, 1);
+                }
+                });
+            });
+        }
+        else if(rule.filtering_item instanceof Status){
+            this.all_services.forEach((service: Service) => {
+                if(service.status === rule.filtering_item){
+                    ret.set(service, 1);
+                }
+            }
+
+        }
+
+        return ret;
+    }
+
+    private rules:       Set<Rule>;
     private filtered:    Set<Service>;
 
-    private readonly all_services: Set<Service>;
+    private readonly all_services: UnorderedSet<Service>;
 
     constructor(service_list: Service[]){
 
         this.rules        = new Set<Rule>();
         this.filtered     = new Set<Service>();
-        this.selectables  = new Selection();
-        this.all_services = new Set<Service>();
+        this.all_services = new UnorderedSet<Service>(service_list.length);
 
         // Initialize variables (no filtering yet)
         service_list.forEach((service: Service) => {
-
-            // Initialize "all_possible"
-            //this.all_possible.services.add(service);
-            //this.all_possible.countries.add(service.getCountry());
-            //this.all_possible.providers.add(service.getProvider());
-            //this.all_possible.statuses.add(service.status);
-            //service.getServiceTypes().forEach((type) => {
-            //    this.all_possible.types.add(type);
-            //});
-
             this.filtered.add(service);
             this.all_services.add(service);
 
-            // Initialize "filtered" and "selectables" (both with all possible values)
-            //mapInsert(service.getCountry(), this.selectables.countries);
-            //mapInsert(service.getProvider(), this.selectables.providers);
-            //mapInsert(service.status, this.selectables.statuses);
-
-            //service.getServiceTypes().forEach((type) => {
-            //    mapInsert(type, this.selectables.types);
-            //});
         });
     }
 

@@ -25,6 +25,8 @@ export class Type implements Settable<Type>{
      */
     readonly name: string;
 
+    readonly services: UnorderedSet<Service>;
+
     /**
      * hashcode of the type
      * @returns the hashcode of the type name
@@ -46,6 +48,7 @@ export class Type implements Settable<Type>{
 
     constructor(name: string){
         this.name = name;
+        this.services = new UnorderedSet<Service>(10);
     }
 }
 
@@ -58,6 +61,8 @@ export class Status implements Settable<Status>{
      * @readonly
      */
     readonly name: string;
+
+    readonly services: UnorderedSet<Service>;
 
     /**
      * hashcode of the status
@@ -80,6 +85,7 @@ export class Status implements Settable<Status>{
 
     constructor(name: string){
         this.name = name;
+        this.services = new UnorderedSet<Service>(10);
     }
 }
 

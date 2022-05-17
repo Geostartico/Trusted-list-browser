@@ -7,11 +7,11 @@ import{Country, Provider, Service} from "./items.js"
 export function objectify(ctodict, jsondict){
     let codeToObject = Country.initCodeToObjectMap(ctodict);
     let ret = new Array<Service>();
-    let iterProv = (elem) => {
-        let curCountry = codeToObject.get(elem["countryCode"]);
-        let curProv = new Provider(elem["name"], elem["tspId"], elem["trustmark"], elem["qServiceTypes"]);
-        elem["services"].forEach((serdict) => {
-            let ser = new Service(serdict["serviceName"], serdict["serviceId"], serdict["qServiceTypes"], curProv, serdict["currentStatus"], serdict["type"], serdict["tspId"], serdict["tob"]);
+    let iterProv = (provider) => {
+        let curCountry = codeToObject.get(provider["countryCode"]);
+        let curProv = new Provider(provider["name"], provider["tspId"], provider["trustmark"], provider["qServiceTypes"]);
+        provider["services"].forEach((service_dict) => {
+            let ser = new Service(service_dict["serviceName"], service_dict["serviceId"], service_dict["qServiceTypes"], curProv, service_dict["currentStatus"], service_dict["type"], service_dict["tspId"], service_dict["tob"]);
             curProv.addService(ser);
             ret.push(ser);
         })
