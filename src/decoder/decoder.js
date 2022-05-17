@@ -1,17 +1,27 @@
-import { Country, Provider, Service } from "./items.js";
+import { Country, Provider, Service, Type, Status } from "./items.js";
 /**
  * transforms from json dictionary to objects, which the Countries are contained in the @see Country.codeToObject map
  * @param ctodict array with elements in the form {countryCode : "string", countryName : "string"}
  * @param jsondict array of providers in json format
+ * @returns object in the form {"codeToObject": dictionary, "servicesArray": array}, with dictionary having the codes
+ * as keys and as value the country objects, and array contrining services
  */
 export function objectify(ctodict, jsondict) {
     let codeToObject = Country.initCodeToObjectMap(ctodict);
     let ret = new Array();
-    let iterProv = (elem) => {
-        let curCountry = codeToObject.get(elem["countryCode"]);
-        let curProv = new Provider(elem["name"], elem["tspId"], elem["trustmark"], elem["qServiceTypes"]);
-        elem["services"].forEach((serdict) => {
-            let ser = new Service(serdict["serviceName"], serdict["serviceId"], serdict["qServiceTypes"], curProv, serdict["currentStatus"], serdict["type"], serdict["tspId"], serdict["tob"]);
+    let iterProv = (provider) => {
+        let curCountry = codeToObject.get(provider["countryCode"]);
+        let typearr = new Array();
+        provider["qServiceTypes"].forEach((typestr) => {
+            typearr.push(new Type(typestr));
+        });
+        let curProv = new Provider(provider["name"], provider["tspId"], provider["trustmark"], typearr);
+        provider["services"].forEach((service_dict) => {
+            let serviceTypeArr = new Array();
+            service_dict["qServiceTypes"].forEach((typestr) => {
+                serviceTypeArr.push(new Type(typestr));
+            });
+            let ser = new Service(service_dict["serviceName"], service_dict["serviceId"], serviceTypeArr, curProv, new Status(service_dict["currentStatus"]), service_dict["type"], service_dict["tspId"], service_dict["tob"]);
             curProv.addService(ser);
             ret.push(ser);
         });
@@ -592,4 +602,4 @@ let countryDict = [
   let retDict = objectify(countryDict, serviceDict);
   
   console.log(retDict);
-*/ 
+*/

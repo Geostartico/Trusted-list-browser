@@ -21,6 +21,7 @@ function stringHash(str) {
 export class Type {
     constructor(name) {
         this.name = name;
+        this.services = new UnorderedSet(10);
     }
     /**
      * hashcode of the type
@@ -46,6 +47,7 @@ export class Type {
 export class Status {
     constructor(name) {
         this.name = name;
+        this.services = new UnorderedSet(10);
     }
     /**
      * hashcode of the status

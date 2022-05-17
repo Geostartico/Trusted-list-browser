@@ -1,4 +1,6 @@
-import{Settable, UnorderedSet} from "./UnorderedSet.js"
+import{UnorderedSet} from "./UnorderedSet.js"
+import{Settable} from "./settable.js";
+
 /**
  * calculates the hash of a function
  * @param str a string

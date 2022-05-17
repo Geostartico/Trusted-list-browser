@@ -1,24 +1,10 @@
+import { Node } from "./node.js";
+/**
+ * T must implement these methods to be used in the @see UnorderedSet
+ */
 /**
  * linked list node
  */
-class Node {
-    constructor(el, aNext) {
-        this.element = el;
-        this.next = aNext;
-    }
-    getNext() {
-        return this.next;
-    }
-    getElement() {
-        return this.element;
-    }
-    setNext(n) {
-        this.next = n;
-    }
-    setElement(el) {
-        this.element = el;
-    }
-}
 /**
  * very dumb dumb Set by geo
  */
