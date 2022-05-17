@@ -3,6 +3,8 @@ import{Country, Provider, Service} from "./items.js"
  * transforms from json dictionary to objects, which the Countries are contained in the @see Country.codeToObject map
  * @param ctodict array with elements in the form {countryCode : "string", countryName : "string"}
  * @param jsondict array of providers in json format
+ * @returns object in the form {"codeToObject": dictionary, "servicesArray": array}, with dictionary having the codes
+ * as keys and as value the country objects, and array contrining services
  */
 export function objectify(ctodict, jsondict){
     let codeToObject = Country.initCodeToObjectMap(ctodict);
