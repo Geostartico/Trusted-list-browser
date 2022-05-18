@@ -3,6 +3,18 @@ import Header from './Header';
 import Viewer from './Viewer';
 import FilterContainer from './FilterContainer';
 
+import { Allotment } from "allotment";
+import "allotment/dist/style.css";
+
+
+const styles = {
+  background: '#000',
+  width: '2px',
+  cursor: 'col-resize',
+  margin: '0 5px',
+  height: '100%',
+};
+
 interface TrustListViewerProps {
     appTitle: string;
 }
@@ -38,14 +50,18 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
                 />
             </header>
             <body>
-                <div className = 'mainContainer'>
 
-                    <Viewer />
-                    <FilterContainer
-                        selectedFilter = {this.state.activeFilter}
-                    />
+                <Allotment onVisibleChange={() => this.forceUpdate()}>
+                    <Allotment.Pane minSize={200}>
+                        <Viewer />
+                    </Allotment.Pane>
+                    <Allotment.Pane snap>
+                        <FilterContainer
+                            selectedFilter = {this.state.activeFilter}
+                        />
+                    </Allotment.Pane>
+                </Allotment>
 
-                </div>
             </body>
           </>
         );
@@ -57,4 +73,12 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
 export default TrustListViewer;
 
 /*
+
+                <div className='mainContainer'>
+                    <Viewer />
+                    <FilterContainer
+                        selectedFilter = {this.state.activeFilter}
+                    />
+                </div>
+
  * */

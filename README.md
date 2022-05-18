@@ -3,6 +3,8 @@
 ## External package
 + Added react-tostify
     + Used to manage on sreen notification, like request goes wrong or something like that
++ https://www.npmjs.com/package/allotment
+    + Used to manage split view panel
 
 
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀
