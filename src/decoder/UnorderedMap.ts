@@ -138,9 +138,18 @@ export class UnorderedMap<K extends Settable<K>,V>{
     /**
      * @returns Array containing all values of the set
      */
-    values(): Array<Entry<K, V>> {
+    entries(): Array<Entry<K, V>> {
         let toReturn: Array<Entry<K, V>> = new Array<Entry<K, V>>();
         this.forEach((v : V, k : K) => toReturn.push(new Entry<K, V>(k, v)));
+        return toReturn;
+    }
+
+    /**
+     * @returns Array containing all values of the set
+     */
+    keys(): Array<K> {
+        let toReturn: Array<K> = new Array<K>();
+        this.forEach((v : V, k : K) => toReturn.push(k));
         return toReturn;
     }
 }

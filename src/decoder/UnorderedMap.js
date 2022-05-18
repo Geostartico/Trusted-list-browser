@@ -124,9 +124,17 @@ export class UnorderedMap {
     /**
      * @returns Array containing all values of the set
      */
-    values() {
+    entries() {
         let toReturn = new Array();
         this.forEach((v, k) => toReturn.push(new Entry(k, v)));
+        return toReturn;
+    }
+    /**
+     * @returns Array containing all values of the set
+     */
+    keys() {
+        let toReturn = new Array();
+        this.forEach((v, k) => toReturn.push(k));
         return toReturn;
     }
 }

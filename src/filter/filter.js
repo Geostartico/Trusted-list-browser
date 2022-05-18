@@ -1,59 +1,38 @@
+const DEBUG = true;
+import { Country, Provider, Status, Type } from "../decoder/items.js";
 import { objectify } from "../decoder/decoder.js";
-/**
- * Class that groups a selection of objects and keeps track of how many times
- * one object has been selected
- */
-//export class Selection{
-//    readonly countries: Map<Country,number>;
-//    readonly providers: Map<Provider,number>;
-//    readonly statuses:  Map<string,number>;
-//    readonly types:     Map<string,number>;
-//
-//    /** Note: pass the value "undefined" to every field that you want to omit */
-//    constructor(
-//                countries: Country[]  = new Array<Country>(),
-//                providers: Provider[] = new Array<Provider>(),
-//                statuses:  string[]   = new Array<string>(),
-//                types:     string[]   = new Array<string>()
-//               )
-//    {
-//       countries.forEach((country)  => { mapInsert(country, this.countries)  });
-//       providers.forEach((provider) => { mapInsert(provider, this.providers) });
-//       statuses.forEach((status)    => { mapInsert(status, this.statuses)    });
-//       types.forEach((type)         => { mapInsert(type, this.types)         });
-//    }
-//
-//    /** @return copy of this Selection (no deep copy, but maps are reconstructed) */
-//    copy(){
-//        return new Selection(
-//            Array.from(this.countries.keys()),
-//            Array.from(this.providers.keys()),
-//            Array.from(this.statuses.keys()),
-//            Array.from(this.types.keys())
-//        );
-//    }
-//}
+import { UnorderedSet } from "../decoder/UnorderedSet.js";
+import { UnorderedMap } from "../decoder/UnorderedMap.js";
 /**
  * Class that groups a selection of objects
  */
 export class Selection {
-    constructor(countries = new Array(), providers = new Array(), statuses = new Array(), types = new Array()) {
+    constructor(countries = new Array(), providers = new Array(), statuses = new Array(), types = new Array(), services = new Array()) {
+        this.countries = new UnorderedSet(10);
+        this.providers = new UnorderedSet(10);
+        this.statuses = new UnorderedSet(10);
+        this.services = new UnorderedSet(10);
+        this.types = new UnorderedSet(10);
         countries.forEach((country) => { this.countries.add(country); });
         providers.forEach((provider) => { this.providers.add(provider); });
         statuses.forEach((status) => { this.statuses.add(status); });
+        services.forEach((service) => { this.services.add(service); });
         types.forEach((type) => { this.types.add(type); });
     }
     /** @return copy of this Selection (no deep copy, but maps are reconstructed) */
     copy() {
-        return new Selection(Array.from(this.countries.values()), Array.from(this.providers.values()), Array.from(this.statuses.values()), Array.from(this.types.values()));
+        return new Selection(Array.from(this.countries.values()), Array.from(this.providers.values()), Array.from(this.statuses.values()), Array.from(this.types.values()), Array.from(this.services.values()));
     }
 }
 /**
- * Flitering rule class to force function parameter and return types
+ * Flitering rule class
  */
 export class Rule {
-    constructor(aRuleFunction) {
-        this.rule_function = aRuleFunction;
+    /**
+     * @param filtering_item: Country, Provider, Type or Status object
+     */
+    constructor(filtering_item) {
+        this.filtering_item = filtering_item;
     }
 }
 /**
@@ -62,30 +41,51 @@ export class Rule {
 export class Filter {
     constructor(service_list) {
         this.rules = new Set();
-        this.filtered = new Set();
-        this.selectables = new Selection();
-        this.all_services = new Set();
-        // Initialize variables (no filtering yet)
+        this.selected = new Selection();
+        this.all_services = new UnorderedSet(service_list.length);
+        this.all_services_map = new UnorderedMap(10);
+        this.countries_service_sum = new UnorderedMap(10);
+        this.providers_service_sum = new UnorderedMap(10);
+        this.types_service_sum = new UnorderedMap(10);
+        this.statuses_service_sum = new UnorderedMap(10);
         service_list.forEach((service) => {
-            // Initialize "all_possible"
-            //this.all_possible.services.add(service);
-            //this.all_possible.countries.add(service.getCountry());
-            //this.all_possible.providers.add(service.getProvider());
-            //this.all_possible.statuses.add(service.status);
-            //service.getServiceTypes().forEach((type) => {
-            //    this.all_possible.types.add(type);
-            //});
-            this.filtered.add(service);
-            console.log(this.filtered);
             this.all_services.add(service);
-            // Initialize "filtered" and "selectables" (both with all possible values)
-            //mapInsert(service.getCountry(), this.selectables.countries);
-            //mapInsert(service.getProvider(), this.selectables.providers);
-            //mapInsert(service.status, this.selectables.statuses);
-            //service.getServiceTypes().forEach((type) => {
-            //    mapInsert(type, this.selectables.types);
-            //});
+            this.all_services_map.set(service, 1);
         });
+    }
+    // TODO: this should just be rule.filtering_item.getServices()
+    getServicesFromRule(rule) {
+        let ret = new UnorderedMap(10);
+        if (rule.filtering_item instanceof Country) {
+            rule.filtering_item.getProviders().forEach((provider) => {
+                provider.getServices().forEach((service) => {
+                    ret.set(service, 1);
+                });
+            });
+            return ret;
+        }
+        if (rule.filtering_item instanceof Provider) {
+            rule.filtering_item.getServices().forEach((service) => {
+                ret.set(service, 1);
+            });
+        }
+        if (rule.filtering_item instanceof Type) {
+            this.all_services.forEach((service) => {
+                service.getServiceTypes().forEach((type) => {
+                    if (type === rule.filtering_item) {
+                        ret.set(service, 1);
+                    }
+                });
+            });
+        }
+        else if (rule.filtering_item instanceof Status) {
+            this.all_services.forEach((service) => {
+                if (service.status === rule.filtering_item) {
+                    ret.set(service, 1);
+                }
+            });
+        }
+        return ret;
     }
     /**
      * Add a rule to the filter
@@ -93,44 +93,147 @@ export class Filter {
      */
     addRule(rule) {
         this.rules.add(rule);
+        if (rule.filtering_item instanceof Country) {
+            this.selected.countries.add(rule.filtering_item);
+            for (let service of this.getServicesFromRule(rule).keys())
+                mapIncreaseOrInsert(service, this.countries_service_sum);
+        }
+        if (rule.filtering_item instanceof Type) {
+            this.selected.types.add(rule.filtering_item);
+            for (let service of this.getServicesFromRule(rule).keys())
+                mapIncreaseOrInsert(service, this.types_service_sum);
+        }
+        if (rule.filtering_item instanceof Provider) {
+            this.selected.providers.add(rule.filtering_item);
+            for (let service of this.getServicesFromRule(rule).keys())
+                mapIncreaseOrInsert(service, this.providers_service_sum); //Note: this could be just a plain map remove
+        }
+        if (rule.filtering_item instanceof Status) {
+            this.selected.statuses.add(rule.filtering_item);
+            for (let service of this.getServicesFromRule(rule).keys())
+                mapIncreaseOrInsert(service, this.statuses_service_sum);
+        }
     }
     removeRule(rule) {
         this.rules.delete(rule);
-    }
-    /**
-     * @returns @see{Selection} object containing all selectable items
-     */
-    getSelectables() {
-        let selectables = new Selection();
-        for (let service of this.getFiltered()) {
-            selectables.countries.add(service.getCountry());
-            selectables.types.add(service.type);
-            selectables.statuses.add(service.status);
-            selectables.providers.add(service.getProvider());
+        if (rule.filtering_item instanceof Country) {
+            this.selected.countries.remove(rule.filtering_item);
+            for (let service of this.getServicesFromRule(rule).keys())
+                mapDecreaseOrRemove(service, this.countries_service_sum);
         }
-        return selectables;
+        if (rule.filtering_item instanceof Type) {
+            this.selected.types.remove(rule.filtering_item);
+            for (let service of this.getServicesFromRule(rule).keys())
+                mapDecreaseOrRemove(service, this.types_service_sum);
+        }
+        if (rule.filtering_item instanceof Provider) {
+            this.selected.providers.remove(rule.filtering_item);
+            for (let service of this.getServicesFromRule(rule).keys())
+                mapDecreaseOrRemove(service, this.providers_service_sum); //Note: this could be just a plain map set
+        }
+        if (rule.filtering_item instanceof Status) {
+            this.selected.statuses.remove(rule.filtering_item);
+            for (let service of this.getServicesFromRule(rule).keys())
+                mapDecreaseOrRemove(service, this.statuses_service_sum);
+        }
     }
     /**
      * @returns set of filtered services based on the rules
      */
     getFiltered() {
-        let filtered = new Set();
-        for (let service of this.all_services) {
-            this.rules.forEach((rule) => {
-                if (rule.rule_function(service)) {
-                    filtered.add(service);
-                }
+        // If I have no selections in a field, it's the same as all selected
+        if (this.selected.statuses.getSize() == 0)
+            this.statuses_service_sum = this.all_services_map;
+        if (this.selected.types.getSize() == 0)
+            this.types_service_sum = this.all_services_map;
+        if (this.selected.countries.getSize() == 0)
+            this.countries_service_sum = this.all_services_map;
+        if (this.selected.countries.getSize() == 0)
+            this.providers_service_sum = this.all_services_map;
+        let ret = new Selection();
+        //let filtered: UnorderedSet<Service> = mapUnion(this.providers_service_sum, mapIntersect(this.countries_service_sum, this.types_service_sum, this.statuses_service_sum));
+        let filtered = mapToUnorderedSet(mapIntersect(this.countries_service_sum, this.types_service_sum, this.statuses_service_sum, this.providers_service_sum));
+        filtered.forEach((service) => {
+            ret.countries.add(service.getCountry());
+            ret.statuses.add(service.status);
+            ret.providers.add(service.getProvider());
+            ret.services.add(service);
+            service.getServiceTypes().forEach((type) => {
+                ret.types.add(type);
             });
-        }
-        return filtered;
+        });
+        // Resetting to safe state
+        if (this.selected.statuses.getSize() == 0)
+            this.statuses_service_sum = new UnorderedMap(10);
+        if (this.selected.types.getSize() == 0)
+            this.types_service_sum = new UnorderedMap(10);
+        if (this.selected.countries.getSize() == 0)
+            this.countries_service_sum = new UnorderedMap(10);
+        if (this.selected.countries.getSize() == 0)
+            this.providers_service_sum = new UnorderedMap(10);
+        return ret;
     }
 }
+function mapToUnorderedSet(map) {
+    let ret = new UnorderedSet(10);
+    for (let service of map.keys())
+        ret.add(service);
+    return ret;
+}
+function unorderedSetToMap(set) {
+    let ret = new UnorderedMap(10);
+    set.forEach((service) => {
+        ret.set(service, 1);
+    });
+    return ret;
+}
+function mapIntersect(...maps) {
+    let ret = new UnorderedMap(10);
+    if (maps.length < 1)
+        return ret;
+    if (maps.length == 1) {
+        for (let service of maps[0].keys())
+            ret.set(service, 1);
+        return ret;
+    }
+    let all_maps_have;
+    for (let service of maps[0].keys()) {
+        all_maps_have = true;
+        for (let map of maps.slice(1)) {
+            if (!map.has(service)) {
+                all_maps_have = false;
+                break;
+            }
+        }
+        if (all_maps_have)
+            ret.set(service, 1);
+    }
+    return ret;
+}
+function mapUnion(...maps) {
+    let ret = new UnorderedSet(10);
+    for (let map of maps) {
+        for (let service of map.keys()) {
+            ret.add(service);
+        }
+    }
+    return ret;
+}
+function mapSum(...maps) {
+    let ret = new UnorderedMap(10);
+    for (let map of maps) {
+        for (let service of map.keys()) {
+            mapIncreaseOrInsert(service, ret);
+        }
+    }
+    return ret;
+}
 /**
- * Helper function to insert value in map
- * @param value: value toinsert
+ * Helper function, self explainatory
+ * @param value: value to update
  * @param map:   map containing the value to be inserted
  */
-function mapInsert(value, map) {
+function mapIncreaseOrInsert(value, map) {
     if (map.has(value)) {
         map.set(value, map.get(value) + 1);
     }
@@ -139,14 +242,14 @@ function mapInsert(value, map) {
     }
 }
 /**
- * Helper function to remove value from map
+ * Helper function, self explainatory
  * @param value: value to remove
  * @param map:   map containing the value to be removed
  *
  * @throws @link{Error}
  * Thrown if the value is not inserted in the map
  */
-function mapRemove(value, map) {
+function mapDecreaseOrRemove(value, map) {
     if (!map.has(value)) {
         throw new Error("Trying to remove an item that does not exist");
     }
@@ -154,7 +257,7 @@ function mapRemove(value, map) {
         map.set(value, map.get(value) - 1);
     }
     else {
-        map.delete(value);
+        map.remove(value);
     }
 }
 let countryDict = [
@@ -660,4 +763,11 @@ let serviceDict = [
 let retDict = objectify(countryDict, serviceDict);
 //console.log(retDict);
 let myFilter = new Filter(retDict.servicesArray);
-console.log(myFilter.getFiltered());
+myFilter.addRule(new Rule(retDict.servicesArray[1].status));
+if (DEBUG == true)
+    //console.log(myFilter.getFiltered());
+    console.log(myFilter.getFiltered().countries.values());
+console.log(myFilter.getFiltered().types.values());
+console.log(myFilter.getFiltered().statuses.values());
+console.log(myFilter.getFiltered().providers.values());
+console.log(myFilter.getFiltered().services.values());

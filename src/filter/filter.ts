@@ -1,6 +1,10 @@
+const DEBUG: boolean = true;
+
 import {Country, Provider, Service, Status, Type} from "../decoder/items.js"
 import {objectify} from "../decoder/decoder.js"
 import {UnorderedSet} from "../decoder/UnorderedSet.js"
+import {UnorderedMap} from "../decoder/UnorderedMap.js"
+import {Settable} from "../decoder/settable.js"
 
  /**
   * Class that groups a selection of objects
@@ -20,11 +24,17 @@ export class Selection{
                 services:  Service[]  = new Array<Service>()
                )
     {
-       countries.forEach((country)  => { this.countries.add(country)  });
-       providers.forEach((provider) => { this.providers.add(provider) });
-       statuses.forEach((status)    => { this.statuses.add(status)    });
-       services.forEach((service)   => { this.services.add(service)   });
-       types.forEach((type)         => { this.types.add(type)         });
+        this.countries = new UnorderedSet<Country>(10);
+        this.providers = new UnorderedSet<Provider>(10);
+        this.statuses  = new UnorderedSet<Status>(10);
+        this.services  = new UnorderedSet<Service>(10);
+        this.types     = new UnorderedSet<Type>(10);
+
+        countries.forEach((country)  => { this.countries.add(country)  });
+        providers.forEach((provider) => { this.providers.add(provider) });
+        statuses.forEach((status)    => { this.statuses.add(status)    });
+        services.forEach((service)   => { this.services.add(service)   });
+        types.forEach((type)         => { this.types.add(type)         });
     }
 
     /** @return copy of this Selection (no deep copy, but maps are reconstructed) */
@@ -59,9 +69,9 @@ export class Rule {
 export class Filter{
 
     // TODO: this should just be rule.filtering_item.getServices()
-    private getServicesFromRule(rule: Rule): Map<Service, number>{
+    private getServicesFromRule(rule: Rule): UnorderedMap<Service, number>{
 
-        let ret = new Map<Service, number>();
+        let ret = new UnorderedMap<Service, number>(10);
 
         if(rule.filtering_item instanceof Country){
             rule.filtering_item.getProviders().forEach((provider: Provider) => {
@@ -78,20 +88,20 @@ export class Filter{
         }
 
         if(rule.filtering_item instanceof Type){
-            for(let service of this.all_services.keys()){
+            this.all_services.forEach((service: Service) => {
                 service.getServiceTypes().forEach((type: Type) => {
                 if(type === rule.filtering_item){
                     ret.set(service, 1);
                 }
                 });
-            }
+            });
         }
         else if(rule.filtering_item instanceof Status){
-            for(let service of this.all_services.keys()){
+            this.all_services.forEach((service: Service) => {
                 if(service.status === rule.filtering_item){
                     ret.set(service, 1);
                 }
-            }
+            });
         }
 
         return ret;
@@ -101,23 +111,27 @@ export class Filter{
 
     private selected: Selection;
 
-    private countries_service_sum: Map<Service, number>;
-    private providers_service_sum: Map<Service, number>;
-    private types_service_sum:     Map<Service, number>;
-    private statuses_service_sum:  Map<Service, number>;
+    private countries_service_sum: UnorderedMap<Service, number>;
+    private providers_service_sum: UnorderedMap<Service, number>;
+    private types_service_sum:     UnorderedMap<Service, number>;
+    private statuses_service_sum:  UnorderedMap<Service, number>;
 
     private readonly all_services:     UnorderedSet<Service>;
-    private readonly all_services_map: Map<Service, number>;
+    private readonly all_services_map: UnorderedMap<Service, number>;
 
     constructor(service_list: Service[]){
 
         this.rules = new Set<Rule>();
-        this.all_services = new UnorderedSet<Service>(service_list.length);
 
-        this.countries_service_sum = new Map<Service, number>();
-        this.providers_service_sum = new Map<Service, number>();
-        this.types_service_sum     = new Map<Service, number>();
-        this.statuses_service_sum  = new Map<Service, number>();
+        this.selected = new Selection();
+
+        this.all_services     = new UnorderedSet<Service>(service_list.length);
+        this.all_services_map = new UnorderedMap<Service, number>(10);
+
+        this.countries_service_sum = new UnorderedMap<Service, number>(10);
+        this.providers_service_sum = new UnorderedMap<Service, number>(10);
+        this.types_service_sum     = new UnorderedMap<Service, number>(10);
+        this.statuses_service_sum  = new UnorderedMap<Service, number>(10);
 
         service_list.forEach((service: Service) => {
             this.all_services.add(service);
@@ -186,14 +200,6 @@ export class Filter{
         }
     }
 
-
-    /**
-     * @returns @see{Selection} object containing all selectable items
-     */
-    getSelectables(): Selection{
-
-    }
-
     /**
      * @returns set of filtered services based on the rules
      */
@@ -209,10 +215,18 @@ export class Filter{
         if(this.selected.countries.getSize() == 0)
             this.countries_service_sum = this.all_services_map;
 
+        if(this.selected.countries.getSize() == 0)
+            this.providers_service_sum = this.all_services_map;
+
 
         let ret = new Selection();
 
-        let filtered: UnorderedSet<Service> = mapUnion(this.providers_service_sum, mapIntersect(this.countries_service_sum, this.types_service_sum, this.statuses_service_sum));
+        //let filtered: UnorderedSet<Service> = mapUnion(this.providers_service_sum, mapIntersect(this.countries_service_sum, this.types_service_sum, this.statuses_service_sum));
+        let filtered: UnorderedSet<Service> = mapToUnorderedSet(
+                                                mapIntersect(this.countries_service_sum,
+                                                             this.types_service_sum,
+                                                             this.statuses_service_sum,
+                                                             this.providers_service_sum));
 
         filtered.forEach((service: Service) => {
             ret.countries.add(service.getCountry());
@@ -226,20 +240,23 @@ export class Filter{
 
         // Resetting to safe state
         if(this.selected.statuses.getSize() == 0)
-            this.statuses_service_sum = new Map<Service, number>();
+            this.statuses_service_sum = new UnorderedMap<Service, number>(10);
 
         if(this.selected.types.getSize() == 0)
-            this.types_service_sum = new Map<Service, number>();
+            this.types_service_sum = new UnorderedMap<Service, number>(10);
 
         if(this.selected.countries.getSize() == 0)
-            this.countries_service_sum = new Map<Service, number>();
+            this.countries_service_sum = new UnorderedMap<Service, number>(10);
+
+        if(this.selected.countries.getSize() == 0)
+            this.providers_service_sum = new UnorderedMap<Service, number>(10);
 
         return ret;
     }
 
 }
 
-function mapToUnorderedSet(map: Map<Service, number>): UnorderedSet<Service>{
+function mapToUnorderedSet(map: UnorderedMap<Service, number>): UnorderedSet<Service>{
     let ret = new UnorderedSet<Service>(10);
 
     for(let service of map.keys())
@@ -248,8 +265,8 @@ function mapToUnorderedSet(map: Map<Service, number>): UnorderedSet<Service>{
     return ret;
 }
 
-function unorderedSetToMap(set: UnorderedSet<Service>): Map<Service, number>{
-    let ret = new Map<Service, number>();
+function unorderedSetToMap(set: UnorderedSet<Service>): UnorderedMap<Service, number>{
+    let ret = new UnorderedMap<Service, number>(10);
 
     set.forEach((service: Service) => {
         ret.set(service, 1);
@@ -258,9 +275,9 @@ function unorderedSetToMap(set: UnorderedSet<Service>): Map<Service, number>{
     return ret;
 }
 
-function mapIntersect(...maps: Array<Map<Service, number>>): Map<Service, number>{
+function mapIntersect(...maps: Array<UnorderedMap<Service, number>>): UnorderedMap<Service, number>{
 
-    let ret = new Map<Service, number>();
+    let ret = new UnorderedMap<Service, number>(10);
 
     if(maps.length < 1)
         return ret;
@@ -287,7 +304,7 @@ function mapIntersect(...maps: Array<Map<Service, number>>): Map<Service, number
     return ret;
 }
 
-function mapUnion(...maps: Array<Map<Service, number>>): UnorderedSet<Service>{
+function mapUnion(...maps: Array<UnorderedMap<Service, number>>): UnorderedSet<Service>{
 
     let ret = new UnorderedSet<Service>(10);
 
@@ -300,9 +317,9 @@ function mapUnion(...maps: Array<Map<Service, number>>): UnorderedSet<Service>{
     return ret;
 }
 
-function mapSum(...maps: Array<Map<Service, number>>): Map<Service, number>{
+function mapSum(...maps: Array<UnorderedMap<Service, number>>): UnorderedMap<Service, number>{
 
-    let ret = new Map<Service, number>();
+    let ret = new UnorderedMap<Service, number>(10);
 
     for(let map of maps){
         for(let service of map.keys()){
@@ -318,7 +335,7 @@ function mapSum(...maps: Array<Map<Service, number>>): Map<Service, number>{
   * @param value: value to update
   * @param map:   map containing the value to be inserted
   */
-function mapIncreaseOrInsert<T>(value: T, map: Map<T, number>){
+function mapIncreaseOrInsert<T extends Settable<T>>(value: T, map: UnorderedMap<T, number>){
     if(map.has(value)){
         map.set(value, map.get(value)+1);
     }
@@ -335,7 +352,7 @@ function mapIncreaseOrInsert<T>(value: T, map: Map<T, number>){
   * @throws @link{Error}
   * Thrown if the value is not inserted in the map
   */
-function mapDecreaseOrRemove<T>(value: T, map: Map<T, number>){
+function mapDecreaseOrRemove<T extends Settable<T>>(value: T, map: UnorderedMap<T, number>){
     if(!map.has(value)){
         throw new Error("Trying to remove an item that does not exist");
     }
@@ -343,7 +360,7 @@ function mapDecreaseOrRemove<T>(value: T, map: Map<T, number>){
         map.set(value, map.get(value)-1);
     }
     else{
-        map.delete(value);
+        map.remove(value);
     }
 }
 
@@ -856,4 +873,12 @@ let retDict = objectify(countryDict, serviceDict);
 
 let myFilter = new Filter(retDict.servicesArray);
 
-console.log(myFilter.getFiltered());
+myFilter.addRule(new Rule(retDict.servicesArray[1].status));
+
+if(DEBUG == true)
+    //console.log(myFilter.getFiltered());
+    console.log(myFilter.getFiltered().countries.values());
+    console.log(myFilter.getFiltered().types.values());
+    console.log(myFilter.getFiltered().statuses.values());
+    console.log(myFilter.getFiltered().providers.values());
+    console.log(myFilter.getFiltered().services.values());
