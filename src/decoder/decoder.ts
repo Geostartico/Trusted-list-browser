@@ -46,7 +46,6 @@ export function objectify(ctodict, jsondict){
         });
         let statusStr : string = service_dict["currentStatus"];
         let stat : Status;
-        console.log(statusStr);
         if(!stringToStatus.has(statusStr)){
           stat = new Status(statusStr);
           stringToStatus.set(statusStr, stat);
