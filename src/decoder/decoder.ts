@@ -131,7 +131,7 @@ let map = [{countryName: "Italia", countryCode: "IT"},
            {countryName: "Germania", countryCode: "DE" }]
 let d = objectify(map, dict);
 console.log(d["servicesArray"]);*/
-let countryDict = [
+/*let countryDict = [
     {
       "countryCode": "AT",
       "countryName": "Austria"
@@ -638,4 +638,4 @@ let countryDict = [
   console.log(retDict["codeToObject"]);
   console.log(retDict["servicesArray"]);
   console.log(retDict["statusSet"].values());
-  console.log(retDict["typeSet"].values());
+  console.log(retDict["typeSet"].values());*/

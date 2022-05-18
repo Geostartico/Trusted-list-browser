@@ -1,4 +1,4 @@
-import { Node } from "./node.js";
+import { Node } from "./link.js";
 /**
  * T must implement these methods to be used in the @see UnorderedSet
  */

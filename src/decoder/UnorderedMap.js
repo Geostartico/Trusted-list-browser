@@ -1,4 +1,4 @@
-import { Node } from "./node.js";
+import { Node } from "./link.js";
 import { Entry } from "./entry.js";
 export class UnorderedMap {
     /**
