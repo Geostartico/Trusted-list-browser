@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 
+import { Facade } from "./facade/facade";
+
 interface ViewerProps {
 }
 
 interface ViewerState {  
+    facede: Facade;
 }
 
 class Viewer extends Component<ViewerProps, ViewerState> {
@@ -11,7 +14,11 @@ class Viewer extends Component<ViewerProps, ViewerState> {
     constructor(props: ViewerProps) {  
         super(props);
         this.state = {
+            facede: new Facade(),
         };
+        this.state.facede.getView().countries.forEach((val: Country) => {
+            console.log(val);
+        })
     }
 
     render() {
@@ -19,7 +26,9 @@ class Viewer extends Component<ViewerProps, ViewerState> {
         return (
           <>
             <div className = 'viewer'>
-                <h1>Qui dovrebbe esserci il visualizer</h1>
+                <p>
+                manid
+                </p>
             </div>
           </>
         );

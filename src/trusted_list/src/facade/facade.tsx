@@ -3,6 +3,7 @@ import { Data } from "./data.js";
 import { objectify } from "../decoder/decoder.js";
 import { Country, Provider, Service, Status, Type } from "../decoder/items.js";
 import { UnorderedSet } from "../decoder/UnorderedSet.js";
+
 export class Facade{
     private filter : Filter;
     //private fetcher : Fetcher;
