@@ -200,6 +200,10 @@ export class Filter{
         }
     }
 
+    getSelected(): Selection{
+        return this.selected;
+    }
+
     /**
      * @returns set of filtered services based on the rules
      */
@@ -279,25 +283,40 @@ function mapIntersect(...maps: Array<UnorderedMap<Service, number>>): UnorderedM
 
     let ret = new UnorderedMap<Service, number>(10);
 
+    // Return empty map if there are no maps for parameters
     if(maps.length < 1)
         return ret;
+
+    // Throw error on null map and find the shortest map for faster search
+    let shortest_map: UnorderedMap<Service, number>;
+    for(let map of maps){
+        if(map === null)
+            throw new Error("Error, intersect on null maps");
+
+        if(map.getSize() < shortest_map.getSize())
+            shortest_map = map;
+    }
+
+    // If there is just one map, return a copy of it
     if(maps.length == 1){
         for(let service of maps[0].keys())
             ret.set(service, 1);
         return ret;
     }
 
-
-    let all_maps_have: boolean;
-    for(let service of maps[0].keys()){
-        all_maps_have = true;
-        for(let map of maps.slice(1)){
+    // Search for each filtered service of shortest map in other filtering maps
+    let all_maps_have_service: boolean;
+    for(let service of shortest_map.keys()){
+        all_maps_have_service = true;
+        for(let map of maps){
+            if(map === shortest_map)
+                continue;
             if(!map.has(service)){
-                all_maps_have = false;
+                all_maps_have_service = false;
                 break;
             }
         }
-        if(all_maps_have)
+        if(all_maps_have_service)
             ret.set(service, 1);
     }
 
