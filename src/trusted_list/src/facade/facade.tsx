@@ -1,8 +1,8 @@
-import {Filter, Rule, Selection} from "../filter/filter.js"
-import { Data } from "./data.js";
-import { objectify } from "../decoder/decoder.js";
-import { Country, Provider, Service, Status, Type } from "../decoder/items.js";
-import { UnorderedSet } from "../decoder/UnorderedSet.js";
+import {Filter, Rule, Selection} from "../filter/filter"
+import { Data } from "./data";
+import { objectify } from "../decoder/decoder";
+import { Country, Provider, Service, Status, Type } from "../decoder/items";
+import { UnorderedSet } from "../decoder/UnorderedSet";
 
 export class Facade{
     private filter : Filter;

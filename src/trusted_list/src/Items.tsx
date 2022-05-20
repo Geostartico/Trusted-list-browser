@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
-
-interface Country {
+export interface Country {
 
 }
 
-interface MainList {
+export interface MainList {
 }
