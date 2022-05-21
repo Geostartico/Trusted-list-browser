@@ -250,7 +250,9 @@ export class Filter{
                                                            this.providers_service_sum);
 
         filtered.forEach((service: Service) => {
-            ret.countries.add(service.getCountry());
+            let country: Country|null = service.getCountry();
+            if(country !== null)
+                ret.countries.add(country);
             ret.statuses.add (service.status);
             ret.providers.add(service.getProvider());
             ret.services.add (service);
@@ -444,7 +446,9 @@ function mapSum(...maps: Array<UnorderedMap<Service, number>>): UnorderedMap<Ser
   */
 function mapIncreaseOrInsert<K extends Settable<K>>(key: K, map: UnorderedMap<K, number>){
     if(map.has(key)){
-        map.set(key, map.get(key)+1);
+        let value: number|null = map.get(key);
+        if(value !== null)
+            map.set(key, value+1);
     }
     else{
         map.set(key, 1);
@@ -463,8 +467,8 @@ function mapDecreaseOrRemove<K extends Settable<K>>(key: K, map: UnorderedMap<K,
     if(!map.has(key)){
         throw new Error("Trying to remove an key that does not exist");
     }
-    let value: number = map.get(key);
-    if(value > 1){
+    let value: number|null = map.get(key);
+    if(value !== null && value > 1){
         map.set(key, value-1);
     }
     else{
