@@ -1,7 +1,13 @@
+/*
+ * filter.ts
+ * This file is part of the TrustedListBrowser project (https://github.com/Geostartico/Trusted-list-browser)
+ */
+
+// Set this variable to true of you want to see debug messages on the console
 const DEBUG: boolean = true;
 
 import {Country, Provider, Service, Status, Type} from "../decoder/items.js"
-import {objectify} from "../decoder/decoder.js"
+//import {objectify} from "../decoder/decoder.js"
 import {UnorderedSet} from "../decoder/UnorderedSet.js"
 import {UnorderedMap} from "../decoder/UnorderedMap.js"
 import {Settable} from "../decoder/settable.js"
@@ -333,6 +339,7 @@ export class Filter{
     }
 }
 
+// TODO: remove
 function mapToUnorderedSet(map: UnorderedMap<Service, number>): UnorderedSet<Service>{
     let ret = new UnorderedSet<Service>(10);
 
@@ -342,6 +349,7 @@ function mapToUnorderedSet(map: UnorderedMap<Service, number>): UnorderedSet<Ser
     return ret;
 }
 
+// TODO: remove
 function unorderedSetToMap(set: UnorderedSet<Service>): UnorderedMap<Service, number>{
     let ret = new UnorderedMap<Service, number>(10);
 
@@ -401,6 +409,7 @@ function mapIntersect(...maps: Array<UnorderedMap<Service, number>>): UnorderedS
     return ret;
 }
 
+// TODO: remove
 function mapUnion(...maps: Array<UnorderedMap<Service, number>>): UnorderedSet<Service>{
 
     let ret = new UnorderedSet<Service>(10);
@@ -414,6 +423,7 @@ function mapUnion(...maps: Array<UnorderedMap<Service, number>>): UnorderedSet<S
     return ret;
 }
 
+// TODO: remove
 function mapSum(...maps: Array<UnorderedMap<Service, number>>): UnorderedMap<Service, number>{
 
     let ret = new UnorderedMap<Service, number>(10);
