@@ -25,7 +25,7 @@ export class UnorderedMap<K extends Settable<K>,V>{
      * @param element
      * @returns the bucket in which elemetn should reside
      */
-    private getBucket(k : K){
+    private getBucket(k : K) : number{
         return Math.abs(k.hashCode()%this.buckets.length);
     }
     /**
@@ -39,11 +39,17 @@ export class UnorderedMap<K extends Settable<K>,V>{
             this.buckets[i] = new Node<Entry<K, V>>(null, null);
         }
         this.size = 0;
-        nBuck.forEach((node) =>
+        nBuck.forEach((node : Node<Entry<K,V>>) =>
         {
-            while(node.getNext() != null){
-                node = node.getNext();
-                this.set(node.getElement().getKey(), node.getElement().getValue());
+            
+            let nextNode : Node<Entry<K,V>> | null = node.getNext();
+            while(nextNode !== null){
+                node = nextNode;
+                let l : Entry<K,V> | null = node.getElement();
+                if(l !== null){
+                    this.set(l.getKey(), l.getValue());
+                }
+                nextNode = node.getNext();
             }
         })
     }
@@ -53,10 +59,12 @@ export class UnorderedMap<K extends Settable<K>,V>{
      * @returns the node previous to the one containing the object or the last node of the bucket it should reside in
      * @private
      */
-    private find(k : K){
-        let buck = this.buckets[this.getBucket(k)];
-        while(buck.getNext() != null && !buck.getNext().getElement().getKey().isEqual(k)){
-            buck = buck.getNext();
+    private find(k : K) : Node<Entry<K,V>>{
+        let buck : Node<Entry<K,V>> = this.buckets[this.getBucket(k)];
+        let nextBuck : Node<Entry<K,V>> | null = buck.getNext();
+        while(nextBuck !== null && !nextBuck.getElement()?.getKey()?.isEqual(k)){
+            buck = nextBuck;
+            nextBuck = buck.getNext();
         }
         return buck
     }
@@ -76,9 +84,10 @@ export class UnorderedMap<K extends Settable<K>,V>{
      * add the element to the set if it isn't in the set (if needed resizes the set)
      * @param el
      */
-    set(k : K, v : V){
-        let buck = this.find(k);
-        if(buck.getNext() == null){
+    set(k : K, v : V | null ){
+        let buck : Node<Entry<K,V>> = this.find(k);
+        let nextBuck : Node<Entry<K,V>> | null= buck.getNext(); 
+        if(nextBuck === null){
             buck.setNext(new Node<Entry<K, V>>(new Entry(k, v), null));
             this.size++;
             if(this.size/this.buckets.length > 0.75){
@@ -86,7 +95,7 @@ export class UnorderedMap<K extends Settable<K>,V>{
             }
         }
         else{
-            buck.getNext().getElement().setValue(v);
+            nextBuck.getElement()?.setValue(v);
         }
     }
     /**
@@ -94,10 +103,11 @@ export class UnorderedMap<K extends Settable<K>,V>{
      * @param el
      * @returns true if the element was in the set
      */
-    remove(k : K){
-        let buck = this.find(k);
-        if(buck.getNext() != null){
-            buck.setNext(buck.getNext().getNext());
+    remove(k : K): boolean{
+        let buck : Node<Entry<K, V>>= this.find(k);
+        let nextBuck : Node<Entry<K,V>> | null = buck.getNext();
+        if(nextBuck !== null){
+            buck.setNext(nextBuck.getNext());
             this.size--;
             return true;
         }
@@ -108,17 +118,18 @@ export class UnorderedMap<K extends Settable<K>,V>{
      * @param el
      * @returns true if el was in the set
      */
-    has(k : K){
+    has(k : K) : boolean{
         let buck = this.find(k);
-        if(buck.getNext() != null){
+        if(buck.getNext() !== null){
             return true;
         }
         return false;
     }
-    get(k : K){
+    get(k : K) : V | null{
         let buck = this.find(k);
-        if(buck.getNext() != null){
-            return buck.getNext().getElement().getValue();
+        let nextBuck : Node<Entry<K,V>> | null = buck.getNext();
+        if(nextBuck !== null){
+            return nextBuck.getElement()?.getValue() ?? null;
         }
         return null;
     }
@@ -127,10 +138,12 @@ export class UnorderedMap<K extends Settable<K>,V>{
      * @param fn callback function taking one parameter
      */
     forEach(fn: Function) {
-        this.buckets.forEach((elem) => {
-            while(elem.getNext() != null){
-                elem = elem.getNext();
-                fn(elem.getElement().getValue(), elem.getElement().getKey());
+        this.buckets.forEach((elem : Node<Entry<K,V>>) => {
+            let nextElem : Node<Entry<K,V>> | null = elem.getNext();
+            while(nextElem !== null){
+                elem = nextElem;
+                fn(elem.getElement()?.getValue(), elem?.getElement()?.getKey());
+                nextElem = elem.getNext();
             }
         })
     }

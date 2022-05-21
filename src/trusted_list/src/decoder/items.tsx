@@ -134,12 +134,12 @@ export class Service implements Settable<Service>{
      * tob of the server
      * @readonly
      */
-    readonly tob : string;
+    readonly tob : string | null;
     /**
      * Country of the server
      * @private
      */
-    private country : Country;
+    private country? : Country;
     /**
      * Constructs a service Object
      * @param aName name of the service
@@ -167,7 +167,7 @@ export class Service implements Settable<Service>{
      * @returns the hashcode of the service name
      * @see Settable
      */
-    hashCode() {
+    hashCode() : number{
         return stringHash(this.name);
     }
     /**
@@ -176,35 +176,35 @@ export class Service implements Settable<Service>{
      * @returns if the two names are the same
      * @see Settable
      */
-    isEqual(el: Service) {
-        return this.name == el.name;
+     isEqual(el: Service) : boolean{
+        return this.name == el.name && this.serviceId == el.serviceId && this.provider.isEqual(el.provider);
     }
     /**
      * get the provider
      * @returns the provider object
      */
-    getProvider(){
+    getProvider() : Provider{
         return this.provider;
     }
     /**
      * get the item list
      * @returns the set of items
      */
-    getServiceTypes(){
+    getServiceTypes() : UnorderedSet<Type>{
         return this.serviceTypes;
     }
     /**
      * get the Country
      * @returns the Country Object
      */
-    getCountry(){
-        return this.country;
+    getCountry() : Country | null{
+        return this.country ?? null;
     }
     /**
      * sets the Country of the Service to the service
      * @param aCountry the Country to set
      */
-    addCountry(aCountry : Country){
+    addCountry(aCountry : Country) : void{
         this.country = aCountry;
     }
 }
@@ -226,7 +226,7 @@ export class Provider implements Settable<Provider>{
      * the country of the provider
      * @private
      */
-    private country : Country;
+    private country? : Country;
     /**
      * trustMark of the provider
      * @readonly
@@ -269,7 +269,7 @@ export class Provider implements Settable<Provider>{
      * @see Settable
      * @returns the hash of the provider name
      */
-    hashCode() {
+    hashCode() : number {
         return stringHash(this.name);
     }
     /**
@@ -278,36 +278,36 @@ export class Provider implements Settable<Provider>{
      * @param el Provider to compare
      * @returns if the two names of the providers are the same
      */
-    isEqual(el: Provider) {
+    isEqual(el: Provider) : boolean{
         return this.name == el.name;
     }
     /**
      * get service type map
      * @returns he map of service types
      */
-    getServiceTypes(){
+    getServiceTypes() : UnorderedMap<Type, number>{
         return this.serviceTypes;
     }
     /**
      * get the service list
      * @returns a @see UnorderedSet of services
      */
-    getServices(){
+    getServices() : UnorderedSet<Service>{
         return this.services;
     }
     /**
      * get the possible status
      * @returns the map of possible status
      */
-    getPossibleStatus(){
+    getPossibleStatus() : UnorderedMap<Type, number>{
         return this.possibleStatus;
     }
     /**
      * get the Country Object
      * @returns the Country object
      */
-    getCountry(){
-        return this.country;
+    getCountry() : Country | null{
+        return this.country ?? null;
     }
     /**
      * updates the map adding the number of type instances of the provider
@@ -315,8 +315,9 @@ export class Provider implements Settable<Provider>{
      * @private
      */
     private addType(type : Type){
-        if(this.serviceTypes.has(type)){
-            this.serviceTypes.set(type, this.serviceTypes.get(type) + 1);
+        let elem : number | null = this.serviceTypes.get(type);
+        if(elem !== null){
+            this.serviceTypes.set(type, elem + 1);
         }
         else{
             this.serviceTypes.set(type, 1);
@@ -327,8 +328,9 @@ export class Provider implements Settable<Provider>{
      * @private
      */
     private addStatus(status : Status){
-        if(this.possibleStatus.has(status)){
-            this.possibleStatus.set(status, this.possibleStatus.get(status) + 1);
+        let elem : number | null = this.possibleStatus.get(status);
+        if(elem !== null){
+            this.possibleStatus.set(status, elem + 1);
         }
         else{
             this.possibleStatus.set(status, 1);
@@ -340,7 +342,7 @@ export class Provider implements Settable<Provider>{
      */
     addService(aService : Service){
         this.services.add(aService);
-        aService.getServiceTypes().forEach((str) => this.addType(str));
+        aService.getServiceTypes().forEach((str : Type) => this.addType(str));
         this.addStatus(aService.status);
     }
     /**
@@ -349,7 +351,7 @@ export class Provider implements Settable<Provider>{
      */
     addCountry(aCountry : Country){
         this.country = aCountry;
-        this.services.forEach((service: Service) => service.addCountry(this.country));
+        this.services.forEach((service: Service) => service.addCountry(aCountry));
     }
 
 }
@@ -372,16 +374,16 @@ export class Country implements Settable<Country>{
      * @param arr an array with elements in the form {countryCode : "string", countryName : "string"}
      * @static
      */
-    static initCodeToStringMap(arr){
+    static initCodeToStringMap(arr : Array<any>){
         this.codeToString = new Map<string, string>();
-        arr.forEach((el) => Country.codeToString.set(el.countryCode, el.countryName))
+        arr.forEach((el : any) => Country.codeToString.set(el["countryCode"], el["countryName"]))
     }
     /**
      * initialises the codeToObject map
      * @param arr an array with elements in the form {countryCode : "string", countryName : "string"}
      * @static
      */
-    static initCodeToObjectMap(arr){
+    static initCodeToObjectMap(arr : Array<any>){
         let codeToObject = new Map<string, Country>();
         arr.forEach((el) => codeToObject.set(el.countryCode, new Country(el.countryCode)));
         return codeToObject
@@ -423,7 +425,7 @@ export class Country implements Settable<Country>{
      * @returns the hashcode of the CountryCode
      * @see Settable
      */
-    hashCode() {
+    hashCode() : number{
         return stringHash(this.countryCode);
     }
     /**
@@ -431,28 +433,28 @@ export class Country implements Settable<Country>{
      * @param el country to compare
      * @returns if the two country codes correspond
      */
-    isEqual(el: Country) {
+    isEqual(el: Country) : boolean {
         return this.countryCode == el.countryCode;
     }
     /**
      * get the possible service Types
      * @returns the map of the possibleTypes
      */
-    getPossibleServiceTypes(){
+    getPossibleServiceTypes() : UnorderedMap<Type, number>{
         return this.possibleServiceTypes;
     }
     /**
      * get the possible status
      * @returns return the map of possible status
      */
-    getPossibleStatus(){
+    getPossibleStatus() : UnorderedMap<Status, number>{
         return this.possibleStatus;
     }
     /**
      * get the set of providers
      * @returns the @see UnorderedSet of providers
      */
-    getProviders(){
+    getProviders() : UnorderedSet<Provider>{
         return this.providers;
     }
     /**
@@ -462,8 +464,9 @@ export class Country implements Settable<Country>{
      * @private
      */
     private addStatus(status : Status, num : number){
-        if(this.possibleStatus.has(status)){
-            this.possibleStatus.set(status, this.possibleStatus.get(status) + num);
+        let stat : number | null = this.possibleStatus.get(status);
+        if(stat !== null){
+            this.possibleStatus.set(status, stat + num);
         }
         else{
             this.possibleStatus.set(status, num);
@@ -476,8 +479,9 @@ export class Country implements Settable<Country>{
      * @private
      */
     private addServiceType(serviceType : Type, num : number){
-        if(this.possibleServiceTypes.has(serviceType)){
-            this.possibleServiceTypes.set(serviceType, this.possibleServiceTypes.get(serviceType) + num);
+        let ser : number | null = this.possibleServiceTypes.get(serviceType);
+        if(ser !== null){
+            this.possibleServiceTypes.set(serviceType, ser + num);
         }
         else{
             this.possibleServiceTypes.set(serviceType, num);
@@ -487,7 +491,7 @@ export class Country implements Settable<Country>{
      * updates the Provider set adding it to the Country and updating the service and status map
      * @param provider provider to add
      */
-    addProvider(provider : Provider){
+    addProvider(provider : Provider) : void{
         if(this.providers.has(provider)){
             return;
         }

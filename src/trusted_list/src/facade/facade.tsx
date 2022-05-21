@@ -13,6 +13,7 @@ export class Facade{
         //this.fetcher = new Fetcher()
         //let dict = fetcher.fetch();
         this.filter = new Filter(stuff["servicesArray"]);
+        this.selection = this.filter.getFiltered();
     }
     updateAdd(item : Country | Type | Status | Provider){
         this.filter.addRule(new Rule(item));
@@ -39,7 +40,14 @@ export class Facade{
         let providers : UnorderedSet<Provider> = new UnorderedSet<Provider>(10);
         let services : UnorderedSet<Service> = this.selection.services;
         services.forEach((elem : Service) => {
-            countries.add(elem.getCountry());
+            let curCountry : Country | null = elem.getCountry(); 
+            if(curCountry !== null){
+                countries.add(curCountry);
+
+            }
+            else{
+                throw new Error("service without a Country");
+            }
             providers.add(elem.getProvider());
         })
         return {"countries" : countries, "providers" : providers, "services" : services};

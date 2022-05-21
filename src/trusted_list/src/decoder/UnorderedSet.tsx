@@ -48,11 +48,16 @@ export class UnorderedSet<T extends Settable<T>>{
             this.buckets[i] = new Node<T>(null, null);
         }
         this.size = 0;
-        nBuck.forEach((node) =>
+        nBuck.forEach((node : Node<T>) =>
         {
-            while(node.getNext() != null){
-                node = node.getNext();
-                this.add(node.getElement());
+            let nextElem : Node<T> | null = node.getNext();
+            while(nextElem !== null){
+                node = nextElem;
+                let el : T | null = node?.getElement();
+                if(el !== null){
+                    this.add(el);
+                }
+                nextElem = node.getNext();
             }
         })
     }
@@ -62,10 +67,12 @@ export class UnorderedSet<T extends Settable<T>>{
      * @returns the node previous to the one containing the object or the last node of the bucket it should reside in
      * @private
      */
-    private find(el : T){
-        let buck = this.buckets[this.getBucket(el)];
-        while(buck.getNext() != null && !buck.getNext().getElement().isEqual(el)){
-            buck = buck.getNext();
+    private find(el : T) : Node<T>{
+        let buck : Node<T>= this.buckets[this.getBucket(el)];
+        let nextBuck : Node<T> | null= buck.getNext();
+        while(nextBuck !== null && !buck?.getNext()?.getElement()?.isEqual(el)){
+            buck = nextBuck;
+            nextBuck = buck.getNext();
         }
         return buck
     }
@@ -103,7 +110,8 @@ export class UnorderedSet<T extends Settable<T>>{
     remove(el : T){
         let buck = this.find(el);
         if(buck.getNext() != null){
-            buck.setNext(buck.getNext().getNext());
+            let curBuck : Node<T> | undefined | null = buck.getNext();
+            buck.setNext(buck?.getNext()?.getNext() ?? null);
             this.size--;
             return true;
         }
@@ -126,10 +134,12 @@ export class UnorderedSet<T extends Settable<T>>{
      * @param fn callback function taking one parameter
      */
     forEach(fn: Function) {
-        this.buckets.forEach((elem) => {
-            while(elem.getNext() != null){
-                elem = elem.getNext();
+        this.buckets.forEach((elem : Node<T>) => {
+            let nextElem : Node<T> | null = elem.getNext();
+            while(nextElem !== null){
+                elem = nextElem;
                 fn(elem.getElement());
+                nextElem = elem.getNext()
             }
         })
     }

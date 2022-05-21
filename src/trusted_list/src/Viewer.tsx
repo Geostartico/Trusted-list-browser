@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Facade } from "./facade/facade";
-
+import {Country} from "./decoder/items"
 interface ViewerProps {
 }
 
@@ -16,9 +16,14 @@ class Viewer extends Component<ViewerProps, ViewerState> {
         this.state = {
             facede: new Facade(),
         };
+
+        //INSERISCI QUA SCRIPT
+
         this.state.facede.getView().countries.forEach((val: Country) => {
             console.log(val);
         })
+
+
     }
 
     render() {

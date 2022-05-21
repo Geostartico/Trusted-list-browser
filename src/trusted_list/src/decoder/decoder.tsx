@@ -8,7 +8,7 @@ import { UnorderedSet } from "./UnorderedSet";
  * @returns object in the form {"codeToObject": dictionary, "servicesArray": array}, with dictionary having the codes
  * as keys and as value the country objects, and array contrining services
  */
-export function objectify(ctodict, jsondict){
+export function objectify(ctodict : any, jsondict : any){
   let codeToObject : Map<string, Country>  = Country.initCodeToObjectMap(ctodict);
   let servicesArray : Array<Service> = new Array<Service>();
   let stringToStatus : Map<string, Status> = new Map<string, Status>();
@@ -16,43 +16,46 @@ export function objectify(ctodict, jsondict){
   let stringToType : Map<string, Type> = new Map<string, Type>();
   let typeSet  : UnorderedSet<Type> = new UnorderedSet<Type>(10);
   let typearr : Array<Type> = new Array<Type>();
-  jsondict.forEach((provider) => {
-    let curCountry = codeToObject.get(provider["countryCode"]);
+  jsondict.forEach((provider : any) => {
+    let curCountry : Country | undefined = codeToObject.get(provider["countryCode"]);
     let typearr = new Array<Type>();
-    provider["qServiceTypes"].forEach((typestr) =>{
-      if(!stringToType.has(typestr)){
+    provider["qServiceTypes"].forEach((typestr : string) =>{
+      let curt : Type | undefined = stringToType.get(typestr);
+      if(curt === undefined){
         let t = new Type(typestr);
         stringToType.set(typestr, t);
         typeSet.add(t);
         typearr.push(t);
       }
       else{
-        typearr.push(stringToType.get(typestr));
+        typearr.push(curt);
       }
     });
     let curProv = new Provider(provider["name"], provider["tspId"], provider["trustmark"], typearr);
-    provider["services"].forEach((service_dict) => {
+    provider["services"].forEach((service_dict : any) => {
         let serviceTypeArr  : Array<Type> = new Array<Type>();
-        service_dict["qServiceTypes"].forEach((typestr) =>{
-          if(!stringToType.has(typestr)){
+        service_dict["qServiceTypes"].forEach((typestr : string) =>{
+          let curt : Type | undefined= stringToType.get(typestr);
+          if(curt === undefined){
             let t : Type = new Type(typestr);
             stringToType.set(typestr, t);
             typeSet.add(t);
             serviceTypeArr.push(t);
           }
           else{
-            serviceTypeArr.push(stringToType.get(typestr));
+            serviceTypeArr.push(curt);
           }
         });
         let statusStr : string = service_dict["currentStatus"];
         let stat : Status;
-        if(!stringToStatus.has(statusStr)){
+        let curs : Status | undefined= stringToStatus.get(statusStr);
+        if(curs === undefined){
           stat = new Status(statusStr);
           stringToStatus.set(statusStr, stat);
           statusSet.add(stat);
         }
         else{
-          stat = stringToStatus.get(statusStr);
+          stat = curs;
         }
         let ser = new Service(service_dict["serviceName"], service_dict["serviceId"], serviceTypeArr, curProv, stat, service_dict["type"], service_dict["tspId"], service_dict["tob"]);
         stat.services.add(ser);
@@ -60,7 +63,12 @@ export function objectify(ctodict, jsondict){
         curProv.addService(ser);
         servicesArray.push(ser);
     })
-    curCountry.addProvider(curProv);
+    if(curCountry !== undefined){
+      curCountry.addProvider(curProv);
+    }
+    else{
+      throw new Error("country not found");
+    }
     });
   return {"codeToObject": codeToObject, "servicesArray": servicesArray, "typeSet" : typeSet, "statusSet" : statusSet};
 }
