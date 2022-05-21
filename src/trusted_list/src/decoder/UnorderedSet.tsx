@@ -35,7 +35,7 @@ export class UnorderedSet<T extends Settable<T>>{
      * @returns the bucket in which elemetn should reside
      */
     private getBucket(element : T){
-        return Math.abs(element.hashCode()%this.buckets.length);
+        return Math.abs(element.hashCode()%(this.buckets.length));
     }
     /**
      * doubles the number of buckets
@@ -43,11 +43,15 @@ export class UnorderedSet<T extends Settable<T>>{
      */
     private resize(){
         let nBuck = this.buckets;
+        //doubles the buckets
         this.buckets = new Array<Node<T>>(nBuck.length * 2);
+        //initialises the buckets
         for(let i = 0; i < this.buckets.length; i ++){
             this.buckets[i] = new Node<T>(null, null);
         }
+        //so that .add method works correctly
         this.size = 0;
+        //for every bucket it inserts the objects in the new buckets
         nBuck.forEach((node : Node<T>) =>
         {
             let nextElem : Node<T> | null = node.getNext();
@@ -70,7 +74,7 @@ export class UnorderedSet<T extends Settable<T>>{
     private find(el : T) : Node<T>{
         let buck : Node<T>= this.buckets[this.getBucket(el)];
         let nextBuck : Node<T> | null= buck.getNext();
-        while(nextBuck !== null && !buck?.getNext()?.getElement()?.isEqual(el)){
+        while(nextBuck !== null && !nextBuck.getElement()?.isEqual(el)){
             buck = nextBuck;
             nextBuck = buck.getNext();
         }
@@ -83,20 +87,22 @@ export class UnorderedSet<T extends Settable<T>>{
     constructor(buckNum : number){
         this.size = 0;
         this.buckets = new Array<Node<T>>(buckNum);
+        //initialises the buckets
         for(let i = 0; i < this.buckets.length; i ++){
             this.buckets[i] = new Node<T>(null, null);
         }
-        //this.buckets.forEach((element) => element = new Node<T>(null, null));
     }
     /**
      * add the element to the set if it isn't in the set (if needed resizes the set)
-     * @param el
+     * @param el can't be null
      */
     add(el : T){
         let buck = this.find(el);
-        if(buck.getNext() == null){
+        //the element isn't already in the set
+        if(buck.getNext() === null){
             buck.setNext(new Node<T>(el, null));
             this.size++;
+            //if the buckets get too crowded the hashset is resized
             if(this.size/this.buckets.length > 0.75){
                 this.resize()
             }
@@ -109,9 +115,9 @@ export class UnorderedSet<T extends Settable<T>>{
      */
     remove(el : T){
         let buck = this.find(el);
-        if(buck.getNext() != null){
-            let curBuck : Node<T> | undefined | null = buck.getNext();
-            buck.setNext(buck?.getNext()?.getNext() ?? null);
+        //the element is contained
+        if(buck.getNext() !== null){
+            buck.setNext(buck.getNext()?.getNext() ?? null);
             this.size--;
             return true;
         }
@@ -124,11 +130,13 @@ export class UnorderedSet<T extends Settable<T>>{
      */
     has(el: T){
         let buck = this.find(el);
-        if(buck.getNext() != null){
+        //the object is contained
+        if(buck.getNext() !== null){
             return true;
         }
         return false;
     }
+    
     /**
      * iterates over the set calling the given callback function
      * @param fn callback function taking one parameter

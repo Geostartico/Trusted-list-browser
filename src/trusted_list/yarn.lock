@@ -2368,17 +2368,17 @@ ajv@^8.0.0, ajv@^8.6.0, ajv@^8.8.0:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-allotment@^1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/allotment/-/allotment-1.13.0.tgz#db9da270004c0ba9ccd5ca6c217ae745c217a959"
-  integrity sha512-Pxzph+GB8FLZUl2XLoNLrd3PKcL9IbUlrcrW4IY6KMP/c+6nYJPHaCnTiYjYLdzhs6dMA+C9RVfsUTytjBpwcg==
+allotment@^1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/allotment/-/allotment-1.14.0.tgz#8c40bdb04acd5a491eb4e8f3eba791530fb68d48"
+  integrity sha512-Ed3QRX9KRpUgOB+t9MbDZGssKKVfLltp8Y4Dd2qr5E7f/XPKwHEwBpeoHmSoYZNFgpMRSinnVS+jHot8AeRk9A==
   dependencies:
     classnames "^2.3.0"
     eventemitter3 "^4.0.0"
     lodash.clamp "^4.0.0"
     lodash.debounce "^4.0.0"
     lodash.isequal "^4.5.0"
-    use-resize-observer "^8.0.0"
+    use-resize-observer "^9.0.0"
 
 ansi-escapes@^4.2.1, ansi-escapes@^4.3.1:
   version "4.3.2"
@@ -8359,10 +8359,10 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
-use-resize-observer@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/use-resize-observer/-/use-resize-observer-8.0.0.tgz#69bd80c1ddd94f3758563fe107efb25fed85067a"
-  integrity sha512-n0iKSeiQpJCyaFh5JA0qsVLBIovsF4EIIR1G6XiBwKJN66ZrD4Oj62bjcuTAATPKiSp6an/2UZZxCf/67fk3sQ==
+use-resize-observer@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/use-resize-observer/-/use-resize-observer-9.0.0.tgz#9708c6fa432f35979b1d6e732b6f4cffde3d11e5"
+  integrity sha512-13r/1XeyfPkeegiVZYLDoQbkwbVMzj1XghqNz9HFqiRevtXCWDQTsqzVjQ4WNM4rJ8P3sFYc+3TgX0J2Jsuxfw==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
 
