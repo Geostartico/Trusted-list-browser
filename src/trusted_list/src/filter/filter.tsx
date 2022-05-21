@@ -4,12 +4,13 @@
  */
 
 // Set this variable to true of you want to see debug messages on the console
-const DEBUG: boolean = true;
-
 import {Country, Provider, Service, Status, Type} from "../decoder/items"
 import {UnorderedSet} from "../decoder/UnorderedSet"
 import {UnorderedMap} from "../decoder/UnorderedMap"
 import {Settable} from "../decoder/settable"
+const DEBUG: boolean = true;
+
+
 //import {objectify} from "../decoder/decoder"
 
  /**
