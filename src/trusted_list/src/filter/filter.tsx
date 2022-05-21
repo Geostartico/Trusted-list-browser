@@ -1,13 +1,24 @@
+/*
+ * filter.ts
+ * This file is part of the TrustedListBrowser project (https://github.com/Geostartico/Trusted-list-browser)
+ */
+
+// Set this variable to true of you want to see debug messages on the console
 const DEBUG: boolean = true;
 
 import {Country, Provider, Service, Status, Type} from "../decoder/items"
-import {objectify} from "../decoder/decoder"
 import {UnorderedSet} from "../decoder/UnorderedSet"
 import {UnorderedMap} from "../decoder/UnorderedMap"
 import {Settable} from "../decoder/settable"
+//import {objectify} from "../decoder/decoder"
 
  /**
-  * Class that groups a selection of objects
+  * Class that groups a selection/superset of objects in separate @see{UnorderedSet} objects representing:
+  * - countries
+  * - providers
+  * - statuses
+  * - types
+  * - services
   */
 export class Selection{
     countries: UnorderedSet<Country>;
@@ -37,7 +48,9 @@ export class Selection{
         types.forEach((type)         => { this.types.add(type)         });
     }
 
-    /** @return copy of this Selection (no deep copy, but maps are reconstructed) */
+    /**
+    * @return copy of this Selection (no deep copy, but maps are reconstructed)
+    */
     copy(){
         return new Selection(
             Array.from(this.countries.values()),
@@ -50,7 +63,7 @@ export class Selection{
 }
 
  /**
-  * Flitering rule class
+  * Flitering rule class, used to store the item to filter with with a forced type
   */
 export class Rule {
     public readonly filtering_item: Type | Status | Provider | Country;
@@ -64,11 +77,16 @@ export class Rule {
 }
 
  /**
-  * Filtering class, (it dynamically updates selectable and active objects)
+  * Filtering class, it dynamically updates selectable and active objects
   */
 export class Filter{
 
-    // TODO: this should just be rule.filtering_item.getServices()
+    /**
+     * Returns a map of all @see{Service} objects that have the property specified in the rule parameter
+     * @param rule: the rule of type @{Rule} that you want to get the affected services from
+     * @returns: @see{UnorderedMap} all affected services as keys
+     * Note: the value of each key (i.e. the multiplicity of every Service key) is always 1
+     */
     private getServicesFromRule(rule: Rule): UnorderedMap<Service, number>{
 
         let ret = new UnorderedMap<Service, number>(10);
@@ -79,54 +97,56 @@ export class Filter{
                     ret.set(service, 1);
                 });
             });
-            return ret;
         }
-        if(rule.filtering_item instanceof Provider){
+        else if(rule.filtering_item instanceof Provider){
             rule.filtering_item.getServices().forEach((service: Service) => {
                 ret.set(service, 1);
             });
         }
 
-        if(rule.filtering_item instanceof Type){
-            this.all_services.forEach((service: Service) => {
-                service.getServiceTypes().forEach((type: Type) => {
-                if(type === rule.filtering_item){
-                    ret.set(service, 1);
-                }
-                });
+        else if(rule.filtering_item instanceof Type){
+            rule.filtering_item.services.forEach((service: Service) => {
+                ret.set(service, 1);
             });
         }
         else if(rule.filtering_item instanceof Status){
-            this.all_services.forEach((service: Service) => {
-                if(service.status === rule.filtering_item){
-                    ret.set(service, 1);
-                }
+            rule.filtering_item.services.forEach((service: Service) => {
+                ret.set(service, 1);
             });
         }
 
         return ret;
     }
 
-    private rules: Set<Rule>;
+    //private rules: Set<Rule>;
 
     private selected: Selection;
 
+    /**
+     * @private
+     * This map is used as a cache for the number of services of type @see{Service} filtered by the @see{Rule} for the countries
+     * The number associated with the @see{Service} is the number of times a service has been referenced by the filter
+     * Note: analogous behaviour for the countries_service_sum, types_service_sum and statuses_service_sum maps
+     */
     private countries_service_sum: UnorderedMap<Service, number>;
     private providers_service_sum: UnorderedMap<Service, number>;
     private types_service_sum:     UnorderedMap<Service, number>;
     private statuses_service_sum:  UnorderedMap<Service, number>;
 
-    private readonly all_services:     UnorderedSet<Service>;
-    private readonly all_services_map: UnorderedMap<Service, number>;
+    /**
+     * @private
+     * This is a cache of all possible services
+     * It is a @see{UnorderedMap} with a @see{Service} object as a key and the number 1 as a value
+     */
+    private readonly all_services: UnorderedMap<Service, number>;
 
     constructor(service_list: Service[]){
 
-        this.rules = new Set<Rule>();
+        //this.rules = new Set<Rule>();
 
         this.selected = new Selection();
 
-        this.all_services     = new UnorderedSet<Service>(service_list.length);
-        this.all_services_map = new UnorderedMap<Service, number>(10);
+        this.all_services = new UnorderedMap<Service, number>(service_list.length);
 
         this.countries_service_sum = new UnorderedMap<Service, number>(10);
         this.providers_service_sum = new UnorderedMap<Service, number>(10);
@@ -134,17 +154,17 @@ export class Filter{
         this.statuses_service_sum  = new UnorderedMap<Service, number>(10);
 
         service_list.forEach((service: Service) => {
-            this.all_services.add(service);
-            this.all_services_map.set(service, 1);
+            this.all_services.set(service, 1);
         });
     }
 
     /**
-     * Add a rule to the filter
-     * @param rule: @see{Rule} object
+     * Add a rule to the filter and dynamically update @see{selected} and cached sum maps (e.g. @see{countries_service_sum})
+     * @param rule: @see{Rule} object to add
+     * Note: this is the opposite of @see{removeRule}
      */
     addRule(rule: Rule){
-        this.rules.add(rule);
+        //this.rules.add(rule);
 
         if(rule.filtering_item instanceof Country){
             this.selected.countries.add(rule.filtering_item);
@@ -171,8 +191,13 @@ export class Filter{
         }
     }
 
+    /**
+     * Remove a rule from the filter and dynamically update @see{selected} and cached sum maps (e.g. @see{countries_service_sum})
+     * @param rule: @see{Rule} object to remove
+     * Note: this is the opposite of @see{addRule}
+     */
     removeRule(rule: Rule){
-        this.rules.delete(rule);
+        //this.rules.delete(rule);
 
         if(rule.filtering_item instanceof Country){
             this.selected.countries.remove(rule.filtering_item);
@@ -200,37 +225,29 @@ export class Filter{
         }
     }
 
+    /**
+     * @returns selected objects that are converted from the added rules
+     */
     getSelected(): Selection{
         return this.selected;
     }
 
     /**
-     * @returns set of filtered services based on the rules
+     * Main filtering method, intersects each chached sum map and (e.g. @see{countries_service_sum}) and updates the
+     * @see{selected} map if some elemets are removed by a cascade effect (TODO: add better link to an explaination)
+     * @returns: set of filtered services based on the rules
      */
     getFiltered(): Selection{
 
         // If I have no selections in a field, it's the same as all selected
-        if(this.selected.statuses.getSize() == 0)
-            this.statuses_service_sum = this.all_services_map;
-
-        if(this.selected.types.getSize() == 0)
-            this.types_service_sum = this.all_services_map;
-
-        if(this.selected.countries.getSize() == 0)
-            this.countries_service_sum = this.all_services_map;
-
-        if(this.selected.countries.getSize() == 0)
-            this.providers_service_sum = this.all_services_map;
-
+        this.convertEmptyToFull();
 
         let ret = new Selection();
 
-        //let filtered: UnorderedSet<Service> = mapUnion(this.providers_service_sum, mapIntersect(this.countries_service_sum, this.types_service_sum, this.statuses_service_sum));
-        let filtered: UnorderedSet<Service> = mapToUnorderedSet(
-                                                mapIntersect(this.countries_service_sum,
-                                                             this.types_service_sum,
-                                                             this.statuses_service_sum,
-                                                             this.providers_service_sum));
+        let filtered: UnorderedSet<Service> = mapIntersect(this.countries_service_sum,
+                                                           this.types_service_sum,
+                                                           this.statuses_service_sum,
+                                                           this.providers_service_sum);
 
         filtered.forEach((service: Service) => {
             ret.countries.add(service.getCountry());
@@ -243,6 +260,71 @@ export class Filter{
         });
 
         // Resetting to safe state
+        this.convertFullToEmpty();
+
+        // Remove item from selected if it is not selectable
+        for(let map of [this.selected.countries, this.selected.types, this.selected.providers, this.selected.statuses]){
+            map.forEach((item: Country|Type|Provider|Status, _: number) => {
+                this.removeFromSelectedIfNotSelectable(item, ret);
+            });
+        }
+
+        return ret;
+    }
+
+    /**
+     * @private
+     * Removes item of type @see{Country}, @see{Type}, @see{Provider}, @see{Status} from @see{selected}
+     * if the item is not in the selectable @see{Selection}.
+     * @param item: item to check and eventually remove
+     * @param selectables: @see{Selection} object containing all selectable items
+     */
+    private removeFromSelectedIfNotSelectable(item: Country|Type|Provider|Status, selectables: Selection){
+        if(item instanceof Country)
+            if(!selectables.countries.has(item))
+                this.selected.countries.remove(item);
+
+        else if(item instanceof Type)
+            if(!selectables.types.has(item))
+                this.selected.types.remove(item);
+
+        else if(item instanceof Status)
+            if(!selectables.statuses.has(item))
+                this.selected.statuses.remove(item);
+
+        else if(item instanceof Provider)
+            if(!selectables.providers.has(item))
+                this.selected.providers.remove(item);
+    }
+
+    /**
+     * @private
+     * Makes all empty service sum maps (i.e. @see{statuses_service_sum}, @see{types_service_sum}, @see{countries_service_sum}, @see{providers_service_sum})
+     * ) have all service.
+     * Note: the inverse of this operation is done in @see{convertFullToEmpty}
+     */
+    private convertEmptyToFull(){
+        if(this.selected.statuses.getSize() == 0)
+            this.statuses_service_sum = this.all_services;
+
+        if(this.selected.types.getSize() == 0)
+            this.types_service_sum = this.all_services;
+
+        if(this.selected.countries.getSize() == 0)
+            this.countries_service_sum = this.all_services;
+
+        if(this.selected.countries.getSize() == 0)
+            this.providers_service_sum = this.all_services;
+    }
+
+
+    /**
+     * @private
+     * Makes all temporary-full service sum maps (i.e. @see{statuses_service_sum}, @see{types_service_sum}, @see{countries_service_sum}, @see{providers_service_sum})
+     * ) have no selected elements.
+     * Note: this is the inverse operation of @see{convertEmptyToFull}
+     */
+    private convertFullToEmpty(){
         if(this.selected.statuses.getSize() == 0)
             this.statuses_service_sum = new UnorderedMap<Service, number>(10);
 
@@ -254,12 +336,10 @@ export class Filter{
 
         if(this.selected.countries.getSize() == 0)
             this.providers_service_sum = new UnorderedMap<Service, number>(10);
-
-        return ret;
     }
-
 }
 
+// TODO: remove
 function mapToUnorderedSet(map: UnorderedMap<Service, number>): UnorderedSet<Service>{
     let ret = new UnorderedSet<Service>(10);
 
@@ -269,6 +349,7 @@ function mapToUnorderedSet(map: UnorderedMap<Service, number>): UnorderedSet<Ser
     return ret;
 }
 
+// TODO: remove
 function unorderedSetToMap(set: UnorderedSet<Service>): UnorderedMap<Service, number>{
     let ret = new UnorderedMap<Service, number>(10);
 
@@ -279,18 +360,23 @@ function unorderedSetToMap(set: UnorderedSet<Service>): UnorderedMap<Service, nu
     return ret;
 }
 
-function mapIntersect(...maps: Array<UnorderedMap<Service, number>>): UnorderedMap<Service, number>{
+/**
+ * Intersects a variable number of maps
+ * @param maps: comma separated map @see{UnorderedMap} maps
+ * @returns: @see{UnorderedSet} containing services of type @see{Service} commmon to all maps
+ */
+function mapIntersect(...maps: Array<UnorderedMap<Service, number>>): UnorderedSet<Service>{
 
-    let ret = new UnorderedMap<Service, number>(10);
+    let ret = new UnorderedSet<Service>(10);
 
     // Return empty map if there are no maps for parameters
     if(maps.length < 1)
         return ret;
 
     // Throw error on null map and find the shortest map for faster search
-    let shortest_map: UnorderedMap<Service, number>;
+    let shortest_map = maps[0];
     for(let map of maps){
-        if(map === null)
+        if(map === undefined || map === null)
             throw new Error("Error, intersect on null maps");
 
         if(map.getSize() < shortest_map.getSize())
@@ -300,7 +386,7 @@ function mapIntersect(...maps: Array<UnorderedMap<Service, number>>): UnorderedM
     // If there is just one map, return a copy of it
     if(maps.length == 1){
         for(let service of maps[0].keys())
-            ret.set(service, 1);
+            ret.add(service);
         return ret;
     }
 
@@ -317,12 +403,13 @@ function mapIntersect(...maps: Array<UnorderedMap<Service, number>>): UnorderedM
             }
         }
         if(all_maps_have_service)
-            ret.set(service, 1);
+            ret.add(service);
     }
 
     return ret;
 }
 
+// TODO: remove
 function mapUnion(...maps: Array<UnorderedMap<Service, number>>): UnorderedSet<Service>{
 
     let ret = new UnorderedSet<Service>(10);
@@ -336,6 +423,7 @@ function mapUnion(...maps: Array<UnorderedMap<Service, number>>): UnorderedSet<S
     return ret;
 }
 
+// TODO: remove
 function mapSum(...maps: Array<UnorderedMap<Service, number>>): UnorderedMap<Service, number>{
 
     let ret = new UnorderedMap<Service, number>(10);
@@ -350,554 +438,52 @@ function mapSum(...maps: Array<UnorderedMap<Service, number>>): UnorderedMap<Ser
 }
 
  /**
-  * Helper function, self explainatory
-  * @param value: value to update
-  * @param map:   map containing the value to be inserted
+  * Increases the numeric value associated to a key in an @see{UnorderedMap} object, if not present, it inserts it (with the value 1)
+  * @param key: value to update
+  * @param map: map
   */
-function mapIncreaseOrInsert<T extends Settable<T>>(value: T, map: UnorderedMap<T, number>){
-    if(map.has(value)){
-        map.set(value, map.get(value)+1);
+function mapIncreaseOrInsert<K extends Settable<K>>(key: K, map: UnorderedMap<K, number>){
+    if(map.has(key)){
+        map.set(key, map.get(key)+1);
     }
     else{
-        map.set(value, 1);
+        map.set(key, 1);
     }
 }
 
  /**
-  * Helper function, self explainatory
-  * @param value: value to remove
-  * @param map:   map containing the value to be removed
-  *
+  * Decreases the numeric value associated to a key in an @see{UnorderedMap} object, if the value drops to 0, it removes the entry
+  * The key must be in the map, otherwise an exception will be thrown
+  * @param key: key to remove
+  * @param map: map containing the key to be removed
   * @throws @link{Error}
-  * Thrown if the value is not inserted in the map
+  * Thrown if the key is not inserted in the map
   */
-function mapDecreaseOrRemove<T extends Settable<T>>(value: T, map: UnorderedMap<T, number>){
-    if(!map.has(value)){
-        throw new Error("Trying to remove an item that does not exist");
+function mapDecreaseOrRemove<K extends Settable<K>>(key: K, map: UnorderedMap<K, number>){
+    if(!map.has(key)){
+        throw new Error("Trying to remove an key that does not exist");
     }
-    if(map.get(value) > 1){
-        map.set(value, map.get(value)-1);
+    let value: number = map.get(key);
+    if(value > 1){
+        map.set(key, value-1);
     }
     else{
-        map.remove(value);
+        map.remove(key);
     }
 }
 
-
-let countryDict = [
-  {
-    "countryCode": "AT",
-    "countryName": "Austria"
-  },
-  {
-    "countryCode": "BE",
-    "countryName": "Belgium"
-  },
-  {
-    "countryCode": "BG",
-    "countryName": "Bulgaria"
-  },
-  {
-    "countryCode": "CY",
-    "countryName": "Cyprus"
-  },
-  {
-    "countryCode": "CZ",
-    "countryName": "Czech Republic"
-  },
-  {
-    "countryCode": "DE",
-    "countryName": "Germany"
-  },
-  {
-    "countryCode": "DK",
-    "countryName": "Denmark"
-  },
-  {
-    "countryCode": "EE",
-    "countryName": "Estonia"
-  },
-  {
-    "countryCode": "EL",
-    "countryName": "Greece"
-  },
-  {
-    "countryCode": "ES",
-    "countryName": "Spain"
-  },
-  {
-    "countryCode": "EU",
-    "countryName": "European Union"
-  },
-  {
-    "countryCode": "FI",
-    "countryName": "Finland"
-  },
-  {
-    "countryCode": "FR",
-    "countryName": "France"
-  },
-  {
-    "countryCode": "HR",
-    "countryName": "Croatia"
-  },
-  {
-    "countryCode": "HU",
-    "countryName": "Hungary"
-  },
-  {
-    "countryCode": "IE",
-    "countryName": "Ireland"
-  },
-  {
-    "countryCode": "IS",
-    "countryName": "Iceland"
-  },
-  {
-    "countryCode": "IT",
-    "countryName": "Italy"
-  },
-  {
-    "countryCode": "LI",
-    "countryName": "Liechtenstein"
-  },
-  {
-    "countryCode": "LT",
-    "countryName": "Lithuania"
-  },
-  {
-    "countryCode": "LU",
-    "countryName": "Luxembourg"
-  },
-  {
-    "countryCode": "LV",
-    "countryName": "Latvia"
-  },
-  {
-    "countryCode": "MT",
-    "countryName": "Malta"
-  },
-  {
-    "countryCode": "NL",
-    "countryName": "Netherlands"
-  },
-  {
-    "countryCode": "NO",
-    "countryName": "Norway"
-  },
-  {
-    "countryCode": "PL",
-    "countryName": "Poland"
-  },
-  {
-    "countryCode": "PT",
-    "countryName": "Portugal"
-  },
-  {
-    "countryCode": "RO",
-    "countryName": "Romania"
-  },
-  {
-    "countryCode": "SE",
-    "countryName": "Sweden"
-  },
-  {
-    "countryCode": "SI",
-    "countryName": "Slovenia"
-  },
-  {
-    "countryCode": "SK",
-    "countryName": "Slovakia"
-  },
-  {
-    "countryCode": "UK",
-    "countryName": "United Kingdom"
-  }
-];
-
-let serviceDict = [
-  {
-    "tspId": 1,
-    "name": "A-Trust Gesellschaft für Sicherheitssysteme im elektronischen Datenverkehr GmbH",
-    "countryCode": "AT",
-    "trustmark": "VATAT-U50272100",
-    "qServiceTypes": [
-      "QCertESeal",
-      "CertESeal",
-      "QCertESig",
-      "WAC",
-      "QWAC",
-      "CertESig"
-    ],
-    "services": [
-      {
-        "tspId": 1,
-        "serviceId": 1,
-        "countryCode": "AT",
-        "serviceName": "TrustSign-Sig-01 (key no. 1)",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 2,
-        "countryCode": "AT",
-        "serviceName": "TrustSign-Sig-01 (key no. 2)",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 3,
-        "countryCode": "AT",
-        "serviceName": "TrustSign-Sig-01 (key no. 3)",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 4,
-        "countryCode": "AT",
-        "serviceName": "a-sign uni",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 5,
-        "countryCode": "AT",
-        "serviceName": "a-sign-Premium-Sig-01 (key no. 1)",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 6,
-        "countryCode": "AT",
-        "serviceName": "a-sign-Premium-Sig-01 (key no. 2)",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 7,
-        "countryCode": "AT",
-        "serviceName": "a-sign-Premium-Sig-01 (key no. 3)",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 8,
-        "countryCode": "AT",
-        "serviceName": "a-sign-Premium-Sig-02 (key no. 1)",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 9,
-        "countryCode": "AT",
-        "serviceName": "a-sign-Premium-Sig-02 (key no. 2)",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 10,
-        "countryCode": "AT",
-        "serviceName": "a-sign-Premium-Sig-03 (key no. 1)",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 11,
-        "countryCode": "AT",
-        "serviceName": "a-sign-Premium-Sig-03 (key no. 2)",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 12,
-        "countryCode": "AT",
-        "serviceName": "a-sign-Premium-Sig-05",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 13,
-        "countryCode": "AT",
-        "serviceName": "a-sign-premium-mobile-03",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 14,
-        "countryCode": "AT",
-        "serviceName": "a-sign-premium-mobile-05",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 15,
-        "countryCode": "AT",
-        "serviceName": "OCSP Responder 03-1",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/Certstatus/OCSP/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 16,
-        "countryCode": "AT",
-        "serviceName": "EU-Identity-mobile-05",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 17,
-        "countryCode": "AT",
-        "serviceName": "a-sign-premium-mobile-seal-07",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESeal"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 18,
-        "countryCode": "AT",
-        "serviceName": "a-sign-SSL-EV-07",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QWAC"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 19,
-        "countryCode": "AT",
-        "serviceName": "a-sign-SSL-03",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/PKC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/recognisedatnationallevel",
-        "tob": null,
-        "qServiceTypes": [
-          "WAC"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 20,
-        "countryCode": "AT",
-        "serviceName": "a-sign-SSL-05",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/PKC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/recognisedatnationallevel",
-        "tob": null,
-        "qServiceTypes": [
-          "WAC"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 21,
-        "countryCode": "AT",
-        "serviceName": "a-sign-SSL-07",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/PKC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/recognisedatnationallevel",
-        "tob": null,
-        "qServiceTypes": [
-          "WAC"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 22,
-        "countryCode": "AT",
-        "serviceName": "a-sign-SSL-EV-05",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/PKC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/recognisedatnationallevel",
-        "tob": null,
-        "qServiceTypes": [
-          "WAC"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 23,
-        "countryCode": "AT",
-        "serviceName": "a-sign-SSL-EV-07a",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QWAC"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 24,
-        "countryCode": "AT",
-        "serviceName": "a-sign-corporate-light-02",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/PKC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/recognisedatnationallevel",
-        "tob": null,
-        "qServiceTypes": [
-          "CertESeal",
-          "CertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 25,
-        "countryCode": "AT",
-        "serviceName": "a-sign-corporate-light-03",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/PKC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/recognisedatnationallevel",
-        "tob": null,
-        "qServiceTypes": [
-          "CertESeal",
-          "CertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 26,
-        "countryCode": "AT",
-        "serviceName": "a-sign-corporate-05",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/PKC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/recognisedatnationallevel",
-        "tob": null,
-        "qServiceTypes": [
-          "CertESeal",
-          "CertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 27,
-        "countryCode": "AT",
-        "serviceName": "a-sign-corporate-07",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/PKC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/recognisedatnationallevel",
-        "tob": null,
-        "qServiceTypes": [
-          "CertESeal",
-          "CertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 28,
-        "countryCode": "AT",
-        "serviceName": "a-sign-premium-mobile-07",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      },
-      {
-        "tspId": 1,
-        "serviceId": 29,
-        "countryCode": "AT",
-        "serviceName": "a-sign-Premium-Sig-07",
-        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
-        "tob": null,
-        "qServiceTypes": [
-          "QCertESig"
-        ]
-      }
-    ]
-  }
-];
-
-let retDict = objectify(countryDict, serviceDict);
-
+//let retDict = objectify(countryDict, serviceDict);
+//
 //console.log(retDict);
-
-let myFilter = new Filter(retDict.servicesArray);
-
-myFilter.addRule(new Rule(retDict.servicesArray[1].status));
-
-if(DEBUG == true)
-    //console.log(myFilter.getFiltered());
-    console.log(myFilter.getFiltered().countries.values());
-    console.log(myFilter.getFiltered().types.values());
-    console.log(myFilter.getFiltered().statuses.values());
-    console.log(myFilter.getFiltered().providers.values());
-    console.log(myFilter.getFiltered().services.values());
+//
+//let myFilter = new Filter(retDict.servicesArray);
+//
+//myFilter.addRule(new Rule(retDict.servicesArray[1].getServiceTypes()[0]));
+//
+//if(DEBUG == true)
+//    console.log(myFilter.getFiltered());
+//    console.log(myFilter.getFiltered().countries.values());
+//    console.log(myFilter.getFiltered().types.values());
+//    console.log(myFilter.getFiltered().statuses.values());
+//    console.log(myFilter.getFiltered().providers.values());
+//    console.log(myFilter.getFiltered().services.values());
