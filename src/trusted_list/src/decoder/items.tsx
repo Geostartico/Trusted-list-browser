@@ -1,6 +1,7 @@
 import{UnorderedSet} from "./UnorderedSet"
 import{Settable} from "./settable";
 import{UnorderedMap} from "./UnorderedMap"
+import{Item} from "./itemInterface"
 /**
  * calculates the hash of a function
  * @param str a string
@@ -20,7 +21,7 @@ function stringHash(str : string): number {
 /**
  * Represents a service type
  */
-export class Type implements Settable<Type>{
+export class Type implements Settable<Type>, Item{
 
     /**
      * @readonly
@@ -54,12 +55,26 @@ export class Type implements Settable<Type>{
         this.name = name;
         this.services = new UnorderedSet<Service>(10);
     }
+    /**
+     * 
+     * @returns name of the serviceType
+     */
+    getText(): string {
+        return this.name;
+    }
+    /**
+     * 
+     * @returns empty object, there's no object hierarchically lower than the ServiceTypes
+     */
+    getChildren(): any[] {
+        return [];
+    }
 }
 
 /**
  * Represents a service status
  */
-export class Status implements Settable<Status>{
+export class Status implements Settable<Status>, Item{
 
     /**
      * @readonly
@@ -95,12 +110,31 @@ export class Status implements Settable<Status>{
         this.name = aName;
         this.services = new UnorderedSet<Service>(10);
     }
+    /**
+     * @returns the name of the status
+     */
+    getText(): string {
+        let i = this.name.length - 1;
+        let n : string = "";
+        while(i >= 0 && this.name.charAt(i) !== '/'){
+            n = this.name.charAt(i) + n;
+            i --;
+        }
+        return n;
+    }
+    /**
+     * 
+     * @returns an empty array, there's no object lower hierarchically than the Status
+     */
+    getChildren(): any[] {
+        return [];
+    }
 }
 
 /**
  * Represents a service
  */
-export class Service implements Settable<Service>{
+export class Service implements Settable<Service>, Item{
     /**
      * name of the Service
      * @readonly
@@ -169,6 +203,20 @@ export class Service implements Settable<Service>{
         this.tob = aTob;
     }
     /**
+     * 
+     * @returns the name of the service followed by the status
+     */
+    getText(): string {
+        return this.name + " {status: " + this.status.getText() + " }";
+    }
+    /**
+     * 
+     * @returns the serviceTypes of the service
+     */
+    getChildren(): any[] {
+        return this.serviceTypes.values();
+    }
+    /**
      * hashcode of the service
      * @returns the hashcode of the service name
      * @see Settable
@@ -217,7 +265,7 @@ export class Service implements Settable<Service>{
 /**
  * Represents a provider
  */
-export class Provider implements Settable<Provider>{
+export class Provider implements Settable<Provider>, Item{
     /**
      * name of the provider
      * @readonly
@@ -271,6 +319,20 @@ export class Provider implements Settable<Provider>{
         this.possibleStatus = new UnorderedMap<Status, number>(10);
     }
     /**
+     * 
+     * @returns the name of the provider
+     */
+    getText(): string {
+        return this.name;
+    }
+    /**
+     * 
+     * @returns the services provided
+     */
+    getChildren(): any[] {
+        return this.services.values();
+    }
+    /**
      * returns the hashcode of the provider
      * @see Settable
      * @returns the hash of the provider name
@@ -305,7 +367,7 @@ export class Provider implements Settable<Provider>{
      * get the possible status
      * @returns the map of possible status
      */
-    getPossibleStatus() : UnorderedMap<Type, number>{
+    getPossibleStatus() : UnorderedMap<Status, number>{
         return this.possibleStatus;
     }
     /**
@@ -367,7 +429,7 @@ export class Provider implements Settable<Provider>{
 /**
  * describes a Country
  */
-export class Country implements Settable<Country>{
+export class Country implements Settable<Country>, Item{
     /**
      * the map of the country code to country name
      * @static
@@ -426,6 +488,20 @@ export class Country implements Settable<Country>{
         this.possibleStatus = new UnorderedMap<Status, number>(10);
         this.possibleServiceTypes = new UnorderedMap<Type, number>(10);
         this.providers = new UnorderedSet<Provider>(10);
+    }
+    /**
+     * 
+     * @returns the CountryCode
+     */
+    getText(): string {
+        return this.countryCode;
+    }
+    /**
+     * 
+     * @returns the providers given by the service
+     */
+    getChildren(): any[] {
+        return this.providers.values();
     }
     /**
      * get the hashcode for the Country
