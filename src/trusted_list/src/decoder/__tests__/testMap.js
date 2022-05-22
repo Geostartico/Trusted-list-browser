@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert';
 import {Country, Service, Type, Provider, Status} from "../items"
-import {Test} from "./testClass";
+import {Test} from "../testClass";
 import {UnorderedMap} from "../UnorderedMap";
 
 
