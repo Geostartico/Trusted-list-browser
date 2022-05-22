@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert';
-import {Country, Service, Type, Provider, Status} from "../items.js"
-import {Test} from "./testClass.js";
-import {UnorderedMap} from "../UnorderedMap.js";
+import {Country, Service, Type, Provider, Status} from "../items"
+import {Test} from "./testClass";
+import {UnorderedMap} from "../UnorderedMap";
 
 
 describe('Unordered Map Test', function () {
