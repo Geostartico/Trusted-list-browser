@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert';
-import {Filter, Rule, Selection} from "../filter.js";
-import {Data} from "./data.js";
-import {objectify} from "../../decoder/decoder.js";
+import {Filter, Rule, Selection} from "../filter";
+import {Data} from "./data";
+import {objectify} from "../../decoder/decoder";
 
 describe('Filter test', function() {
 
