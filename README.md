@@ -6,6 +6,7 @@
 + https://www.npmjs.com/package/allotment
     + Used to manage split view panel
 + test: https://create-react-app.dev/docs/running-tests/
+    + yarn add @testing-library/react @testing-library/jest-dom
 
 
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀
