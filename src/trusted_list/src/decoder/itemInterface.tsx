@@ -10,4 +10,6 @@ export interface Item{
      * @returns the items hierarchically below the item
      */
     getChildren() : Array<any>;
+
+    expand?: boolean;
 }

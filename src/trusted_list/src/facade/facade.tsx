@@ -4,6 +4,12 @@ import { objectify } from "../decoder/decoder";
 import { Country, Provider, Service, Status, Type } from "../decoder/items";
 import { UnorderedSet } from "../decoder/UnorderedSet";
 
+export interface IgetView {
+    "countries" : UnorderedSet<Country>, 
+    "providers" : UnorderedSet<Provider>, 
+    "services" : UnorderedSet<Service>,
+}
+
 export class Facade{
     private filter : Filter;
     //private fetcher : Fetcher;
@@ -35,7 +41,7 @@ export class Facade{
     getSelectableStatus() : UnorderedSet<Status>{
         return this.selection.statuses;
     }
-    getView() : {"countries" : UnorderedSet<Country>, "providers" : UnorderedSet<Provider>, "services" : UnorderedSet<Service>}{
+    getView() : IgetView {
         let countries : UnorderedSet<Country> = new UnorderedSet<Country>(10); 
         let providers : UnorderedSet<Provider> = new UnorderedSet<Provider>(10);
         let services : UnorderedSet<Service> = this.selection.services;

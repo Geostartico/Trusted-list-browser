@@ -2,18 +2,10 @@ import React, { Component } from 'react';
 import Header from './Header';
 import Viewer from './Viewer';
 import FilterContainer from './FilterContainer';
-
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
+import {Facade} from './facade/facade';
 
-
-const styles = {
-  background: '#000',
-  width: '2px',
-  cursor: 'col-resize',
-  margin: '0 5px',
-  height: '100%',
-};
 
 interface TrustListViewerProps {
     appTitle: string;
@@ -21,6 +13,7 @@ interface TrustListViewerProps {
 
 interface TrustListViewerState {
     activeFilter: number;
+    facade: Facade;
 }
 
 class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerState> {
@@ -29,6 +22,7 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
         super(props);
         this.state = {
             activeFilter: 0,
+            facade: new Facade(),
         };
         this.onChangeFilter = this.onChangeFilter.bind(this);
     }
@@ -38,6 +32,11 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
             activeFilter: selectedFilter
         });
     }
+
+
+    // Func to update the viewe
+
+    // func callback the filer
 
     render() {
         return (
@@ -53,7 +52,9 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
 
                 <Allotment onVisibleChange={() => this.forceUpdate()}>
                     <Allotment.Pane minSize={200}>
-                        <Viewer />
+                        <Viewer 
+                            viewItems={this.state.facade.getView()} // for now update each render
+                        />
                     </Allotment.Pane>
                     <Allotment.Pane snap>
                         <FilterContainer

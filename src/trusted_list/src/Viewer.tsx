@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 
-import { Facade } from "./facade/facade";
-import {Country} from "./decoder/items"
+import { IgetView } from "./facade/facade";
+import ItemViewer from "./ItemViewer"
+import { Item } from './decoder/itemInterface';
+
 interface ViewerProps {
+    viewItems: IgetView;
 }
 
 interface ViewerState {  
-    facede: Facade;
 }
 
 class Viewer extends Component<ViewerProps, ViewerState> {
@@ -14,26 +16,31 @@ class Viewer extends Component<ViewerProps, ViewerState> {
     constructor(props: ViewerProps) {  
         super(props);
         this.state = {
-            facede: new Facade(),
         };
 
         //INSERISCI QUA SCRIPT
 
+        /*
         this.state.facede.getView().countries.forEach((val: Country) => {
             console.log(val);
         })
+        */
 
-
+        console.log(this.props.viewItems.providers.getSize());
     }
+
 
     render() {
 
         return (
           <>
-            <div className = 'viewer'>
-                <p>
-                manid
-                </p>
+            <div className="viewer">
+                <ItemViewer
+                    key={"0"}
+                    viewItems={this.props.viewItems}
+                    items = {null}
+                    indent = {0}
+                />
             </div>
           </>
         );
