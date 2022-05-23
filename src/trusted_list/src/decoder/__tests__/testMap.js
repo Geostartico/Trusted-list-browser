@@ -26,7 +26,7 @@ describe('Unordered Map Test', function () {
             assert.equal(et.has(new Test(4, i)), false);
         }
     })
-    console.log(et.entries());
+    //console.log(et.entries());
     it("should have the right value for every element", function () {
         assert.equal(et.get(t1), 4);
         et.forEach((num, key) =>{

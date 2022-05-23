@@ -347,7 +347,7 @@ export class Provider implements Settable<Provider>, Item{
      * @returns if the two names of the providers are the same
      */
     isEqual(el: Provider) : boolean{
-        return this.name == el.name;
+        return this.name === el.name && this.tspId === el.tspId;
     }
     /**
      * get service type map

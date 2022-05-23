@@ -1,6 +1,4 @@
-//var assert = require('assert');
 import { strict as assert } from 'node:assert';
-//var Service = require('./items').Service;
 import {Country, Service, Type, Provider, Status} from "../items"
 
 let serviceDict =

@@ -8,8 +8,8 @@ describe('Filter test', function() {
     let myFilter;
     let all_providers = (objectify(Data.countryDict, Data.serviceDict)["servicesArray"]);
 
-    console.log(all_providers);
-    console.log(Data.serviceDict);
+    //console.log(all_providers);
+    //console.log(Data.serviceDict);
 
     let all_service_number = 0;
     for(let provider of Data.serviceDict){
@@ -29,7 +29,7 @@ describe('Filter test', function() {
             }
         });
         it('should return all services when I filter (comparing the number of entries)', function(){
-            console.log(all_service_number);
+            //console.log(all_service_number);
             assert.equal(myFilter.getFiltered().services.getSize(), all_service_number);
         });
         it('should fuck your uncle in the ass', function(){
@@ -46,7 +46,7 @@ describe('Filter test', function() {
             }
         }
         if(!all_good){
-            console.log(service.name);
+            //console.log(service.name);
         }
     }
 
