@@ -8,12 +8,6 @@ describe('Filter test', function() {
     let myFilter;
     let all_providers = (objectify(Data.countryDict, Data.serviceDict)["servicesArray"]);
 
-<<<<<<< Updated upstream
-    //console.log(all_providers);
-    //console.log(Data.serviceDict);
-
-=======
->>>>>>> Stashed changes
     let all_service_number = 0;
     for(let provider of Data.serviceDict){
         //console.log(provider["services"]);
@@ -21,21 +15,6 @@ describe('Filter test', function() {
             all_service_number += 1;
     }
 
-<<<<<<< Updated upstream
-    describe('Filter construction', function() {
-        it('should construct the Filter object', function(){
-            myFilter = new Filter([]);
-            myFilter = new Filter(all_providers);
-        });
-        it('sould have nothing selected', function(){
-            for(let map of [myFilter.selected.providers, myFilter.selected.statuses, myFilter.selected.countries, myFilter.selected.types]){
-                assert.equal(map.getSize(), 0);
-            }
-        });
-        it('should return all services when I filter (comparing the number of entries)', function(){
-            //console.log(all_service_number);
-            assert.equal(myFilter.getFiltered().services.getSize(), all_service_number);
-=======
     describe('Filter testing', function() {
         describe('Filter construction', function() {
             it('should construct the Filter object', function(){
@@ -50,26 +29,11 @@ describe('Filter test', function() {
             it('should return all services when I filter (comparing the number of entries)', function(){
                 assert.equal(myFilter.getFiltered().services.getSize(), all_service_number);
             });
->>>>>>> Stashed changes
         });
         describe('Adding rules', function() {
             it('should return the filtered services by status (comparing number of entries)', function(){
                 myFilter = new Filter(all_providers);
 
-<<<<<<< Updated upstream
-    for(let service of Data.serviceDict){
-        let all_good = true;
-        for(let service2 of all_providers){
-            if(service.name == service2.name){
-                all_good = false;
-                break;
-            }
-        }
-        if(!all_good){
-            //console.log(service.name);
-        }
-    }
-=======
                 let my_status = all_providers[3].status;
                 myFilter.addRule(new Rule(my_status));
                 let sum = 0;
@@ -94,7 +58,6 @@ describe('Filter test', function() {
             });
             it('should return the filtered services by type (comparing number of entries)', function(){
                 myFilter = new Filter(all_providers);
->>>>>>> Stashed changes
 
                 let my_type = all_providers[3].getServiceTypes()[0];
                 myFilter.addRule(new Rule(my_type));

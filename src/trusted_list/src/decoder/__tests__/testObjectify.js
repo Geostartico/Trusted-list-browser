@@ -29,7 +29,7 @@ describe("decoder test with objectify function", () => {
     })
     it("should create services without null a null country", () => {
         all.servicesArray.forEach((elem) => {
-            console.log(elem.getCountry().countryCode)
+            //console.log(elem.getCountry().countryCode)
             assert.equal(elem.getCountry() !== null, true);
         });
     });
@@ -52,4 +52,41 @@ describe("decoder test with objectify function", () => {
         })
         assert.equal(sum, 3500)
     })
+    it("should create providers and service with the correct country", () => {
+        all.codeToObject.forEach((count, str) =>{
+            count.getProviders().forEach((prov) => {
+                assert.equal(prov.getCountry().isEqual(count), true);
+                prov.getServices().forEach((ser) => {
+                    assert.equal(ser.getCountry().isEqual(count), true);
+                });
+            });
+        });
+    });
+    it("should crate services with the right provider", () =>{
+        all.codeToObject.forEach((count, str) =>{
+            count.getProviders().forEach((prov) => {
+                prov.getServices().forEach((ser) => {
+                    assert.equal(ser.getProvider().isEqual(prov), true);
+                });
+            });
+        });
+    });
+    it("should create services were Types and services contain each other", () =>{
+        all.servicesArray.forEach((ser) => {
+            all.typeSet.forEach((type) => {
+                if(ser.getServiceTypes().has(type)){
+                    assert.equal(type.services.has(ser), true);
+                }
+            })
+        })
+    });
+    it("should create services were status and services contain each other", () =>{
+        all.servicesArray.forEach((ser) => {
+            all.statusSet.forEach((status) => {
+                if(ser.getServiceTypes().has(status)){
+                    assert.equal(status.services.has(ser), true);
+                }
+            })
+        })
+    });
 });
