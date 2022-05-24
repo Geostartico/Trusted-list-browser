@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import FilterPane from './FilterPane';
-import { UnorderedSet } from './decoder/UnorderedSet';
 import { Country, Provider, Service, Status, Type } from "./decoder/items";
-import {FilterType} from './Enums';
-import { Item } from "./decoder/itemInterface";
+import {FilterType, SelectionType} from './Enums';
+import {UnorderedMap} from './decoder/UnorderedMap';
 
 interface FilterProps {
     selectedFilter: FilterType;
-    filters: Item[];
+    filters: UnorderedMap<Country | Type | Status | Provider, SelectionType>;
+    onToggle: Function;
 }
 
 interface FilterState{  
@@ -29,6 +29,7 @@ class FilterContainer extends Component<FilterProps, FilterState> {
                  
                    <FilterPane
                         filters= {this.props.filters}
+                        onToggle = {this.props.onToggle}
                    /> 
 
             </div>

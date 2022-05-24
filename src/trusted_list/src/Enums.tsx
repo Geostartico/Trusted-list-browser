@@ -5,5 +5,10 @@ export enum FilterType {
     Type, // id: 0
     State, // id: 0
     Provider, // id: 0
-}
+};
 
+export enum SelectionType {
+    Selectable,
+    Selected,
+    NotSelectable,
+};

@@ -39,7 +39,7 @@ class ItemViewer extends Component<ItemViewerProps, ItemViewerState> {
     }
 
     expand(val: Item) {
-        console.log("lool");
+        //console.log("lool");
 
         val.expand = !val.expand;
         this.forceUpdate();
@@ -55,17 +55,17 @@ class ItemViewer extends Component<ItemViewerProps, ItemViewerState> {
 
         if( this.props.items === null) {
             this.props.viewItems.countries.forEach((val: Item) => {
-                console.log("contry " + val.getText());
+                //console.log("contry " + val.getText());
                 items.push(val);
             })
         }
         else {
 
-            console.log("Indentazione " + this.props.indent);
+            //console.log("Indentazione " + this.props.indent);
 
             this.props.items.getChildren().forEach((val: Item) => {
 
-                console.log("Testing this item: " + val.getText());
+                //console.log("Testing this item: " + val.getText());
                 switch (this.props.indent) {
                     case 2: 
                         if(!this.props.viewItems.providers.has(val as Provider)) 
@@ -78,7 +78,7 @@ class ItemViewer extends Component<ItemViewerProps, ItemViewerState> {
                 }
 
                 items.push(val);
-                console.log("something " + val.getText());
+                //console.log("something " + val.getText());
 
             })
             // now I have to filter in function of the items

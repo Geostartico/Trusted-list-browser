@@ -17,16 +17,6 @@ class Viewer extends Component<ViewerProps, ViewerState> {
         super(props);
         this.state = {
         };
-
-        //INSERISCI QUA SCRIPT
-
-        /*
-        this.state.facede.getView().countries.forEach((val: Country) => {
-            console.log(val);
-        })
-        */
-
-        console.log(this.props.viewItems.providers.getSize());
     }
 
 

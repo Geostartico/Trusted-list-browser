@@ -124,6 +124,7 @@ div {
 
 .filterEntryText {
     padding-left: 1vw;
+    color: var(--main-text-color);
 }
 
 .switch {
@@ -156,6 +157,10 @@ div {
   background-color: var(--main-bg-color);
   -webkit-transition: .4s;
   transition: .4s;
+}
+
+#filterNotSelectable {
+  background-color: var(--main-bg-color);
 }
 
 input:checked + .slider {
