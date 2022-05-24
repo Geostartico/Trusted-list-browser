@@ -14,12 +14,22 @@ export class Facade{
     private filter : Filter;
     //private fetcher : Fetcher;
     private selection : Selection;
+    readonly allServices : UnorderedSet<Service>;
+    readonly allCountries : UnorderedSet<Country>;
+    readonly allProviders : UnorderedSet<Provider>;
+    readonly allTypes : UnorderedSet<Type>;
+    readonly allStatuses : UnorderedSet<Status>;
     constructor(){
         let stuff = objectify(Data.countryDict, Data.serviceDict);
         //this.fetcher = new Fetcher()
         //let dict = fetcher.fetch();
         this.filter = new Filter(stuff["servicesArray"]);
         this.selection = this.filter.getFiltered();
+        this.allServices = this.selection.services;
+        this.allCountries = this.selection.countries;
+        this.allProviders = this.selection.providers;
+        this.allTypes = this.selection.types;
+        this.allStatuses = this.selection.statuses;
     }
     updateAdd(item : Country | Type | Status | Provider){
         this.filter.addRule(new Rule(item));

@@ -46,7 +46,7 @@ export class Type implements Settable<Type>, Item{
      * @see Settable
      */
     public isEqual(el: Type): boolean{
-        return this.name == el.name;
+        return this.name === el.name;
     }
     /**
      * @param name name of the Type
@@ -101,7 +101,7 @@ export class Status implements Settable<Status>, Item{
      * @see Settable
      */
     public isEqual(el: Status): boolean{
-        return this.name == el.name;
+        return this.name === el.name;
     }
     /**
      * @param aName name of the status
@@ -231,7 +231,7 @@ export class Service implements Settable<Service>, Item{
      * @see Settable
      */
     isEqual(el: Service) : boolean{
-        return this.name == el.name && this.serviceId == el.serviceId && this.provider.isEqual(el.provider);
+        return this.name === el.name && this.serviceId === el.serviceId && this.provider.isEqual(el.provider);
     }
     /**
      * get the provider
@@ -439,12 +439,10 @@ export class Country implements Settable<Country>, Item{
      * initialises the codeToString map
      * @param arr an array with elements in the form {countryCode : "string", countryName : "string"}
      * @static
-     * @returns codeToString, a map containing entries code->country name
      */
-    static initCodeToStringMap(arr : Array<any>) : Map<string, string>{
-        let codeToString : Map<string, string> = new Map<string, string>();
-        arr.forEach((el : any) => Country.codeToString.set(el["countryCode"], el["countryName"]))
-        return codeToString;
+    static initCodeToStringMap(arr : Array<any>){
+        Country.codeToString = new Map<string, string>();
+        arr.forEach((el : any) => Country.codeToString.set(el["countryCode"], el["countryName"]))   
     }
     /**
      * initialises the codeToObject map
@@ -494,6 +492,10 @@ export class Country implements Settable<Country>, Item{
      * @returns the CountryCode
      */
     getText(): string {
+        let n = Country.codeToString.get(this.countryCode);
+        if(n !== undefined){
+            return n
+        }
         return this.countryCode;
     }
     /**
@@ -517,7 +519,7 @@ export class Country implements Settable<Country>, Item{
      * @returns if the two country codes correspond
      */
     isEqual(el: Country) : boolean {
-        return this.countryCode == el.countryCode;
+        return this.countryCode === el.countryCode;
     }
     /**
      * get the possible service Types

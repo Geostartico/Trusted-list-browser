@@ -11,7 +11,7 @@ import { UnorderedSet } from "./UnorderedSet";
 export function objectify(ctodict : any, jsondict : any) : {"codeToObject": Map<string, Country>, "servicesArray": Array<Service>, "typeSet" : UnorderedSet<Type>, "statusSet" : UnorderedSet<Status>}{
   //initialises all the objects corresponding to the codes in the cto
   let codeToObject : Map<string, Country>  = Country.initCodeToObjectMap(ctodict);
-
+  Country.initCodeToStringMap(ctodict);
   let servicesArray : Array<Service> = new Array<Service>();
 
   let stringToStatus : Map<string, Status> = new Map<string, Status>();
