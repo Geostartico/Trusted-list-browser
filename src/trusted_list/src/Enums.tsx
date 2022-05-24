@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
-export const FilterTypes = [
-    'Country',
-    'Type',
-    'State'
-]
+export enum FilterType {
+    Country, // id: 0
+    Type, // id: 0
+    State, // id: 0
+    Provider, // id: 0
+}
 

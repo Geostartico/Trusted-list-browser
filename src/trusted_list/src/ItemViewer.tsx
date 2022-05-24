@@ -30,7 +30,7 @@ class ItemViewer extends Component<ItemViewerProps, ItemViewerState> {
         super(props);
         this.state = {
             expand: false,
-            marginLeftStyle : (this.props.indent * indentValue) + "vw",
+            marginLeftStyle : (this.props.indent) + "vw",
             filteredItems: this.filterItems(),
         };
 
@@ -67,11 +67,11 @@ class ItemViewer extends Component<ItemViewerProps, ItemViewerState> {
 
                 console.log("Testing this item: " + val.getText());
                 switch (this.props.indent) {
-                    case 1: 
+                    case 2: 
                         if(!this.props.viewItems.providers.has(val as Provider)) 
                             return;
                     break;
-                    case 2: 
+                    case 3: 
                         if(!this.props.viewItems.services.has(val as Service))
                             return;
                     break;
@@ -90,12 +90,12 @@ class ItemViewer extends Component<ItemViewerProps, ItemViewerState> {
 
     render() {
         return (
-        <div className = 'viewerInside' style={{marginLeft: this.state.marginLeftStyle}} >
+        <div className = 'viewerInside' id = {this.props.items === null ? 'firstDivViwer' : ''} style={{marginLeft: this.state.marginLeftStyle}} >
             {this.state.filteredItems.map((val: Item, index: number) => {
                 return (
                     <>
-                        <button onClick={() => this.expand(val)} className="buttonViewer">
-                            <p>{val.getText()}</p>
+                        <button onClick={this.props.indent < 4 ? () => this.expand(val) : undefined} className="buttonViewer" >
+                            {val.getText()}
                         </button>
                         {val.expand && 
                             <ItemViewer key={val.getText() + index} viewItems={this.props.viewItems} items={val} indent={this.props.indent + 1}/>

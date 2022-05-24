@@ -39,7 +39,7 @@ class Viewer extends Component<ViewerProps, ViewerState> {
                     key={"0"}
                     viewItems={this.props.viewItems}
                     items = {null}
-                    indent = {0}
+                    indent = {1}
                 />
             </div>
           </>

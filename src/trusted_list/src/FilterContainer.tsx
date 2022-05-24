@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import {FilterTypes} from './Enums';
-import FilterCountry from './FilterCountry';
-import FilterState from './FilterState';
-import FilterType from './FilterType';
+import FilterPane from './FilterPane';
+import { UnorderedSet } from './decoder/UnorderedSet';
+import { Country, Provider, Service, Status, Type } from "./decoder/items";
+import {FilterType} from './Enums';
+import { Item } from "./decoder/itemInterface";
 
 interface FilterProps {
-     selectedFilter: number;
+    selectedFilter: FilterType;
+    filters: Item[];
 }
 
-interface FilterStateInerface {  
+interface FilterState{  
 }
 
-class FilterContainer extends Component<FilterProps, FilterStateInerface> {
+class FilterContainer extends Component<FilterProps, FilterState> {
 
     constructor(props: FilterProps) {  
         super(props);
@@ -25,15 +27,9 @@ class FilterContainer extends Component<FilterProps, FilterStateInerface> {
           <>
             <div className = 'filtersContainer'>
                  
-                {this.props.selectedFilter == 0 &&
-                    <FilterCountry/>
-                }
-                {this.props.selectedFilter == 1 &&
-                    <FilterType/>
-                }
-                {this.props.selectedFilter == 2 &&
-                    <FilterState/>
-                }
+                   <FilterPane
+                        filters= {this.props.filters}
+                   /> 
 
             </div>
           </>
