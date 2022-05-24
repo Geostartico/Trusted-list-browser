@@ -8,10 +8,6 @@ import {UnorderedSet} from "../decoder/UnorderedSet"
 import {UnorderedMap} from "../decoder/UnorderedMap"
 import {Settable} from "../decoder/settable"
 
-// Set this variable to true of you want to @link debug messages on the console
-const DEBUG: boolean = true;
-//import {objectify} from "../decoder/decoder"
-
  /**
   * Class that groups a selection/superset of objects in separate {@link UnorderedSet} objects representing:
   * - countries
@@ -179,6 +175,9 @@ export class Filter{
      * @param rule: {@link Rule} object to remove
      */
     removeRule(rule: Rule){
+
+        if(rule === null || rule === undefined || rule.filtering_item === null || rule.filtering_item === undefined)
+            throw new Error("Cannot add a null or undefined rule");
 
         if(rule.filtering_item instanceof Country){
             this.selected.countries.remove(rule.filtering_item);

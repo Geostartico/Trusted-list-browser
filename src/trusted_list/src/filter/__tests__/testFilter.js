@@ -1,17 +1,19 @@
 import { strict as assert } from 'node:assert';
-import {Filter, Rule, Selection} from "../filter";
+const util = require('util')
+
+import {Filter, Rule} from "../filter";
+import {UnorderedMap, UnorderedSet} from "../../decoder/decoder";
 import {Data} from "../data";
 import {objectify} from "../../decoder/decoder";
 
-const util = require('util')
 
 let myFilter;
 let all_services = (objectify(Data.countryDict, Data.serviceDict)["servicesArray"]);
 let all_services_length = all_services.length;
 
-describe('Filter tests', function() {
+describe('Filter module tests', function() {
 
-    describe('Filter testing', function() {
+    describe('Filter class tests', function() {
         describe('Filter construction', function() {
             it('should construct the Filter object', function(){
                 myFilter = new Filter([]);
@@ -26,17 +28,58 @@ describe('Filter tests', function() {
                 assert.equal(myFilter.getFiltered().services.getSize(), all_services_length);
             });
         });
-        describe('Adding rules', function() {
+        describe('Adding and removing rules', function() {
             myFilter = new Filter(all_services);
+            var added_rules = [];
 
             it('should add rule with no error', function(){
-                let my_status = all_services[3].status;
-                expect(() => myFilter.addRule(new Rule(my_status))).not.toThrow();
+                added_rules.push(new Rule(all_services[getRandomServiceIndex()].status));
+                expect(() => myFilter.addRule(added_rules[0])).not.toThrow();
+
+                added_rules.push(new Rule(all_services[getRandomServiceIndex()].getCountry()));
+                expect(() => myFilter.addRule(added_rules[1])).not.toThrow();
+
+                added_rules.push(new Rule(all_services[getRandomServiceIndex()].getProvider()));
+                expect(() => myFilter.addRule(added_rules[2])).not.toThrow();
+
+                added_rules.push(new Rule(all_services[getRandomServiceIndex()].getServiceTypes().values()[0]));
+                expect(() => myFilter.addRule(added_rules[3])).not.toThrow();
             });
-            it('should throw an error', function(){
+            it('should throw an error when inserting a null or undefined key', function(){
                 expect(() => myFilter.addRule(new Rule(null))).toThrow();
+                expect(() => myFilter.addRule(new Rule(undefined))).toThrow();
+            });
+            it('should remove the rule with no error', function(){
+                added_rules.push(new Rule(all_services[getRandomServiceIndex()].status));
+                expect(() => myFilter.removeRule(added_rules[0])).not.toThrow();
+
+                added_rules.push(new Rule(all_services[getRandomServiceIndex()].getCountry()));
+                expect(() => myFilter.removeRule(added_rules[1])).not.toThrow();
+
+                added_rules.push(new Rule(all_services[getRandomServiceIndex()].getProvider()));
+                expect(() => myFilter.removeRule(added_rules[2])).not.toThrow();
+
+                added_rules.push(new Rule(all_services[getRandomServiceIndex()].getServiceTypes().values()[0]));
+                expect(() => myFilter.removeRule(added_rules[3])).not.toThrow();
+            });
+            it('should throw an error when removing an unexistent rule', function(){
+                expect(() => myFilter.removeRule(new Rule(null))).toThrow();
+                expect(() => myFilter.removeRule(new Rule(undefined))).toThrow();
+
+                added_rules.push(new Rule(all_services[getRandomServiceIndex()].status));
+                expect(() => myFilter.removeRule(added_rules[0])).toThrow();
+
+                added_rules.push(new Rule(all_services[getRandomServiceIndex()].getCountry()));
+                expect(() => myFilter.removeRule(added_rules[1])).toThrow();
+
+                added_rules.push(new Rule(all_services[getRandomServiceIndex()].getProvider()));
+                expect(() => myFilter.removeRule(added_rules[2])).toThrow();
+
+                added_rules.push(new Rule(all_services[getRandomServiceIndex()].getServiceTypes().values()[0]));
+                expect(() => myFilter.removeRule(added_rules[3])).toThrow();
             });
         });
+
         describe('Checking filtered services', function() {
             it('should filter as expected', function() {
                 for(let i=0; i<10; i+=1)
@@ -44,8 +87,19 @@ describe('Filter tests', function() {
             });
         });
     });
+    //describe('Static functions testing', function(){
+    //    it('should add an elemen to the map with no error', function(){
+    //        let my_map = new UnorderedMap();
+    //        my_map.set(all_services);
+    //    });
+    //});
 });
 
+///////////// Helper functions ///////////////
+
+function getRandomServiceIndex(){
+    return Math.floor(Math.random() * all_services_length);
+}
 
 function testFilteredServices(all_services, items){
     let my_filter = new Filter(all_services);
@@ -100,15 +154,15 @@ function genRandomItems(){
     let rules = [];
     let types_present = [false, false, false, false];
     for(let i=0; i<Math.random()*10; i++){
-        rules.push(all_services[Math.floor(Math.random() * all_services_length)].status);
+        rules.push(all_services[getRandomServiceIndex()].status);
         types_present[0] = true;
     }
     for(let i=0; i<Math.random()*10; i++){
-        rules.push(all_services[Math.floor(Math.random() * all_services_length)].getCountry());
+        rules.push(all_services[getRandomServiceIndex()].getCountry());
         types_present[1] = true;
     }
     for(let i=0; i<Math.random()*10; i++){
-        rules.push(all_services[Math.floor(Math.random() * all_services_length)].getProvider());
+        rules.push(all_services[getRandomServiceIndex()].getProvider());
         types_present[2] = true;
     }
     for(let i=0; i<Math.random()*10; i++){
