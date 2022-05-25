@@ -69,14 +69,13 @@ div {
 }
 
 .viewerInside {
-    /*width: 100%;*/
     height: auto;
     color: var(--main-text-color);
 
     border: 1px solid var(--main-text-color);
-    border-radius: 3px;
+    border-radius: 0.5vw;
     padding: 0.5vh;
-    /*margin-bottom: 8px;*/
+    margin: 1vw;
 }
 
 #firstDivViwer {

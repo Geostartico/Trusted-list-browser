@@ -140,6 +140,7 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
             viewItems: this.state.facade.getView(),
         });
 
+        console.log("internl lengh" + this.state.facade.getView().countries.getSize())
     }
 
     render() {
@@ -155,7 +156,7 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
             <body>
 
                 <Allotment onVisibleChange={() => this.forceUpdate()}>
-                    <Allotment.Pane minSize={200}>
+                    <Allotment.Pane minSize={300}>
 
                        <div className="viewer">
                            {this.state.viewItems !== null &&
@@ -166,9 +167,9 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
                                indent = {1}
                            />}
                        </div>
- *
-                    </Allotment.Pane>
-                    <Allotment.Pane snap>
+ 
+                    </Allotment.Pane >
+                    <Allotment.Pane minSize={510} snap>
                         {this.state.activeFilterItems !== null ?
                             <FilterContainer
                                 selectedFilter = {this.state.activeFilter}
