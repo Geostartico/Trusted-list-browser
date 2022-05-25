@@ -1,5 +1,5 @@
 /*
- * filter.ts
+ * filter.tsx
  * This file is part of the TrustedListBrowser project (https://github.com/Geostartico/Trusted-list-browser)
  */
 
@@ -43,6 +43,69 @@ export class Selection{
         statuses.forEach((status)    => { this.statuses.add(status)    });
         services.forEach((service)   => { this.services.add(service)   });
         types.forEach((type)         => { this.types.add(type)         });
+    }
+
+    /**
+     * @private
+     * Adds an item to the corresponding set
+     * Note: this is the opposite of {@link removeFromSelection}
+     * @param item: the item to add
+     */
+    add(item: Type|Country|Status|Provider|Service){
+        switch(item.item_type){
+            case ItemType.Type:     { this.types.add(item);     return; }
+            case ItemType.Country:  { this.countries.add(item); return; }
+            case ItemType.Provider: { this.providers.add(item); return; }
+            case ItemType.Status:   { this.statuses.add(item);  return; }
+            case ItemType.Service:  { this.services.add(item);  return; }
+        }
+    }
+
+    /**
+     * @private
+     * Removes an item from the corresponding set
+     * Note: this is the opposite of {@link addToSelection}
+     * @param item: the item to remove
+     */
+    remove(item: Type|Country|Status|Provider|Service){
+        switch(item.item_type){
+            case ItemType.Type:     { this.types.remove(item);     return; }
+            case ItemType.Country:  { this.countries.remove(item); return; }
+            case ItemType.Provider: { this.providers.remove(item); return; }
+            case ItemType.Status:   { this.statuses.remove(item);  return; }
+            case ItemType.Service:  { this.services.remove(item);  return; }
+        }
+    }
+
+    has(item: Type|Country|Status|Provider|Service): boolean{
+        switch(item.item_type){
+            case ItemType.Type:     { return this.types.has(item);     }
+            case ItemType.Country:  { return this.countries.has(item); }
+            case ItemType.Provider: { return this.providers.has(item); }
+            case ItemType.Status:   { return this.statuses.has(item);  }
+            case ItemType.Service:  { return this.services.has(item);  }
+        }
+    }
+
+    /**
+     * Get a {@link Map} whose keys are an {@link ItemType} instance and whose values are the {@link Set}s of items
+     * @returns a {@link Map} whose keys are an {@link ItemType} instance and whose values are the {@link Set}s of items
+     */
+    getSets(): Map<ItemType, UnorderedSet<Service> |
+                             UnorderedSet<Status>  |
+                             UnorderedSet<Type>    |
+                             UnorderedSet<Country> |
+                             UnorderedSet<Provider>  >
+    {
+        let ret = new Map<ItemType, UnorderedSet<Service>|UnorderedSet<Status>|UnorderedSet<Type>|UnorderedSet<Country>|UnorderedSet<Provider>>();
+
+        ret.set(ItemType.Service,  this.services);
+        ret.set(ItemType.Status,   this.statuses);
+        ret.set(ItemType.Provider, this.providers);
+        ret.set(ItemType.Country,  this.countries);
+        ret.set(ItemType.Type,     this.types);
+
+        return ret;
     }
 
     /**
@@ -91,32 +154,6 @@ export class Filter{
 
     private service_sums: Map<ItemType, UnorderedMap<Service, number>>;
 
-    ///**
-     //* @private
-     //* This map is used as a cache for the number of services of type {@link Service} filtered by the {@link Rule} for the countries
-     //* The number associated with the {@link Service} is the number of times a service has been referenced by the filter
-     //* Note: analogous behaviour for the countries_service_sum, types_service_sum and statuses_service_sum maps
-     //*/
-    //private countries_service_sum: UnorderedMap<Service, number>;
-
-    ///**
-     //* @private
-     //* {@link countries_service_sum}
-     //*/
-    //private providers_service_sum: UnorderedMap<Service, number>;
-
-    ///**
-     //* @private
-     //* {@link countries_service_sum}
-     //*/
-    //private types_service_sum:     UnorderedMap<Service, number>;
-
-    ///**
-     //* @private
-     //* {@link countries_service_sum}
-     //*/
-    //private statuses_service_sum:  UnorderedMap<Service, number>;
-
     /**
      * @private
      * This is a set of all possible services
@@ -132,7 +169,7 @@ export class Filter{
 
     /**
      * @private
-     * Type of the first applied rule, with this convenction
+     * Type of the first applied rule
      */
     private first_rule_type: ItemType;
 
@@ -146,14 +183,19 @@ export class Filter{
         this.service_sums = new Map<ItemType, UnorderedMap<Service, number>>();
 
         this.service_sums.set(ItemType.Provider, new UnorderedMap<Service, number>(10));
-        this.service_sums.set(ItemType.Status, new UnorderedMap<Service, number>(10));
-        this.service_sums.set(ItemType.Type, new UnorderedMap<Service, number>(10));
-        this.service_sums.set(ItemType.Country, new UnorderedMap<Service, number>(10));
+        this.service_sums.set(ItemType.Status,   new UnorderedMap<Service, number>(10));
+        this.service_sums.set(ItemType.Type,     new UnorderedMap<Service, number>(10));
+        this.service_sums.set(ItemType.Country,  new UnorderedMap<Service, number>(10));
 
         service_list.forEach((service: Service) => {
             this.all_services.set(service, 1);
         });
+
+        this.number_of_rules = 0;
+        // This is just a default initialization
+        this.first_rule_type = ItemType.Country;
     }
+
 
     /**
      * Add a rule to the filter and dynamically update {@link selected} and cached sum maps (e.g. {@link countries_service_sum})
@@ -162,28 +204,20 @@ export class Filter{
      */
     addRule(rule: Rule){
 
-        if(rule.filtering_item instanceof Country){
-            this.selected.countries.add(rule.filtering_item);
-            for(let service of this.getServicesFromRule(rule).keys())
-                mapIncreaseOrInsert(service, this.countries_service_sum);
-        }
+        if(rule === null || rule === undefined || rule.filtering_item === null || rule.filtering_item === undefined)
+            throw new Error("Cannot add a null or undefined rule");
 
-        if(rule.filtering_item instanceof Type){
-            this.selected.types.add(rule.filtering_item);
-            for(let service of this.getServicesFromRule(rule).keys())
-                mapIncreaseOrInsert(service, this.types_service_sum);
-        }
+        if(this.number_of_rules === 0)
+            this.first_rule_type = rule.filtering_item.item_type;
 
-        if(rule.filtering_item instanceof Provider){
-            this.selected.providers.add(rule.filtering_item);
-            for(let service of this.getServicesFromRule(rule).keys())
-                mapIncreaseOrInsert(service, this.providers_service_sum); //Note: this could be just a plain map remove
-        }
+        this.number_of_rules += 1;
 
-        if(rule.filtering_item instanceof Status){
-            this.selected.statuses.add(rule.filtering_item);
-            for(let service of this.getServicesFromRule(rule).keys())
-                mapIncreaseOrInsert(service, this.statuses_service_sum);
+        this.selected.add(rule.filtering_item);
+        for(let service of this.getServicesFromRule(rule).keys()){
+            const service_sum_map = this.service_sums.get(rule.filtering_item.item_type);
+            if(service_sum_map === null || service_sum_map === undefined)
+                throw new Error("Null or undefined sum map");
+            mapIncreaseOrInsert(service, service_sum_map);
         }
     }
 
@@ -195,71 +229,19 @@ export class Filter{
     removeRule(rule: Rule){
 
         if(rule === null || rule === undefined || rule.filtering_item === null || rule.filtering_item === undefined)
-            throw new Error("Cannot add a null or undefined rule");
+            throw new Error("Cannot remove a null or undefined rule");
 
-        if(rule.filtering_item instanceof Country){
-            this.selected.countries.remove(rule.filtering_item);
-            for(let service of this.getServicesFromRule(rule).keys())
-                mapDecreaseOrRemove(service, this.countries_service_sum);
-        }
+        this.number_of_rules -= 1;
 
-        if(rule.filtering_item instanceof Type){
-            this.selected.types.remove(rule.filtering_item);
-            for(let service of this.getServicesFromRule(rule).keys())
-                mapDecreaseOrRemove(service, this.types_service_sum);
-        }
-
-        if(rule.filtering_item instanceof Provider){
-            this.selected.providers.remove(rule.filtering_item);
-            for(let service of this.getServicesFromRule(rule).keys())
-                mapDecreaseOrRemove(service, this.providers_service_sum); //Note: this could be just a plain map set
-
-        }
-
-        if(rule.filtering_item instanceof Status){
-            this.selected.statuses.remove(rule.filtering_item);
-            for(let service of this.getServicesFromRule(rule).keys())
-                mapDecreaseOrRemove(service, this.statuses_service_sum);
+        this.selected.remove(rule.filtering_item);
+        for(let service of this.getServicesFromRule(rule).keys()){
+            const service_sum_map = this.service_sums.get(rule.filtering_item.item_type);
+            if(service_sum_map === null || service_sum_map === undefined)
+                throw new Error("Null or undefined sum map");
+            mapDecreaseOrRemove(service, service_sum_map);
         }
     }
 
-    /**
-     * @private
-     * Returns a map of all {@link Service} objects that have the property specified in the rule parameter
-     * @param rule: the rule of type {@link Rule} that you want to get the affected services from
-     * @returns: {@link UnorderedMap} all affected services as keys
-     *           Note: the value of each key (i.e. the multiplicity of every Service key) is always 1
-     */
-    private getServicesFromRule(rule: Rule): UnorderedMap<Service, number>{
-
-        let ret = new UnorderedMap<Service, number>(10);
-
-        if(rule.filtering_item instanceof Country){
-            rule.filtering_item.getProviders().forEach((provider: Provider) => {
-                provider.getServices().forEach((service: Service) => {
-                    ret.set(service, 1);
-                });
-            });
-        }
-        else if(rule.filtering_item instanceof Provider){
-            rule.filtering_item.getServices().forEach((service: Service) => {
-                ret.set(service, 1);
-            });
-        }
-
-        else if(rule.filtering_item instanceof Type){
-            rule.filtering_item.services.forEach((service: Service) => {
-                ret.set(service, 1);
-            });
-        }
-        else if(rule.filtering_item instanceof Status){
-            rule.filtering_item.services.forEach((service: Service) => {
-                ret.set(service, 1);
-            });
-        }
-
-        return ret;
-    }
 
     /**
      * @returns selected objects that are converted from the added rules
@@ -275,106 +257,89 @@ export class Filter{
      */
     getFiltered(): Selection{
 
-        // If I have no selections in a field, it's the same as all selected
-        this.convertEmptyToFull();
+        // If no selection is made, it is like all options are selected
+        let map = this.selected.getSets();
+        map.forEach((set, item_type) => {
+            if(set.getSize() === 0)
+                this.service_sums.set(item_type, this.all_services);
+        });
 
         let ret = new Selection();
 
-        let filtered: UnorderedSet<Service> = mapIntersect(this.countries_service_sum,
-                                                           this.types_service_sum,
-                                                           this.statuses_service_sum,
-                                                           this.providers_service_sum);
+        let filtered: UnorderedSet<Service> = mapIntersect(this.service_sums.get(ItemType.Country),
+                                                           this.service_sums.get(ItemType.Provider),
+                                                           this.service_sums.get(ItemType.Type),
+                                                           this.service_sums.get(ItemType.Status)
+                                                          );
 
         filtered.forEach((service: Service) => {
-            let country: Country|null = service.getCountry();
-            if(country === null)
-                throw new Error("Country variable is null");
-            ret.countries.add(country);
+            ret.services.add (service);
             ret.statuses.add (service.status);
             ret.providers.add(service.getProvider());
-            ret.services.add (service);
             service.getServiceTypes().forEach((type: Type) => {
                 ret.types.add(type);
             });
+            let country: Country|null = service.getCountry();
+            if(country === null)
+                throw new Error("Service's country attribute is null");
+            ret.countries.add(country);
         });
 
-        // Resetting to safe state
+        // Return to initial state after treating all empty selections as full selection
         this.convertFullToEmpty();
 
         // Remove item from selected if it is not selectable
-        for(let map of [this.selected.countries, this.selected.types, this.selected.providers, this.selected.statuses]){
-            map.forEach((item: Country|Type|Provider|Status, _: number) => {
-                this.removeFromSelectedIfNotSelectable(item, ret);
+        this.selected.getSets().forEach((set, item_type) => {
+            set.forEach((item: Country|Type|Provider|Status, _: number) => {
+                if(item.item_type !== item_type && !ret.has(item))
+                    this.selected.remove(item);
             });
-        }
+        });
 
         return ret;
     }
 
     /**
      * @private
-     * Removes item of typl@link ink Country}, {@link Type}, {@link Provider}, {@link Status} from {@link selected}
-     * if the item is not in the selectable {@link Selection}.
-     * @param item: item to check and eventually remove
-     * @param selectables: {@link Selection} object containing all selectable items
+     * Returns a map of all {@link Service} objects that have the property specified in the rule parameter
+     * @param rule: the rule of type {@link Rule} that you want to get the affected services from
+     * @returns: {@link UnorderedMap} all affected services as keys
+     *           Note: the value of each key (i.e. the multiplicity of every Service key) is always 1
      */
-    private removeFromSelectedIfNotSelectable(item: Country|Type|Provider|Status, selectables: Selection){
-        if(item instanceof Country)
-            if(!selectables.countries.has(item))
-                this.selected.countries.remove(item);
+    private getServicesFromRule(rule: Rule): UnorderedMap<Service, number>{
 
-        else if(item instanceof Type)
-            if(!selectables.types.has(item))
-                this.selected.types.remove(item);
-
-        else if(item instanceof Status)
-            if(!selectables.statuses.has(item))
-                this.selected.statuses.remove(item);
-
-        else if(item instanceof Provider)
-            if(!selectables.providers.has(item))
-                this.selected.providers.remove(item);
+        switch(rule.filtering_item.item_type){
+            case ItemType.Country: {
+                let ret = new UnorderedMap<Service, number>(10);
+                rule.filtering_item.getProviders().forEach((provider: Provider) => {
+                    provider.getServices().forEach((service: Service) => {
+                        ret.set(service, 1);
+                    });
+                });
+                return ret;
+            }
+            case ItemType.Provider: {
+                return setToMap(rule.filtering_item.getServices());
+            }
+            case ItemType.Status: {
+                return setToMap(rule.filtering_item.services);
+            }
+            case ItemType.Type: {
+                return setToMap(rule.filtering_item.services);
+            }
+        }
     }
 
     /**
      * @private
-     * Makes all empty service sum maps (i.e. {@link statuses_service_sum}, {@link types_service_sum}, {@link countries_service_sum}, {@link providers_service_sum})
-     * ) have all service.
-     * Note: the inverse of this operation is done in {@link convertFullToEmpty}
-     */
-    private convertEmptyToFull(){
-        if(this.selected.statuses.getSize() === 0)
-            this.statuses_service_sum = this.all_services;
-
-        if(this.selected.types.getSize() === 0)
-            this.types_service_sum = this.all_services;
-
-        if(this.selected.countries.getSize() === 0)
-            this.countries_service_sum = this.all_services;
-
-        if(this.selected.providers.getSize() === 0)
-            this.providers_service_sum = this.all_services;
-    }
-
-
-    /**
-     * @private
-     * Makes all temporary-full service sum maps (i.e. {@link statuses_service_sum}, {@link types_service_sum}, {@link countries_service_sum}, {@link providers_service_sum})
-     * ) have no selected elements.
-     * Note: this is the inverse operation of {@link convertEmptyToFull}
+     * Makes all empty service sum maps have all services
      */
     private convertFullToEmpty(){
-        if(this.selected.statuses.getSize() === 0)
-            this.statuses_service_sum = new UnorderedMap<Service, number>(10);
-
-        if(this.selected.types.getSize() === 0)
-            this.types_service_sum = new UnorderedMap<Service, number>(10);
-
-        if(this.selected.countries.getSize() === 0)
-            this.countries_service_sum = new UnorderedMap<Service, number>(10);
-
-        if(this.selected.providers.getSize() === 0)
-            this.providers_service_sum = new UnorderedMap<Service, number>(10);
+        let map = this.selected.getSets();
+        map.forEach((set, item_type) => {
+            if(set.getSize() === 0)
+                this.service_sums.set(item_type, new UnorderedMap<Service, number>(10));
+        });
     }
 }
 
@@ -382,8 +347,10 @@ export class Filter{
  * Intersects a variable number of maps
  * @param maps: comma separated map {@link UnorderedMap} maps
  * @returns: {@link UnorderedSet} containing services of type {@link Service} commmon to all maps
+ * @throws {@link Error}
+ * Thrown if one of the input maps is null
  */
-function mapIntersect(...maps: Array<UnorderedMap<Service, number>>): UnorderedSet<Service>{
+function mapIntersect(...maps: Array<UnorderedMap<Service, number> | null | undefined>): UnorderedSet<Service>{
 
     let ret = new UnorderedSet<Service>(10);
 
@@ -393,6 +360,9 @@ function mapIntersect(...maps: Array<UnorderedMap<Service, number>>): UnorderedS
 
     // Throw error on null map and find the shortest map for faster search
     let shortest_map = maps[0];
+    if(shortest_map === undefined || shortest_map === null)
+        throw new Error("Error, intersect on null maps");
+
     for(let map of maps){
         if(map === undefined || map === null)
             throw new Error("Error, intersect on null maps");
@@ -403,7 +373,7 @@ function mapIntersect(...maps: Array<UnorderedMap<Service, number>>): UnorderedS
 
     // If there is just one map, return a copy of it
     if(maps.length === 1){
-        for(let service of maps[0].keys())
+        for(let service of shortest_map.keys())
             ret.add(service);
         return ret;
     }
@@ -413,6 +383,8 @@ function mapIntersect(...maps: Array<UnorderedMap<Service, number>>): UnorderedS
     for(let service of shortest_map.keys()){
         all_maps_have_service = true;
         for(let map of maps){
+            if(map === undefined || map === null)
+                throw new Error("Error, intersect on null maps");
             if(map === shortest_map)
                 continue;
             if(!map.has(service)){
@@ -427,16 +399,31 @@ function mapIntersect(...maps: Array<UnorderedMap<Service, number>>): UnorderedS
     return ret;
 }
 
+/**
+ * Converts an {@link UnorderedSet} to an {@link UnorderedMap} whose keys are the number 1
+ * @param set: The set to be converted
+ * @returns a map whose keys are the number 1
+ */
+function setToMap<K extends Settable<K>>(set: UnorderedSet<K>): UnorderedMap<K, number>{
+    let ret = new UnorderedMap<K, number>(set.getSize());
+    set.forEach((value: K) => {
+        ret.set(value, 1);
+    });
+    return ret;
+}
+
  /**
   * Increases the numeric value associated to a key in an {@link UnorderedMap} object, if not present, it inserts it (with the value 1)
   * @param key: value to update
   * @param map: map
+  * @throws {@link error}
+  * Thrown if the associated value to the key is null or does not exist in the map
   */
 function mapIncreaseOrInsert<K extends Settable<K>>(key: K, map: UnorderedMap<K, number>){
     if(map.has(key)){
         let value: number|null = map.get(key);
         if(value === null || value === undefined)
-            throw new Error("Null value in map associated with input key");
+            throw new Error("Missing or null value in map associated with input key");
         map.set(key, value+1);
     }
     else
