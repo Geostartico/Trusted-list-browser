@@ -31,30 +31,32 @@ class ItemViewer extends Component<ItemViewerProps, ItemViewerState> {
         this.state = {
             expand: false,
             marginLeftStyle : (this.props.indent) + "vw",
-            filteredItems: this.filterItems(),
+            filteredItems: this.filterItems(this.props),
         };
 
         this.filterItems = this.filterItems.bind(this);
         this.expand = this.expand.bind(this);
     }
 
-    expand(val: Item) {
-        //console.log("lool");
+    componentWillReceiveProps(nextProps: ItemViewerProps) {
 
-        val.expand = !val.expand;
-        this.forceUpdate();
-        /*
         this.setState({
-            expand: !this.state.expand
+            filteredItems: this.filterItems(nextProps),
         });
-        */
+        
+        console.log("UPDAAATEE");
     }
 
-    filterItems(): Item[] {
+    expand(val: Item) {
+        val.expand = !val.expand;
+        this.forceUpdate();
+    }
+
+    filterItems(props: ItemViewerProps): Item[] {
         let items: Item[] = [];
 
-        if( this.props.items === null) {
-            this.props.viewItems.countries.forEach((val: Item) => {
+        if( props.items === null) {
+            props.viewItems.countries.forEach((val: Item) => {
                 //console.log("contry " + val.getText());
                 items.push(val);
             })
@@ -63,16 +65,16 @@ class ItemViewer extends Component<ItemViewerProps, ItemViewerState> {
 
             //console.log("Indentazione " + this.props.indent);
 
-            this.props.items.getChildren().forEach((val: Item) => {
+            props.items.getChildren().forEach((val: Item) => {
 
                 //console.log("Testing this item: " + val.getText());
-                switch (this.props.indent) {
+                switch (props.indent) {
                     case 2: 
-                        if(!this.props.viewItems.providers.has(val as Provider)) 
+                        if(!props.viewItems.providers.has(val as Provider)) 
                             return;
                     break;
                     case 3: 
-                        if(!this.props.viewItems.services.has(val as Service))
+                        if(!props.viewItems.services.has(val as Service))
                             return;
                     break;
                 }

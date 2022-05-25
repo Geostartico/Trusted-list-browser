@@ -159,8 +159,8 @@ div {
   transition: .4s;
 }
 
-#filterNotSelectable {
-  background-color: var(--main-bg-color);
+.NotSelectable:before {
+  background-color: var(--main-text-color) !important;
 }
 
 input:checked + .slider {

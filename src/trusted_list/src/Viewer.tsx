@@ -19,6 +19,9 @@ class Viewer extends Component<ViewerProps, ViewerState> {
         };
     }
 
+    componentWillReceiveProps(nextProps: ViewerProps) {
+        this.forceUpdate();
+    }
 
     render() {
 

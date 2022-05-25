@@ -25,6 +25,15 @@ class FilterPane extends Component<FilterProps, FilterState> {
         console.log(this.state.filters);
     }
 
+    componentWillReceiveProps(nextProps: FilterProps) {
+
+        this.setState({
+            filters: nextProps.filters.keys(),
+            filtersType: nextProps.filters.entries().map((entry) => entry.getValue() ?? SelectionType.NotSelectable),
+        });
+        
+    }
+
 
     render() {
         return (
@@ -36,8 +45,12 @@ class FilterPane extends Component<FilterProps, FilterState> {
                         return (
                             <div key={val.getText() + index} className='filterEntryContainer'>
                                 <label className="switch">
-                                    <input type="checkbox" onChange={() => this.state.filtersType[index] !== SelectionType.NotSelectable ? this.props.onToggle(this.state.filters[index]) : undefined}/>
-                                    <span className="slider" id={this.state.filtersType[index] === SelectionType.NotSelectable ? 'filterNotSelectable' : ''}>
+                                <input 
+                                    type="checkbox" 
+                                    onChange={() => this.state.filtersType[index] !== SelectionType.NotSelectable ? this.props.onToggle(this.state.filters[index]) : undefined}
+                                    checked ={this.state.filtersType[index] == SelectionType.Selected}
+                                />
+                                    <span className={"slider" + (this.state.filtersType[index] === SelectionType.NotSelectable ? ' NotSelectable' : '')} >
                                     </span>
                                 </label>
                                 <p className='filterEntryText'>{val.getText()}</p>
