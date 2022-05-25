@@ -3,19 +3,20 @@
  * This file is part of the TrustedListBrowser project (https://github.com/Geostartico/Trusted-list-browser)
  */
 
-import {Country, Provider, Service, Status, Type} from "../decoder/items"
+import {Country, Provider, Service, Status, Type, ItemType} from "../decoder/items"
 import {UnorderedSet} from "../decoder/UnorderedSet"
 import {UnorderedMap} from "../decoder/UnorderedMap"
 import {Settable} from "../decoder/settable"
 
- /**
-  * Class that groups a selection/superset of objects in separate {@link UnorderedSet} objects representing:
-  * - countries
-  * - providers
-  * - statuses
-  * - types
-  * - services
-  */
+
+/**
+ * Class that groups a selection/superset of objects in separate {@link UnorderedSet} objects representing:
+ * - countries
+ * - providers
+ * - statuses
+ * - types
+ * - services
+ */
 export class Selection{
     countries: UnorderedSet<Country>;
     providers: UnorderedSet<Provider>;
@@ -88,31 +89,33 @@ export class Filter{
      */
     private selected: Selection;
 
-    /**
-     * @private
-     * This map is used as a cache for the number of services of type {@link Service} filtered by the {@link Rule} for the countries
-     * The number associated with the {@link Service} is the number of times a service has been referenced by the filter
-     * Note: analogous behaviour for the countries_service_sum, types_service_sum and statuses_service_sum maps
-     */
-    private countries_service_sum: UnorderedMap<Service, number>;
+    private service_sums: Map<ItemType, UnorderedMap<Service, number>>;
 
-    /**
-     * @private
-     * @link countries_service_sum
-     */
-    private providers_service_sum: UnorderedMap<Service, number>;
+    ///**
+     //* @private
+     //* This map is used as a cache for the number of services of type {@link Service} filtered by the {@link Rule} for the countries
+     //* The number associated with the {@link Service} is the number of times a service has been referenced by the filter
+     //* Note: analogous behaviour for the countries_service_sum, types_service_sum and statuses_service_sum maps
+     //*/
+    //private countries_service_sum: UnorderedMap<Service, number>;
 
-    /**
-     * @private
-     * @link countries_service_sum
-     */
-    private types_service_sum:     UnorderedMap<Service, number>;
+    ///**
+     //* @private
+     //* {@link countries_service_sum}
+     //*/
+    //private providers_service_sum: UnorderedMap<Service, number>;
 
-    /**
-     * @private
-     * @link countries_service_sum
-     */
-    private statuses_service_sum:  UnorderedMap<Service, number>;
+    ///**
+     //* @private
+     //* {@link countries_service_sum}
+     //*/
+    //private types_service_sum:     UnorderedMap<Service, number>;
+
+    ///**
+     //* @private
+     //* {@link countries_service_sum}
+     //*/
+    //private statuses_service_sum:  UnorderedMap<Service, number>;
 
     /**
      * @private
@@ -121,16 +124,31 @@ export class Filter{
      */
     private readonly all_services: UnorderedMap<Service, number>;
 
+    /**
+     * @private
+     * Number of currently applied rules
+     */
+    private number_of_rules: number;
+
+    /**
+     * @private
+     * Type of the first applied rule, with this convenction
+     */
+    private first_rule_type: ItemType;
+
+
     constructor(service_list: Service[]){
 
         this.selected = new Selection();
 
         this.all_services = new UnorderedMap<Service, number>(service_list.length);
 
-        this.countries_service_sum = new UnorderedMap<Service, number>(10);
-        this.providers_service_sum = new UnorderedMap<Service, number>(10);
-        this.types_service_sum     = new UnorderedMap<Service, number>(10);
-        this.statuses_service_sum  = new UnorderedMap<Service, number>(10);
+        this.service_sums = new Map<ItemType, UnorderedMap<Service, number>>();
+
+        this.service_sums.set(ItemType.Provider, new UnorderedMap<Service, number>(10));
+        this.service_sums.set(ItemType.Status, new UnorderedMap<Service, number>(10));
+        this.service_sums.set(ItemType.Type, new UnorderedMap<Service, number>(10));
+        this.service_sums.set(ItemType.Country, new UnorderedMap<Service, number>(10));
 
         service_list.forEach((service: Service) => {
             this.all_services.set(service, 1);

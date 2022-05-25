@@ -18,6 +18,18 @@ function stringHash(str : string): number {
     return hash;
 }
 
+
+/**
+ * Represents the type of the filtering item
+ */
+export enum ItemType {
+    Country,
+    Provider,
+    Status,
+    Type,
+    Service
+}
+
 /**
  * Represents a service type
  */
@@ -29,6 +41,8 @@ export class Type implements Settable<Type>, Item{
     readonly name: string;
 
     readonly services: UnorderedSet<Service>;
+
+    readonly item_type = ItemType.Type;
 
     /**
      * hashcode of the type
@@ -80,6 +94,9 @@ export class Status implements Settable<Status>, Item{
      * @readonly
      */
     readonly name: string;
+
+    readonly item_type = ItemType.Status;
+
     /**
      * @readonly
      */
@@ -140,6 +157,9 @@ export class Service implements Settable<Service>, Item{
      * @readonly
      */
     readonly name : string;
+
+    readonly item_type = ItemType.Service;
+
     /**
      * Id of the service
      * @readonly
@@ -271,6 +291,9 @@ export class Provider implements Settable<Provider>, Item{
      * @readonly
      */
     readonly name: string;
+
+    readonly item_type = ItemType.Provider;
+
     /**
      * tspId of the provider
      * @readonly
@@ -442,7 +465,7 @@ export class Country implements Settable<Country>, Item{
      */
     static initCodeToStringMap(arr : Array<any>){
         Country.codeToString = new Map<string, string>();
-        arr.forEach((el : any) => Country.codeToString.set(el["countryCode"], el["countryName"]))   
+        arr.forEach((el : any) => Country.codeToString.set(el["countryCode"], el["countryName"]))
     }
     /**
      * initialises the codeToObject map
@@ -460,6 +483,9 @@ export class Country implements Settable<Country>, Item{
      * @readonly
      */
     readonly countryCode : string;
+
+    readonly item_type = ItemType.Country;
+
     /**
      * service types given by the services given by the coutnry providers,
      * with the number of instances
