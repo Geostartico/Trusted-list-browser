@@ -6,7 +6,6 @@ export class Fetcher{
 		fetch(url)
 		.then(res => res.json())
 		.then(response => {
-		
 			if(!response.ok){
 				
 				this.times += 1;

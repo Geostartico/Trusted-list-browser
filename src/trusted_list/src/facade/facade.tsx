@@ -3,7 +3,7 @@ import { Data } from "./data";
 import { objectify } from "../decoder/decoder";
 import { Country, Provider, Service, Status, Type } from "../decoder/items";
 import { UnorderedSet } from "../decoder/UnorderedSet";
-
+import { Fetcher } from "../fetch/fetch";
 export interface IgetView {
     "countries" : UnorderedSet<Country>, 
     "providers" : UnorderedSet<Provider>, 
@@ -12,7 +12,7 @@ export interface IgetView {
 
 export class Facade{
     private filter : Filter;
-    //private fetcher : Fetcher;
+    private fetcher : Fetcher;
     private selection : Selection;
     readonly allServices : UnorderedSet<Service>;
     readonly allCountries : UnorderedSet<Country>;
@@ -20,9 +20,8 @@ export class Facade{
     readonly allTypes : UnorderedSet<Type>;
     readonly allStatuses : UnorderedSet<Status>;
     constructor(){
-        let stuff = objectify(Data.countryDict, Data.serviceDict);
-        //this.fetcher = new Fetcher()
-        //let dict = fetcher.fetch();
+        this.fetcher = new Fetcher()
+        let stuff = objectify(this.fetcher.getJSON("https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list"), this.fetcher.getJSON("https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list"));
         this.filter = new Filter(stuff["servicesArray"]);
         this.selection = this.filter.getFiltered();
         this.allServices = this.selection.services;
