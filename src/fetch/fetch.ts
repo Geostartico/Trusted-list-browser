@@ -1,5 +1,6 @@
 export class Fetcher{
-	
+	private times: number = 0;
+
 	getJSON(url: string){
 
 		fetch(url)
@@ -7,7 +8,14 @@ export class Fetcher{
 		.then(response => {
 		
 			if(!response.ok){
-				throw new Error(response.statusText)
+				
+				this.times += 1;
+				
+				if (this.times > 2)
+					throw new Error(response.statusText);
+				
+				this.getJSON(url);
+
 			}
 
 			return response;
