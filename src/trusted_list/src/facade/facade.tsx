@@ -15,6 +15,7 @@ export class Facade{
     private filter : Filter | undefined;
     private fetcher : Fetcher;
     private selection : Selection;
+<<<<<<< Updated upstream
     private allServices : UnorderedSet<Service>;
     private allCountries : UnorderedSet<Country>;
     private allProviders : UnorderedSet<Provider>;
@@ -42,6 +43,17 @@ export class Facade{
                         .then(res => res.json());
 
         let stuff = objectify(tmp1, tmp2);
+=======
+    readonly allServices : UnorderedSet<Service>;
+    readonly allCountries : UnorderedSet<Country>;
+    readonly allProviders : UnorderedSet<Provider>;
+    readonly allTypes : UnorderedSet<Type>;
+    readonly allStatuses : UnorderedSet<Status>;
+    constructor(){
+        this.fetcher = new Fetcher()
+        //let stuff = objectify(this.fetcher.getJSON("https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list"), this.fetcher.getJSON("https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list"));
+        let stuff = objectify(Data.countryDict, Data.serviceDict);
+>>>>>>> Stashed changes
         this.filter = new Filter(stuff["servicesArray"]);
         this.selection = this.filter.getFiltered();
         this.allServices = this.selection.services;
