@@ -250,6 +250,7 @@ export class Filter{
         this.selected.add(rule.filtering_item);
 
         this.active_filtering_types.add(rule.filtering_item.item_type);
+        //console.log(this.active_filtering_types);
 
         this.getServicesFromItem(rule.filtering_item).forEach((service: Service) => {
             const service_sum_map = this.service_sums.get(rule.filtering_item.item_type);
@@ -321,10 +322,10 @@ export class Filter{
             selectables.countries.add(country);
         });
 
+        this.addSelectables(selectables);
+
         // Return to initial state after treating all empty selections as full selection
         this.convertFullToEmpty();
-
-        this.addSelectables(selectables);
 
         return selectables;
     }
@@ -338,15 +339,18 @@ export class Filter{
     private addSelectables(selectables: Selection){
         this.all_items.getSets().forEach((set, item_type) => {
             set.forEach((item: any) => {
-                if(selectables.has(item)){
+                if(!selectables.has(item)){
                     let maps = new Array<UnorderedMap<Service, number>>();
                     this.service_sums.forEach((map, item_type) => {
                         if(item.item_type !== item_type)
                             maps.push(map);
                     });
                     maps.push(setToMap(this.getServicesFromItem(item)));
-                    if(mapIntersect(maps).getSize() > 0)
+                    //console.log(maps);
+                    if(mapIntersect(maps).getSize() > 0){
                         selectables.add(item);
+                        //console.log("YAYAYAYAYAYAYA");
+                    }
                 }
             });
         });
