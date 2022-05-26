@@ -178,3 +178,6 @@ input:checked + .slider:before {
   transform: translateX(24px);
 }
 
+.Toastify__toast-theme--light div {
+    background: var(--toastify-color-light) !important;
+}

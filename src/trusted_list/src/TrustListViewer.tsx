@@ -11,6 +11,9 @@ import { Item } from "./decoder/itemInterface";
 import { FilterType, SelectionType } from "./Enums";
 import { Settable } from './decoder/settable';
 import {UnorderedMap} from './decoder/UnorderedMap';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 interface TrustListViewerProps {
     appTitle: string;
@@ -21,40 +24,63 @@ interface TrustListViewerState {
     facade: Facade;
     activeFilterItems: UnorderedMap<Country | Type | Status | Provider, SelectionType> | null;
     viewItems: IgetView | null;
+
+    countryEntrieFilter: UnorderedMap<Country, SelectionType> | null;
+    typeEntrieFilter: UnorderedMap<Type, SelectionType> | null;
+    stateEntrieFilter: UnorderedMap<Status, SelectionType> | null;
+    providerEntrieFilter: UnorderedMap<Provider, SelectionType> | null;
 }
 
 class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerState> {
 
-    countryEntrieFilter: UnorderedMap<Country, SelectionType>;
-    typeEntrieFilter: UnorderedMap<Type, SelectionType>;
-    stateEntrieFilter: UnorderedMap<Status, SelectionType>;
-    providerEntrieFilter: UnorderedMap<Provider, SelectionType>;
-
     constructor(props: TrustListViewerProps) {
         super(props);
-        this.state = {
-            activeFilter: FilterType.Country,
-            facade: new Facade(),
-            activeFilterItems: null,
-            viewItems: null,
-        };
 
         this.onChangeFilter = this.onChangeFilter.bind(this);
         this.createEntryFilterSet = this.createEntryFilterSet.bind(this);
         this.onToggle = this.onToggle.bind(this);
+        this.onSetUpCompleted = this.onSetUpCompleted.bind(this);
+
+
+        this.state = {
+            activeFilter: FilterType.Country,
+            facade: new Facade(this.onSetUpCompleted),
+            activeFilterItems: null,
+            viewItems: null,
+            countryEntrieFilter: null,
+            typeEntrieFilter: null,
+            stateEntrieFilter: null, 
+            providerEntrieFilter: null,
+
+        };
+
+        toast.success('🦄 SetUp running!');
 
         // Set up All the Set for the Filter
-        this.countryEntrieFilter = this.createEntryFilterSet(this.state.facade.getSelectableCountries());
-        this.typeEntrieFilter = this.createEntryFilterSet(this.state.facade.getSelectableTypes());
-        this.stateEntrieFilter = this.createEntryFilterSet(this.state.facade.getSelectableStatus());
-        this.providerEntrieFilter = this.createEntryFilterSet(this.state.facade.getSelectableProviders());
     }
 
+    onSetUpCompleted() {
+
+        this.setState({
+            countryEntrieFilter: this.createEntryFilterSet(this.state.facade.getSelectableCountries()),
+            typeEntrieFilter: this.createEntryFilterSet(this.state.facade.getSelectableTypes()),
+            stateEntrieFilter: this.createEntryFilterSet(this.state.facade.getSelectableStatus()),
+            providerEntrieFilter: this.createEntryFilterSet(this.state.facade.getSelectableProviders()),
+            viewItems: this.state.facade.getView(),
+        }, () => {
+
+            toast.success('🦄 Set up Done!');
+
+        });
+    }
+
+    /*
     componentDidMount() {
         this.setState({
             viewItems: this.state.facade.getView(),
         });
     }
+    */
 
     createEntryFilterSet<T extends Settable<T>, Item>(map: UnorderedSet<T>): UnorderedMap<T, SelectionType> {
         let newMap: UnorderedMap<T, SelectionType> = new UnorderedMap(10);
@@ -74,16 +100,20 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
 
         switch(this.state.activeFilter) {
             case FilterType.Country:
-                map = this.countryEntrieFilter;
+                if(this.state.countryEntrieFilter === null) return;
+                map = this.state.countryEntrieFilter;
             break;
             case FilterType.State:
-                map = this.stateEntrieFilter;
+                if(this.state.stateEntrieFilter === null) return;
+                map = this.state.stateEntrieFilter;
             break;
             case FilterType.Provider:
-                map = this.providerEntrieFilter;
+                if(this.state.providerEntrieFilter === null) return;
+                map = this.state.providerEntrieFilter;
             break;
             case FilterType.Type:
-                map = this.typeEntrieFilter;
+                if(this.state.typeEntrieFilter === null) return;
+                map = this.state.typeEntrieFilter;
             break;
         }
 
@@ -100,27 +130,31 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
         this.onChangeFilter(this.state.activeFilter);
     }
 
-    onChangeFilter(selectedFilter: FilterType){
+    onChangeFilter(selectedFilter: FilterType) {
 
         let filtersSet: UnorderedSet<Country | Type | Status | Provider>;
         let map: UnorderedMap<Country | Type | Status | Provider, SelectionType>;
 
         switch(selectedFilter) {
             case FilterType.Country:
+                if(this.state.countryEntrieFilter === null) return;
                 filtersSet = this.state.facade.getSelectableCountries();
-                map = this.countryEntrieFilter;
+                map = this.state.countryEntrieFilter;
             break;
             case FilterType.State:
+                if(this.state.stateEntrieFilter === null) return;
                 filtersSet = this.state.facade.getSelectableStatus();
-                map = this.stateEntrieFilter;
+                map = this.state.stateEntrieFilter;
             break;
             case FilterType.Provider:
+                if(this.state.providerEntrieFilter === null) return;
                 filtersSet = this.state.facade.getSelectableProviders();
-                map = this.providerEntrieFilter;
+                map = this.state.providerEntrieFilter;
             break;
             case FilterType.Type:
+                if(this.state.typeEntrieFilter === null) return;
                 filtersSet = this.state.facade.getSelectableTypes();
-                map = this.typeEntrieFilter;
+                map = this.state.typeEntrieFilter;
             break;
         }
 
@@ -139,8 +173,6 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
             activeFilterItems: map,
             viewItems: this.state.facade.getView(),
         });
-
-        console.log("internl lengh" + this.state.facade.getView().countries.getSize())
     }
 
     render() {
@@ -153,8 +185,11 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
                     selectedFilter = {this.state.activeFilter}
                 />
             </header>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={2000}
+            />
             <body>
-
                 <Allotment onVisibleChange={() => this.forceUpdate()}>
                     <Allotment.Pane minSize={300}>
 
@@ -193,9 +228,3 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
 }
 
 export default TrustListViewer;
-
-/*
-<Viewer 
-    viewItems={this.state.viewItems} // for now update each render
-/>
- */

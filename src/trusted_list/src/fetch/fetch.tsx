@@ -1,26 +1,25 @@
 export class Fetcher{
-	private times: number = 0;
+	times: number;
 
-	getJSON(url: string){
+    constructor() {
+        this.times = 0;
+    }
 
-		fetch(url)
-		.then(res => res.json())
-		.then(response => {
-			if(!response.ok){
-				
-				this.times += 1;
-				
-				if (this.times > 2)
-					throw new Error(response.statusText);
-				
-				this.getJSON(url);
+	async getJSON (url: string) {
 
+        return await fetch(url)
+		.then(res => {
+
+			if(!res.ok){
+                console.log("merda");
+
+				//this.getJSON(url);
 			}
+            
+            return res.json();
 
-			return response;
-		
-		})
-	
+        }).catch(error => {
+            console.log("something went wrong");
+        });
 	}
-
 }
