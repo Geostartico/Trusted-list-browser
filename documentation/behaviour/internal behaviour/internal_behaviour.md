@@ -14,4 +14,3 @@
 - when the current selection is completed the **send option listener** notificates the **GUI facade** which send the selected list to the **filter** which filters based on the items type and returns the next batch of selectables, iterating until the services are shown
 
 ![Alt text](./internal_behaviour.svg)
-

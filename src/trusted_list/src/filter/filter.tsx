@@ -394,12 +394,12 @@ export class Filter{
         this.selected.getSets().forEach((set, item_type) => {
             if(set.getSize() === 0){
                 this.service_sums.set(item_type, this.all_services);
-                switch(item_type){
+                /*switch(item_type){
                     case ItemType.Status:   { selectables.statuses  = this.all_items.statuses;  break;}
                     case ItemType.Type:     { selectables.types     = this.all_items.types;     break;}
                     case ItemType.Country:  { selectables.countries = this.all_items.countries; break;}
                     case ItemType.Provider: { selectables.providers = this.all_items.providers; break;}
-                }
+                }*/
             }
         });
     }
