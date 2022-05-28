@@ -15,6 +15,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
 
+
 interface TrustListViewerProps {
     appTitle: string;
 }
@@ -33,6 +34,8 @@ interface TrustListViewerState {
 
 class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerState> {
 
+    static isLoading: boolean = false;
+
     constructor(props: TrustListViewerProps) {
         super(props);
 
@@ -40,7 +43,6 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
         this.createEntryFilterSet = this.createEntryFilterSet.bind(this);
         this.onToggle = this.onToggle.bind(this);
         this.onSetUpCompleted = this.onSetUpCompleted.bind(this);
-
 
         this.state = {
             activeFilter: FilterType.Country,
@@ -51,11 +53,13 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
             typeEntrieFilter: null,
             stateEntrieFilter: null, 
             providerEntrieFilter: null,
-
         };
 
-        toast.success('🦄 SetUp running!');
-
+        if(!TrustListViewer.isLoading) {
+            toast.success('🦄 Set up running!');
+            TrustListViewer.isLoading = true;
+        }
+        
         // Set up All the Set for the Filter
     }
 
@@ -70,17 +74,10 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
         }, () => {
 
             toast.success('🦄 Set up Done!');
+            TrustListViewer.isLoading = false;
 
         });
     }
-
-    /*
-    componentDidMount() {
-        this.setState({
-            viewItems: this.state.facade.getView(),
-        });
-    }
-    */
 
     createEntryFilterSet<T extends Settable<T>, Item>(map: UnorderedSet<T>): UnorderedMap<T, SelectionType> {
         let newMap: UnorderedMap<T, SelectionType> = new UnorderedMap(10);
@@ -187,7 +184,7 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
             </header>
             <ToastContainer
                 position="bottom-right"
-                autoClose={2000}
+                autoClose={4000}
             />
             <body>
                 <Allotment onVisibleChange={() => this.forceUpdate()}>
@@ -214,8 +211,21 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
 
                             :
 
-                            <div>
-                                <h2>Created by Andrea - Gabriele - Giovanni - Giulio</h2>
+                            <div className='titleNameContainer'>
+                                <svg viewBox="0 0 1000 300">
+                                	<text x="50%" y="0%" dy=".45em" text-anchor="middle">
+                                		Giovanni
+                                	</text>
+                                	<text x="50%" y="25%" dy=".45em" text-anchor="middle">
+                                		Giulio
+                                	</text>
+                                	<text x="50%" y="50%" dy=".45em" text-anchor="middle">
+                                		Gabriele
+                                	</text>
+                                	<text x="50%" y="75%" dy=".45em" text-anchor="middle">
+                                		Andrea
+                                	</text>
+                                </svg>	
                             </div>
                         }
                     </Allotment.Pane>

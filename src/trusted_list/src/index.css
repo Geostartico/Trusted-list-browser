@@ -110,6 +110,7 @@ div {
     /*background-color: var(--main-bg-color);*/
 }
 
+
 .sash-module_sash__eG8e7.sash-module_hover__119X7:before,
 .sash-module_sash__eG8e7.sash-module_active__FozP9:before {
   background: var(--main-text-color) !important;
@@ -180,4 +181,36 @@ input:checked + .slider:before {
 
 .Toastify__toast-theme--light div {
     background: var(--toastify-color-light) !important;
+}
+
+.titleNameContainer {
+    width: 100%;
+    height: 100%;
+}
+
+svg {
+	font-family: 'Russo One', sans-serif;
+	position: absolute; 
+	width: 100%; height: 100%;
+}
+
+svg text {
+	text-transform: uppercase;
+	animation: stroke 5s infinite alternate;
+	stroke-width: 2;
+	stroke: var(--main-text-color);
+	font-size: 140px;
+}
+
+@keyframes stroke {
+	0%   {
+		fill: rgba(212,212,212,0); stroke: rgba(212,212,212,1);
+		stroke-dashoffset: 25%; stroke-dasharray: 0 50%; stroke-width: 2;
+	}
+	70%  {fill: rgba(212,212,212,0); stroke: rgba(212,212,212,1); }
+	80%  {fill: rgba(212,212,212,0); stroke: rgba(212,212,212,1); stroke-width: 3; }
+	100% {
+		fill: rgba(212,212,212,1); stroke: rgba(212,212,212,1); 
+		stroke-dashoffset: -25%; stroke-dasharray: 50% 0; stroke-width: 0;
+	}
 }
