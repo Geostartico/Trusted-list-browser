@@ -11,6 +11,7 @@
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.3",
     "allotment": "^1.14.0",
+    "country-flag-emoji": "^1.0.3",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-scripts": "5.0.1",

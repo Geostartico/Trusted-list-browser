@@ -43,7 +43,7 @@ class ItemViewer extends Component<ItemViewerProps, ItemViewerState> {
         this.setState({
             filteredItems: this.filterItems(nextProps),
         });
-        
+
         console.log("UPDAAATEE");
     }
 
