@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-05-22T17:20:37.692Z" agent="5.0 (X11)" etag="Ebyu0Zl31DQIQeLYzlMQ" version="18.1.1" type="github">
+<mxfile host="app.diagrams.net" modified="2022-05-29T15:36:12.246Z" agent="5.0 (X11)" etag="81XnJSv-lwshiX0hn1Wd" version="18.1.3" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="2009" dy="541" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1414" dy="498" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -140,7 +140,7 @@
         <mxCell id="jx6eO44tTlSofghOy_yD-68" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;Settable&amp;lt;T&amp;gt;&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;div&gt;hashCode() : number&lt;/div&gt;&lt;div&gt;isEqualTo(T) : boolean&lt;br&gt;&lt;/div&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;hachureGap=4;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-530" y="170" width="190" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="jx6eO44tTlSofghOy_yD-69" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;item&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ getText() : string&lt;br&gt;+ getChildren() : item&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;hachureGap=4;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="jx6eO44tTlSofghOy_yD-69" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;item&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ getText() : string&lt;br&gt;+ getChildren() : item&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ expand : boolean&lt;br&gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;hachureGap=4;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-520" y="376" width="190" height="140" as="geometry" />
         </mxCell>
         <mxCell id="jx6eO44tTlSofghOy_yD-70" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;sourcePerimeterSpacing=8;targetPerimeterSpacing=8;curved=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" target="jx6eO44tTlSofghOy_yD-69" edge="1">
@@ -255,29 +255,74 @@
         <mxCell id="jx6eO44tTlSofghOy_yD-105" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Facade&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;div&gt;- filter : Filter&lt;/div&gt;&lt;div&gt;- selection : Selection&lt;br&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;&lt;div&gt;+ addRule(Provider | Status | Country | ServiceType) : void&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ removeRule(Provider | Status | Country | ServiceType) : void&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ getViews() : {Country[], Providers[] , Services}&lt;/div&gt;&lt;div&gt;+ getSelectableCountries() : Country[]&lt;/div&gt;&lt;div&gt;&lt;div&gt;+ getSelectableProviders() : Provider[]&lt;/div&gt;&lt;div&gt;&lt;div&gt;+ getSelectableServiceType() : ServiceType[]&lt;/div&gt;&lt;div&gt;&lt;div&gt;+ getSelectableStatuses() : Status[]&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt; &lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;hachureGap=4;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-90" y="1650" width="340" height="200" as="geometry" />
         </mxCell>
-        <mxCell id="-e_v6TnxBKaBj5N8BUCK-5" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.397;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="jx6eO44tTlSofghOy_yD-100" target="jx6eO44tTlSofghOy_yD-105">
+        <mxCell id="-e_v6TnxBKaBj5N8BUCK-5" value="" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.397;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="jx6eO44tTlSofghOy_yD-100" target="jx6eO44tTlSofghOy_yD-105" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="180" y="1430" as="sourcePoint" />
             <mxPoint x="340" y="1430" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="-e_v6TnxBKaBj5N8BUCK-6" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="-e_v6TnxBKaBj5N8BUCK-5">
+        <mxCell id="-e_v6TnxBKaBj5N8BUCK-6" value="1" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" parent="-e_v6TnxBKaBj5N8BUCK-5" connectable="0" vertex="1">
           <mxGeometry x="-1" relative="1" as="geometry">
             <mxPoint x="5" y="25" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="-e_v6TnxBKaBj5N8BUCK-7" value="1" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="-e_v6TnxBKaBj5N8BUCK-5">
+        <mxCell id="-e_v6TnxBKaBj5N8BUCK-7" value="1" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" parent="-e_v6TnxBKaBj5N8BUCK-5" connectable="0" vertex="1">
           <mxGeometry x="1" relative="1" as="geometry">
             <mxPoint x="25" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="-e_v6TnxBKaBj5N8BUCK-8" value="gets information from..." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+        <mxCell id="-e_v6TnxBKaBj5N8BUCK-8" value="gets information from..." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="40" y="1620" width="140" height="20" as="geometry" />
         </mxCell>
         <mxCell id="jx6eO44tTlSofghOy_yD-74" value="" style="endArrow=diamondThin;endFill=0;html=1;rounded=0;startSize=14;endSize=14;sourcePerimeterSpacing=8;targetPerimeterSpacing=8;entryX=1.014;entryY=0.955;entryDx=0;entryDy=0;entryPerimeter=0;exitX=-0.01;exitY=0.92;exitDx=0;exitDy=0;exitPerimeter=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="zkfFHV4jXpPFQw0GAbJ--18" target="zkfFHV4jXpPFQw0GAbJ--1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="420" y="340" as="sourcePoint" />
             <mxPoint x="370" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="yTGQvYgbSu-PY9iP79x5-1" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;TrustList&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;div&gt;State:&lt;br&gt;&lt;/div&gt;&lt;div&gt;- activeFilter : FilterType (Enum?)&lt;br&gt;&lt;/div&gt;&lt;div&gt;- facade : Facade&lt;/div&gt;&lt;div&gt;- activeFilterItems: UnorderdMap&amp;lt;Provider | Status | Country | ServiceType&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- viewItems : Facade&lt;/div&gt;&lt;div&gt;- countryEntriesFilter: UnorderedMap&amp;lt;Country, SelectionType&amp;gt;&lt;/div&gt;&lt;div&gt;- typeEntriesFilter: UnorderedMap&amp;lt;Type, SelectionType&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- statusEntriesFilter: UnorderedMap&amp;lt;Status, SelectionType&amp;gt; &lt;br&gt;&lt;/div&gt;&lt;div&gt;- providerEntriesFilter: UnorderedMap&amp;lt;Provider, SelectionType&amp;gt; &lt;br&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;&lt;div&gt;+ onSetUpCompleted() : void&lt;/div&gt;&lt;div&gt;+ createEntryFilterSet&amp;lt;T extends Settable&amp;lt;T&amp;gt;&amp;gt;(map: UnorderedSet&amp;lt;T&amp;gt;): UnorderedMap&amp;lt;T, SelectionType&amp;gt;&lt;/div&gt;&lt;div&gt;+ onToggle(item : Country | Type | Status | Provider)&lt;/div&gt;&lt;div&gt;+ onChangeFilter(selectedFilter: FilterType)&lt;/div&gt;&lt;div&gt;+ render()&lt;br&gt;&lt;/div&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;hachureGap=4;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-255" y="1940" width="610" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="yTGQvYgbSu-PY9iP79x5-2" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;Header&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;div&gt;Props:&lt;/div&gt;&lt;div&gt;- title: string&lt;/div&gt;&lt;div&gt;- onChangeFilter: Function&lt;/div&gt;&lt;div&gt;- selectedFilter: FilterType&lt;br&gt;&lt;hr size=&quot;1&quot;&gt;+ render()&lt;br&gt;&lt;/div&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;hachureGap=4;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="535" y="1650" width="175" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="yTGQvYgbSu-PY9iP79x5-4" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;ItemViewer&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;div&gt;Props:&lt;br&gt;&lt;/div&gt;&lt;div&gt;- viewItems: IgetView&lt;/div&gt;&lt;div&gt;- items: Item&lt;br&gt;&lt;/div&gt;&lt;div&gt;- indent: number&lt;br&gt;&lt;/div&gt;&lt;div&gt;State:&lt;br&gt;&lt;/div&gt;&lt;div&gt;- marginLeftStyle: string&lt;/div&gt;&lt;div&gt;- filteredItems: Item[]&lt;br&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ componentWillReceiveProps(nextProps: ItemViewerProps)&lt;br&gt;&lt;div&gt;+ expand(val : Item)&lt;/div&gt;&lt;div&gt;+ filterItems(props: ItemViewerProps): Item[]&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ render()&lt;br&gt;&lt;/div&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;hachureGap=4;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="510" y="1850" width="360" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="yTGQvYgbSu-PY9iP79x5-5" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;FilterPane&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;&gt;&lt;div&gt;Props:&lt;/div&gt;&lt;div&gt;- filters: UnorderedMap&amp;lt;Country | Type | Status | Provider, SelectionType&amp;gt;&lt;/div&gt;&lt;div&gt;- onToggle: Function&lt;br&gt;&lt;/div&gt;&lt;div&gt;State:&lt;/div&gt;&lt;div&gt;- filters: Item[]&lt;br&gt;&lt;/div&gt;&lt;div&gt;- filtersType: SelectionType[]&lt;br&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ componentWillReceiveProps(nextProps: FilterProps)&lt;br&gt;&lt;div&gt;+ render()&lt;br&gt;&lt;/div&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;hachureGap=4;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="520" y="2100" width="440" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="yTGQvYgbSu-PY9iP79x5-6" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;exitX=0.412;exitY=1.001;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="jx6eO44tTlSofghOy_yD-105" target="yTGQvYgbSu-PY9iP79x5-1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="720" y="1910" as="sourcePoint" />
+            <mxPoint x="560" y="1910" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="yTGQvYgbSu-PY9iP79x5-8" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="yTGQvYgbSu-PY9iP79x5-2" target="yTGQvYgbSu-PY9iP79x5-1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="385.0799999999999" y="1689.9999999999998" as="sourcePoint" />
+            <mxPoint x="385" y="1779.8" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="yTGQvYgbSu-PY9iP79x5-9" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="yTGQvYgbSu-PY9iP79x5-5">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="70.07999999999993" y="1870.1999999999998" as="sourcePoint" />
+            <mxPoint x="350" y="2060" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="yTGQvYgbSu-PY9iP79x5-10" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="yTGQvYgbSu-PY9iP79x5-4" target="yTGQvYgbSu-PY9iP79x5-1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="80.07999999999993" y="1880.1999999999998" as="sourcePoint" />
+            <mxPoint x="80" y="1970" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="yTGQvYgbSu-PY9iP79x5-11" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;exitX=0.873;exitY=-0.009;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;exitPerimeter=0;edgeStyle=orthogonalEdgeStyle;curved=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="yTGQvYgbSu-PY9iP79x5-4" target="yTGQvYgbSu-PY9iP79x5-4">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="735" y="1770" as="sourcePoint" />
+            <mxPoint x="555" y="2110" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="940" y="1800" />
+            </Array>
           </mxGeometry>
         </mxCell>
       </root>
