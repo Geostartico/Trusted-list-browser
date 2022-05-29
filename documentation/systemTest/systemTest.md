@@ -1,7 +1,5 @@
 # System Test
 
-
-
 ## Test case 1
 
 - Summary: when the application is executed, it must call the api and consequentially initialise the objects, to then show them on the view component of the GUI. Since no filter is chosen at the beginning, all services can be viewed
@@ -69,4 +67,3 @@
   3) the selected services are viewed
 
 - execution variables: different initial configurations and different orders of deselection may lead to different results
-

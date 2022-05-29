@@ -160,6 +160,15 @@ export class UnorderedSet<T extends Settable<T>>{
         this.forEach((item: T) => toReturn.push(item));
         return toReturn;
     }
+    /**
+     * 
+     * @returns a copy o the set
+     */
+    copy() : UnorderedSet<T>{
+        let ret : UnorderedSet<T> = new UnorderedSet<T>(this.buckets.length);
+        this.forEach((elem : T) => ret.add(elem));
+        return ret
+    }
 }
 /*
 class Test implements Settable<Test>{

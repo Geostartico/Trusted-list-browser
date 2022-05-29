@@ -2,6 +2,7 @@ import{UnorderedSet} from "./UnorderedSet"
 import{Settable} from "./settable";
 import{UnorderedMap} from "./UnorderedMap"
 import{Item} from "./itemInterface"
+import{Immutable} from "./immutable"
 /**
  * calculates the hash of a function
  * @param str a string
@@ -33,16 +34,18 @@ export enum ItemType {
 /**
  * Represents a service type
  */
-export class Type implements Settable<Type>, Item{
+export class Type implements Settable<Type>, Item, Immutable{
 
     /**
      * @readonly
      */
     readonly name: string;
 
-    readonly services: UnorderedSet<Service>;
+    private services: UnorderedSet<Service>;
 
     readonly item_type = ItemType.Type;
+
+    private immutable : boolean;
 
     /**
      * hashcode of the type
@@ -68,6 +71,13 @@ export class Type implements Settable<Type>, Item{
     constructor(name: string){
         this.name = name;
         this.services = new UnorderedSet<Service>(10);
+        this.immutable = false;
+    }
+    isImmutable(): boolean {
+        return this.immutable;
+    }
+    makeImmutable() : void{
+        this.immutable = true
     }
     /**
      * 
@@ -83,12 +93,29 @@ export class Type implements Settable<Type>, Item{
     getChildren(): any[] {
         return [];
     }
+    /**
+     * adds a service to the Type
+     * @param ser service to add
+     */
+    addService(ser : Service){
+        if(this.immutable){
+            throw new Error("the object is immutable")
+        }
+        this.services.add(ser);
+    }
+    /**
+     * 
+     * @returns the services associated to the Type
+     */
+    getServices() : UnorderedSet<Service>{
+        return this.services.copy();
+    }
 }
 
 /**
  * Represents a service status
  */
-export class Status implements Settable<Status>, Item{
+export class Status implements Settable<Status>, Item, Immutable{
 
     /**
      * @readonly
@@ -97,10 +124,12 @@ export class Status implements Settable<Status>, Item{
 
     readonly item_type = ItemType.Status;
 
+    private immutable;
+
     /**
-     * @readonly
+     * @private
      */
-    readonly services: UnorderedSet<Service>;
+    private services: UnorderedSet<Service>;
 
     /**
      * hashcode of the status
@@ -126,6 +155,14 @@ export class Status implements Settable<Status>, Item{
     constructor(aName: string){
         this.name = aName;
         this.services = new UnorderedSet<Service>(10);
+        this.immutable = false;
+    }
+
+    isImmutable(): boolean {
+        return this.immutable;
+    }
+    makeImmutable(): void {
+        this.immutable = true;
     }
     /**
      * @returns the name of the status
@@ -146,12 +183,29 @@ export class Status implements Settable<Status>, Item{
     getChildren(): any[] {
         return [];
     }
+    /**
+     * adds a service to the status
+     * @param ser service to add
+     */
+    addService(ser : Service){
+        if(this.immutable){
+            throw new Error("the object is immutable")
+        }
+        this.services.add(ser);
+    }
+    /**
+    * 
+    * @returns the services associated to the Type
+    */
+    getServices() : UnorderedSet<Service>{
+        return this.services.copy();
+    }
 }
 
 /**
  * Represents a service
  */
-export class Service implements Settable<Service>, Item{
+export class Service implements Settable<Service>, Item, Immutable{
     /**
      * name of the Service
      * @readonly
@@ -200,6 +254,8 @@ export class Service implements Settable<Service>, Item{
      * @private
      */
     private country? : Country;
+
+    private immutable : boolean;
     /**
      * Constructs a service Object
      * @param aName name of the service
@@ -221,6 +277,14 @@ export class Service implements Settable<Service>, Item{
         this.type = aType;
         this.tspId = aTspId;
         this.tob = aTob;
+        this.immutable = false;
+    }
+
+    isImmutable(): boolean {
+        return this.immutable;
+    }
+    makeImmutable(): void {
+        this.immutable = true;
     }
     /**
      * 
@@ -265,7 +329,7 @@ export class Service implements Settable<Service>, Item{
      * @returns the set of service types
      */
     getServiceTypes() : UnorderedSet<Type>{
-        return this.serviceTypes;
+        return this.serviceTypes.copy();
     }
     /**
      * get the Country
@@ -279,13 +343,16 @@ export class Service implements Settable<Service>, Item{
      * @param aCountry the Country to set
      */
     addCountry(aCountry : Country) : void{
+        if(this.immutable){
+            throw new Error("the object is immutable");
+        }
         this.country = aCountry;
     }
 }
 /**
  * Represents a provider
  */
-export class Provider implements Settable<Provider>, Item{
+export class Provider implements Settable<Provider>, Item, Immutable{
     /**
      * name of the provider
      * @readonly
@@ -325,6 +392,8 @@ export class Provider implements Settable<Provider>, Item{
      * @private
      */
     private services: UnorderedSet<Service>;
+
+    private immutable : boolean;
     /**
      * constructor
      * @param aName name of Provider
@@ -340,6 +409,13 @@ export class Provider implements Settable<Provider>, Item{
         aServiceTypes.forEach((str) => this.serviceTypes.set(str, 0));
         this.services = new UnorderedSet<Service>(10);
         this.possibleStatus = new UnorderedMap<Status, number>(10);
+        this.immutable = false;
+    }
+    isImmutable(): boolean {
+        return this.immutable;
+    }
+    makeImmutable(): void {
+        this.immutable = true;
     }
     /**
      * 
@@ -377,21 +453,21 @@ export class Provider implements Settable<Provider>, Item{
      * @returns he map of service types
      */
     getServiceTypes() : UnorderedMap<Type, number>{
-        return this.serviceTypes;
+        return this.serviceTypes.copy();
     }
     /**
      * get the service list
      * @returns a @see UnorderedSet of services
      */
     getServices() : UnorderedSet<Service>{
-        return this.services;
+        return this.services.copy();
     }
     /**
      * get the possible status
      * @returns the map of possible status
      */
     getPossibleStatus() : UnorderedMap<Status, number>{
-        return this.possibleStatus;
+        return this.possibleStatus.copy();
     }
     /**
      * get the Country Object
@@ -434,6 +510,9 @@ export class Provider implements Settable<Provider>, Item{
      * @param aService service to add
      */
     addService(aService : Service){
+        if(this.immutable){
+            throw new Error("the object is immutable");
+        }
         this.services.add(aService);
         aService.getServiceTypes().forEach((str : Type) => this.addType(str));
         this.addStatus(aService.status);
@@ -443,6 +522,9 @@ export class Provider implements Settable<Provider>, Item{
      * @param aCountry the country to add
      */
     addCountry(aCountry : Country){
+        if(this.immutable){
+            throw new Error("the object is immutable");
+        }
         this.country = aCountry;
         //updates the country of the services of the provider
         this.services.forEach((service: Service) => service.addCountry(aCountry));
@@ -452,7 +534,7 @@ export class Provider implements Settable<Provider>, Item{
 /**
  * describes a Country
  */
-export class Country implements Settable<Country>, Item{
+export class Country implements Settable<Country>, Item, Immutable{
     /**
      * the map of the country code to country name
      * @static
@@ -463,7 +545,7 @@ export class Country implements Settable<Country>, Item{
      * @param arr an array with elements in the form {countryCode : "string", countryName : "string"}
      * @static
      */
-    static initCodeToStringMap(arr : Array<any>){
+    static initCodeToStringMap(arr : Array<any>) : void{
         Country.codeToString = new Map<string, string>();
         arr.forEach((el : any) => Country.codeToString.set(el["countryCode"], el["countryName"]))
     }
@@ -473,7 +555,7 @@ export class Country implements Settable<Country>, Item{
      * @static
      * @returns codeToObject, map containing entries code -> Country
      */
-    static initCodeToObjectMap(arr : Array<any>){
+    static initCodeToObjectMap(arr : Array<any>) : Map<string, Country>{
         let codeToObject = new Map<string, Country>();
         arr.forEach((el) => codeToObject.set(el.countryCode, new Country(el.countryCode)));
         return codeToObject
@@ -503,6 +585,8 @@ export class Country implements Settable<Country>, Item{
      * @private
      */
     private providers : UnorderedSet<Provider>;
+
+    private immutable : boolean;
     /**
      * constructor of Country
      * @param code country code string
@@ -512,6 +596,13 @@ export class Country implements Settable<Country>, Item{
         this.possibleStatus = new UnorderedMap<Status, number>(10);
         this.possibleServiceTypes = new UnorderedMap<Type, number>(10);
         this.providers = new UnorderedSet<Provider>(10);
+        this.immutable = false;
+    }
+    isImmutable(): boolean {
+        return this.immutable;
+    }
+    makeImmutable(): void {
+        this.immutable = true;
     }
     /**
      * 
@@ -552,21 +643,21 @@ export class Country implements Settable<Country>, Item{
      * @returns the map of the possibleTypes
      */
     getPossibleServiceTypes() : UnorderedMap<Type, number>{
-        return this.possibleServiceTypes;
+        return this.possibleServiceTypes.copy();
     }
     /**
      * get the possible status
      * @returns return the map of possible status
      */
     getPossibleStatus() : UnorderedMap<Status, number>{
-        return this.possibleStatus;
+        return this.possibleStatus.copy();
     }
     /**
      * get the set of providers
      * @returns the @see UnorderedSet of providers
      */
     getProviders() : UnorderedSet<Provider>{
-        return this.providers;
+        return this.providers.copy();
     }
     /**
      * updates the status map
@@ -607,6 +698,9 @@ export class Country implements Settable<Country>, Item{
      * @param provider provider to add
      */
     addProvider(provider : Provider) : void{
+        if(this.immutable){
+            throw new Error("the object is immutable");
+        }
         //the provider was already created
         if(this.providers.has(provider)){
             return;

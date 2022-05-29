@@ -181,4 +181,13 @@ export class UnorderedMap<K extends Settable<K>,V>{
         this.forEach((v : V, k : K) => toReturn.push(k));
         return toReturn;
     }
+    /**
+     * 
+     * @returns a copy of the map
+     */
+    copy() : UnorderedMap<K,V>{
+        let ret : UnorderedMap<K,V> = new UnorderedMap<K,V>(this.buckets.length);
+        this.forEach((val : V, key : K) => ret.set(key, val));
+        return ret
+    }
 }

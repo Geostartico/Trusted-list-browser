@@ -52,5 +52,9 @@ describe('Unordered Map Test', function () {
         });
         assert(set2.getSize(), 12);
     })
-    
+    it("should copy the map", function () {
+        let copy = et.copy();
+        assert.equal(copy.getSize(), et.getSize())
+        copy.forEach((val, key) => assert.equal(et.has(key), true))
+    })    
 });

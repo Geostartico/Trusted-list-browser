@@ -75,7 +75,7 @@ describe("decoder test with objectify function", () => {
         all.servicesArray.forEach((ser) => {
             all.typeSet.forEach((type) => {
                 if(ser.getServiceTypes().has(type)){
-                    assert.equal(type.services.has(ser), true);
+                    assert.equal(type.getServices().has(ser), true);
                 }
             })
         })
@@ -84,7 +84,7 @@ describe("decoder test with objectify function", () => {
         all.servicesArray.forEach((ser) => {
             all.statusSet.forEach((status) => {
                 if(ser.getServiceTypes().has(status)){
-                    assert.equal(status.services.has(ser), true);
+                    assert.equal(status.getServices().has(ser), true);
                 }
             })
         })

@@ -380,10 +380,10 @@ export class Filter{
                 return item.getServices();
             }
             case ItemType.Status: {
-                return item.services;
+                return item.getServices();
             }
             case ItemType.Type: {
-                return item.services;
+                return item.getServices();
             }
         }
     }

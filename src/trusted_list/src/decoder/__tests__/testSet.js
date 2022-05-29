@@ -45,4 +45,9 @@ describe('Unordered Set Test', function () {
         });
         assert(set2.getSize(), 12);
     })
+    it("should copy the set", function () {
+        let copy = et.copy();
+        assert.equal(copy.getSize(), et.getSize())
+        copy.forEach((elem) => assert.equal(et.has(elem), true))
+    })
 });

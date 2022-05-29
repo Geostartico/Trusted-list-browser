@@ -1,3 +1,4 @@
+import { stat } from "fs/promises";
 import{Country, Provider, Service, Type, Status} from "./items"
 import { UnorderedMap } from "./UnorderedMap";
 import { UnorderedSet } from "./UnorderedSet";
@@ -76,9 +77,9 @@ export function objectify(ctodict : any, jsondict : any) : {"codeToObject": Map<
         //create service
         let ser = new Service(service_dict["serviceName"], service_dict["serviceId"], serviceTypeArr, curProv, stat, service_dict["type"], service_dict["tspId"], service_dict["tob"]);
         //add the service to the status
-        stat.services.add(ser);
+        stat.addService(ser);
         //add the service to the serviceTypes it contains
-        serviceTypeArr.forEach((elem : Type) => elem.services.add(ser));
+        serviceTypeArr.forEach((elem : Type) => elem.addService(ser));
         //adds the service to the provider
         curProv.addService(ser);
         //adds the services to the array of all the services
@@ -92,8 +93,12 @@ export function objectify(ctodict : any, jsondict : any) : {"codeToObject": Map<
     else{
       throw new Error("country not found");
     }
+    curProv.makeImmutable()
+    curProv.getServices().forEach((elem : Service) => elem.makeImmutable());
     });
-  
+  codeToObject.forEach((val : Country, key : string) => {val.makeImmutable()});
+  typeSet.forEach((elem: Type) => elem.makeImmutable());
+  statusSet.forEach((elem : Status) => elem.makeImmutable());
   return {"codeToObject": codeToObject, "servicesArray": servicesArray, "typeSet" : typeSet, "statusSet" : statusSet};
 }
 /*
