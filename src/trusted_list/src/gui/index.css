@@ -2,8 +2,8 @@
     --main-bg-color: #262626;
     --main-text-color: #D4D4D4;
 }
+
 body {
-  height:90vh;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -19,6 +19,11 @@ code {
 
 div {
     background-color: var(--main-bg-color);
+}
+
+.panelsContainer {
+  height:90vh;
+  margin: 0;
 }
 
 .header {
@@ -98,18 +103,12 @@ div {
     color: var(--main-bg-color);
 }
 
-.itemText {
-}
-
-
 .filtersContainer {
     width: 100%;
     height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
-    /*background-color: var(--main-bg-color);*/
 }
-
 
 .sash-module_sash__eG8e7.sash-module_hover__119X7:before,
 .sash-module_sash__eG8e7.sash-module_active__FozP9:before {
@@ -166,12 +165,6 @@ div {
 input:checked + .slider {
   background-color: var(--main-text-color);
 }
-
-/*
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-*/
 
 input:checked + .slider:before {
   -webkit-transform: translateX(24px);

@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
-import { Country, Provider, Service, Status, Type } from "./decoder/items";
-import{ Item } from "./decoder/itemInterface"
-import {UnorderedMap} from './decoder/UnorderedMap';
-import {SelectionType} from './Enums';
+import { Country, Provider, Status, Type } from "../decoder/items";
+import { Item } from "../decoder/itemInterface"
+import { UnorderedMap } from '../decoder/UnorderedMap';
+import { SelectionType } from './Enums';
 
+/**
+ * @param filters contain all the entries of the active filter
+ * @param onToggle is a callback function to be used when is performed an action o a entry
+ */
 interface FilterProps {
     filters: UnorderedMap<Country | Type | Status | Provider, SelectionType>;
     onToggle: Function;
 }
 
+/**
+ * @param filters used to store the Item to be displayed
+ * @param filtersType used to manage the states of the entries
+ */
 interface FilterState {
     filters: Item[];
     filtersType: SelectionType[];
@@ -16,6 +24,9 @@ interface FilterState {
 
 class FilterPane extends Component<FilterProps, FilterState> {
 
+    /**
+     * @param props is used to set the state variables correctly
+     */
     constructor(props: FilterProps) {  
         super(props);
         this.state = {
@@ -25,6 +36,9 @@ class FilterPane extends Component<FilterProps, FilterState> {
         console.log(this.state.filters);
     }
 
+    /**
+     * Each time there is an update the entries have to be recalculate
+     */
     componentWillReceiveProps(nextProps: FilterProps) {
 
         this.setState({
@@ -35,12 +49,17 @@ class FilterPane extends Component<FilterProps, FilterState> {
     }
 
 
+    /**
+     * All the necessary entries will be created on the basis of the internal data of the state
+     */
     render() {
         return (
           <>
             <div className = 'filtersContainer'>
-
                 {
+                    // loop each value in the array and create a proper div with:
+                    //  + checkbox
+                    //  + description
                     this.state.filters.map((val: Item, index: number) => {
                         return (
                             <div key={val.getText() + index} className='filterEntryContainer'>
@@ -48,7 +67,7 @@ class FilterPane extends Component<FilterProps, FilterState> {
                                 <input 
                                     type="checkbox" 
                                     onChange={() => this.state.filtersType[index] !== SelectionType.NotSelectable ? this.props.onToggle(this.state.filters[index]) : undefined}
-                                    checked ={this.state.filtersType[index] == SelectionType.Selected}
+                                    checked ={this.state.filtersType[index] === SelectionType.Selected}
                                 />
                                     <span className={"slider" + (this.state.filtersType[index] === SelectionType.NotSelectable ? ' NotSelectable' : '')} >
                                     </span>

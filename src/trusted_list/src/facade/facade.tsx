@@ -30,8 +30,7 @@ export class Facade{
         this.allProviders= new UnorderedSet(10);
         this.allTypes = new UnorderedSet(10);
         this.allStatuses = new UnorderedSet(10);
-        this.setUp(onSetUpCompleted);//.then(onSetUpCompleted());
-        console.log("dovrebbe avere finto il costruttore");
+        this.setUp(onSetUpCompleted);
     }
 
     async setUp(onSetUpCompleted: Function) {
