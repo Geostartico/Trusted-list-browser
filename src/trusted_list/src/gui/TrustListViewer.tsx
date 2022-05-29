@@ -85,7 +85,7 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-                });
+            });
             TrustListViewer.isLoading = true;
         }
     }
@@ -113,7 +113,7 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
     /**
      * @returns an UnorderedMap with Key the values inside the set and Value the SelectionType, initially always selectable
      */
-    createEntryFilterSet<T extends Settable<T>, Item>(map: UnorderedSet<T>): UnorderedMap<T, SelectionType> {
+    createEntryFilterSet<T extends Settable<T>>(map: UnorderedSet<T>): UnorderedMap<T, SelectionType> {
         let newMap: UnorderedMap<T, SelectionType> = new UnorderedMap(10);
 
         map.forEach((val: T) => {

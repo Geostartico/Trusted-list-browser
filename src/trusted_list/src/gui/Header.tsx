@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {FilterType} from './Enums';
+import { FilterType } from './Enums';
 
 /**
  * @param title is the string will be displayed 

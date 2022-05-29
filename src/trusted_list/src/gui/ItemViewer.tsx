@@ -23,7 +23,6 @@ interface ItemViewerProps {
 }
 
 /**
- * @param expand used to show or not the inside entries of an entry
  * @param marginLeftStyle used to calculate the indent 
  * @param filteredItems contain all the items that have to be shown, after been properly filtered
  */
@@ -51,7 +50,7 @@ class ItemViewer extends Component<ItemViewerProps, ItemViewerState> {
     /**
      * Eeach time there is an update the entries have to be filtered again
      */
-    UNSAFE_componentWillUpdate(nextProps: ItemViewerProps) {
+    componentWillReceiveProps(nextProps: ItemViewerProps) {
 
         this.setState({
             filteredItems: this.filterItems(nextProps),
@@ -117,7 +116,7 @@ class ItemViewer extends Component<ItemViewerProps, ItemViewerState> {
                         </button>
                         {/* recursively render all the childs of this components */}
                         {val.expand && 
-                            <ItemViewer key={val.getText() + index.toString()} viewItems={this.props.viewItems} items={val} indent={this.props.indent + 1}/>
+                            <ItemViewer key={val.getText() + index} viewItems={this.props.viewItems} items={val} indent={this.props.indent + 1}/>
                         }
                     </>
                 )
