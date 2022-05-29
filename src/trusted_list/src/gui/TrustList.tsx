@@ -15,7 +15,7 @@ import { ToastContainer, toast } from 'react-toastify';
 /**
  * @param appTitle Title of the web page
  */
-interface TrustListViewerProps {
+interface TrustListProps {
     appTitle: string;
 }
 
@@ -29,7 +29,7 @@ interface TrustListViewerProps {
  * @param statusEntriesFilter all possible entries inside the Status filter and the SelectionType status
  * @param providerEntriesFilter all possible entries inside the Provider filter and the SelectionType status
  */
-interface TrustListViewerStatus {
+interface TrustListState {
     activeFilter: FilterType;
     facade: Facade;
     activeFilterItems: UnorderedMap<Country | Type | Status | Provider, SelectionType> | null;
@@ -47,7 +47,7 @@ interface TrustListViewerStatus {
  *  + Viewer
  *  + Filters
  */
-class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerStatus> {
+class TrustList extends Component<TrustListProps, TrustListState> {
 
     // Used to manage the loading toast
     static isLoading: boolean = false;
@@ -56,7 +56,7 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
      * Initially all the information inside the status is null, 
      * the facade have to fetch and decode the data
      */
-    constructor(props: TrustListViewerProps) {
+    constructor(props: TrustListProps) {
         super(props);
 
         this.onChangeFilter = this.onChangeFilter.bind(this);
@@ -75,7 +75,7 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
             providerEntriesFilter: null,
         };
 
-        if(!TrustListViewer.isLoading) {
+        if(!TrustList.isLoading) {
             //toast.success('🦄 Set up running!');
             toast('🦄 Wow so easy!', {
                 position: "bottom-right",
@@ -86,7 +86,7 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
                 draggable: true,
                 progress: undefined,
             });
-            TrustListViewer.isLoading = true;
+            TrustList.isLoading = true;
         }
     }
 
@@ -105,7 +105,7 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
         }, () => {
 
             toast.success('🦄 Set up Done!');
-            TrustListViewer.isLoading = false;
+            TrustList.isLoading = false;
 
         });
     }
@@ -297,4 +297,4 @@ class TrustListViewer extends Component<TrustListViewerProps, TrustListViewerSta
     }
 }
 
-export default TrustListViewer;
+export default TrustList;

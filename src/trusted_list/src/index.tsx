@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import TrustListViewer from './gui/TrustListViewer';
+import TrustList from './gui/TrustList';
 
 import './gui/index.css';
 import "allotment/dist/style.css";
@@ -15,8 +15,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     {/*<App />*/}
-    <TrustListViewer
-        appTitle = {'TrustListViewer'}
+    <TrustList
+        appTitle = {'Trusted List'}
     />
   </React.StrictMode>
 );
