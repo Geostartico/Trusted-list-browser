@@ -19,14 +19,14 @@ export class Fetcher{
 				
 				if (this.counter < 2){
 					this.counter += 1;
-					return await this.getJSON(url);
+					//return await this.getJSON(url);
 				}
 				else{
 				    this.counter = 0;
 					throw new Error('Can\'t fetch json');
                 }
         	}
-        	return res.json();
-        })
+        	res.json();
+        });
 	}
 }
