@@ -60,10 +60,21 @@ export class Facade{
         if(this.filter === undefined) return;
         this.selection = this.filter.getFiltered();
     }
-    updateRemove(item : Country | Type | Status | Provider){
+    updateRemove(item : Country | Type | Status | Provider) : boolean{
         this.filter?.removeRule(new Rule(item));
-        if(this.filter === undefined) return;
-        this.selection = this.filter.getFiltered();
+
+        if(this.filter === undefined) return false;
+
+        let temp = this.filter.getFiltered();
+        
+        if(temp.services.getSize() === 0){
+            this.filter.addRule(new Rule(item));
+            return false
+        }
+        else{
+            this.selection = temp;
+            return true;
+        }
     }
     getSelectableCountries() : UnorderedSet<Country>{
         return this.selection.countries;
@@ -93,5 +104,14 @@ export class Facade{
             providers.add(elem.getProvider());
         })
         return {"countries" : countries, "providers" : providers, "services" : services};
+    }
+    getSelected() : IgetView{
+        let temp = this.filter?.getSelected();
+        if(temp?.countries !== undefined && temp.providers !== undefined && temp.services !== undefined){
+            return {"countries" : temp?.countries, "providers" : temp?.providers, "services" : temp?.services};
+        }
+        else{
+            throw new Error("undefined filter");
+        }
     }
 }

@@ -73,7 +73,7 @@ actors: user, trusted list server
 
 - precondition: the user has already filtered the items by a criteria
 
-- acceptance criteria: the item is no longer selected and the selectable items and selected services are coherent with currently selected items(given the rules defined by the filtering algorithm)
+- acceptance criteria: the item is no longer selected and the selectable items are coherent with currently selected items or the item isn't selected because it would make the selected list empty(given the rules defined by the filtering algorithm)
 
 - actions:
   - via the interface the user is able to remove the selection from a specific item

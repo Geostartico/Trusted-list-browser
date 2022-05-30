@@ -51,7 +51,7 @@
 
 ## Test case 4
 
-- Summary: on the filter component the selected items must be selectable, eventually changing the selected services
+- Summary: on the filter component the selected items must be selectable, eventually giving an error if the deselection returns would make the list of selected services empty
 
 - Precondition: items are selected
 
@@ -59,7 +59,11 @@
   1) the previously selected item is no longer selected
   2) the services shown on the view component are at least one
   3) the services shown are coherent with the currently selected items
-  4) filters that would make the selected services list empty are automatically deselected
+
+  or
+
+  1) the item isn't deselected
+  2) an error is shown  
 
 - Test script:
   1) a selected in the filter list is chosen
