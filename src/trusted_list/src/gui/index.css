@@ -172,16 +172,26 @@ input:checked + .slider:before {
   transform: translateX(24px);
 }
 
-.Toastify__toast-theme--light div {
+.Toastify__toast-body {
     background: var(--toastify-color-light) !important;
 }
+
+.Toastify__toast-body div {
+    background: var(--toastify-color-light) !important;
+}
+
+/*
+.Toastify__toast-theme--light Toastify__toast-body div{
+    background: var(--toastify-color-light) !important;
+}
+*/
 
 .titleNameContainer {
     width: 100%;
     height: 100%;
 }
 
-svg {
+.nameSvg {
 	font-family: 'Russo One', sans-serif;
 	position: absolute; 
 	width: 100%; height: 100%;

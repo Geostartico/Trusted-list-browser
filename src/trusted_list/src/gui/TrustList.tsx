@@ -9,7 +9,7 @@ import { Country, Provider, Status, Type } from "../decoder/items";
 import { FilterType, SelectionType } from "./Enums";
 import { Settable } from '../decoder/settable';
 import { UnorderedMap } from '../decoder/UnorderedMap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 
 /**
@@ -76,16 +76,7 @@ class TrustList extends Component<TrustListProps, TrustListState> {
         };
 
         if(!TrustList.isLoading) {
-            //toast.success('🦄 Set up running!');
-            toast('🦄 Wow so easy!', {
-                position: "bottom-right",
-                autoClose: 4000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            toast('🦄 Set up running!');
             TrustList.isLoading = true;
         }
     }
@@ -104,7 +95,7 @@ class TrustList extends Component<TrustListProps, TrustListState> {
             viewItems: this.state.facade.getView(),
         }, () => {
 
-            toast.success('🦄 Set up Done!');
+            toast('🦄 Set up Done!');
             TrustList.isLoading = false;
 
         });
@@ -224,17 +215,6 @@ class TrustList extends Component<TrustListProps, TrustListState> {
             {/*</header>*/}
 
             {/*Used for the notification*/}
-            <ToastContainer
-                position="bottom-right"
-                autoClose={4000}
-                hideProgressBar={false}
-                newestOnTop
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
 
             {/*The body is divided in two panals, the Viewer container and the Filter container, both resizable*/}
             <div className='panelsContainer'>
@@ -270,7 +250,7 @@ class TrustList extends Component<TrustListProps, TrustListState> {
                             :
 
                             <div className='titleNameContainer'>
-                                <svg viewBox="0 0 1000 300">
+                                <svg className='nameSvg' viewBox="0 0 1000 300">
                                 	<text x="50%" y="0%" dy=".45em" textAnchor="middle">
                                 		Giovanni
                                 	</text>
