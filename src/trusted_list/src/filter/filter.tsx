@@ -5,7 +5,7 @@
 
 import {Country, Provider, Service, Status, Type, ItemType} from "../decoder/items"
 import {UnorderedSet} from "../decoder/UnorderedSet"
-import {UnorderedMap} from "../decoder/UnorderedMap"
+import {UnorderedMap, mapIncreaseOrInsert, mapDecreaseOrRemove} from "../decoder/UnorderedMap"
 import {Settable} from "../decoder/settable"
 
 
@@ -18,11 +18,11 @@ import {Settable} from "../decoder/settable"
  * - services
  */
 export class Selection{
-    countries: UnorderedSet<Country>;
-    providers: UnorderedSet<Provider>;
-    statuses:  UnorderedSet<Status>;
-    types:     UnorderedSet<Type>;
-    services:  UnorderedSet<Service>;
+    public countries: UnorderedSet<Country>;
+    public providers: UnorderedSet<Provider>;
+    public statuses:  UnorderedSet<Status>;
+    public types:     UnorderedSet<Type>;
+    public services:  UnorderedSet<Service>;
 
     constructor(
                 countries: Country[]  = new Array<Country>(),
@@ -51,7 +51,7 @@ export class Selection{
      * Note: this is the opposite of {@link removeFromSelection}
      * @param item: the item to add
      */
-    add(item: Type|Country|Status|Provider|Service){
+    public add(item: Type|Country|Status|Provider|Service){
         switch(item.item_type){
             case ItemType.Type:     { this.types.add(item);     return; }
             case ItemType.Country:  { this.countries.add(item); return; }
@@ -67,7 +67,7 @@ export class Selection{
      * Note: this is the opposite of {@link addToSelection}
      * @param item: the item to remove
      */
-    remove(item: Type|Country|Status|Provider|Service){
+    public remove(item: Type|Country|Status|Provider|Service){
         switch(item.item_type){
             case ItemType.Type:     { this.types.remove(item);     return; }
             case ItemType.Country:  { this.countries.remove(item); return; }
@@ -83,7 +83,7 @@ export class Selection{
      * @param item: the item to remove
      * @returns true is the element is present, false otherwise
      */
-    has(item: Type|Country|Status|Provider|Service): boolean{
+    public has(item: Type|Country|Status|Provider|Service): boolean{
         switch(item.item_type){
             case ItemType.Type:     { return this.types.has(item);     }
             case ItemType.Country:  { return this.countries.has(item); }
@@ -97,7 +97,7 @@ export class Selection{
      * Get the set of the corresponding item type
      * @param item_type: the type of the required set
      */
-    getSet(item_type: ItemType){
+    public getSet(item_type: ItemType){
         switch(item_type){
             case ItemType.Status:   return this.statuses;
             case ItemType.Provider: return this.providers;
@@ -110,7 +110,7 @@ export class Selection{
      * Get a {@link Map} whose keys are an {@link ItemType} instance and whose values are the {@link Set}s of items
      * @returns a {@link Map} whose keys are an {@link ItemType} instance and whose values are the {@link Set}s of items
      */
-    getSets(): Map<ItemType, UnorderedSet<Service> |
+    public getSets(): Map<ItemType, UnorderedSet<Service> |
                              UnorderedSet<Status>  |
                              UnorderedSet<Type>    |
                              UnorderedSet<Country> |
@@ -130,7 +130,7 @@ export class Selection{
     /**
     * @return copy of this Selection (no deep copy, but maps are reconstructed)
     */
-    copy(){
+    public copy(){
         return new Selection(
             Array.from(this.countries.values()),
             Array.from(this.providers.values()),
@@ -242,7 +242,7 @@ export class Filter{
      * Note: this is the opposite of {@link removeRule}
      * @param rule: {@link Rule} object to add
      */
-    addRule(rule: Rule){
+    public addRule(rule: Rule){
 
         if(rule === null || rule === undefined || rule.filtering_item === null || rule.filtering_item === undefined)
             throw new Error("Cannot add a null or undefined rule");
@@ -265,7 +265,7 @@ export class Filter{
      * Note: this is the opposite of {@link addRule}
      * @param rule: {@link Rule} object to remove
      */
-    removeRule(rule: Rule){
+    public removeRule(rule: Rule){
 
         if(rule === null || rule === undefined || rule.filtering_item === null || rule.filtering_item === undefined)
             throw new Error("Cannot remove a null or undefined rule");
@@ -287,8 +287,8 @@ export class Filter{
     /**
      * @returns selected objects that are converted from the added rules
      */
-    getSelected(): Selection{
-        return this.selected;
+    public getSelected(): Selection{
+        return this.selected.copy();
     }
 
     /**
@@ -296,7 +296,7 @@ export class Filter{
      * {@link selected} map if some elemets are no longer selectable after a previous removal
      * @returns: set of filtered services based on the rules
      */
-    getFiltered(): Selection{
+    public getFiltered(): Selection{
 
         let selectables = new Selection();
 
@@ -304,10 +304,10 @@ export class Filter{
         this.convertEmptyToFull();
 
 
-        let filtered: UnorderedSet<Service> = mapIntersect(new Array(this.service_sums.get(ItemType.Country),
-                                                                     this.service_sums.get(ItemType.Provider),
-                                                                     this.service_sums.get(ItemType.Type),
-                                                                     this.service_sums.get(ItemType.Status)));
+        let filtered: UnorderedSet<Service> = UnorderedMap.mapIntersect(new Array(this.service_sums.get(ItemType.Country),
+                                                                                  this.service_sums.get(ItemType.Provider),
+                                                                                  this.service_sums.get(ItemType.Type),
+                                                                                  this.service_sums.get(ItemType.Status)));
 
         filtered.forEach((service: Service) => {
             selectables.services.add (service);
@@ -327,7 +327,7 @@ export class Filter{
         // Return to initial state after treating all empty selections as full selection
         this.convertFullToEmpty();
 
-        return selectables;
+        return selectables.copy();
     }
 
 
@@ -346,7 +346,7 @@ export class Filter{
                             maps.push(map);
                     });
                     maps.push(setToMap(this.getServicesFromItem(item)));
-                    if(mapIntersect(maps).getSize() > 0){
+                    if(UnorderedMap.mapIntersect(maps).getSize() > 0){
                         selectables.add(item);
                     }
                 }
@@ -413,62 +413,6 @@ export class Filter{
 }
 
 /**
- * Intersects a variable number of maps
- * @param maps: comma separated map {@link UnorderedMap} maps
- * @returns: {@link UnorderedSet} containing services of type {@link Service} commmon to all maps
- * @throws {@link Error}
- * Thrown if one of the input maps is null
- */
-function mapIntersect(maps: Array<UnorderedMap<Service, number> | null | undefined>): UnorderedSet<Service>{
-
-    let ret = new UnorderedSet<Service>(10);
-
-    // Return empty map if there are no input maps
-    if(maps.length < 1)
-        return ret;
-
-    // Throw error on null map and find the shortest map for faster search
-    let shortest_map = maps[0];
-    if(shortest_map === undefined || shortest_map === null)
-        throw new Error("Error, intersect on null maps");
-
-    for(let map of maps){
-        if(map === undefined || map === null)
-            throw new Error("Error, intersect on null maps");
-
-        if(map.getSize() < shortest_map.getSize())
-            shortest_map = map;
-    }
-
-    // If there is just one map, return a copy of it
-    if(maps.length === 1){
-        for(let service of shortest_map.keys())
-            ret.add(service);
-        return ret;
-    }
-
-    // Search for each filtered service of shortest map in other filtering maps
-    let all_maps_have_service: boolean;
-    for(let service of shortest_map.keys()){
-        all_maps_have_service = true;
-        for(let map of maps){
-            if(map === undefined || map === null)
-                throw new Error("Error, intersect on null maps");
-            if(map === shortest_map)
-                continue;
-            if(!map.has(service)){
-                all_maps_have_service = false;
-                break;
-            }
-        }
-        if(all_maps_have_service)
-            ret.add(service);
-    }
-
-    return ret;
-}
-
-/**
  * Converts an {@link UnorderedSet} to an {@link UnorderedMap} whose keys are the number 1
  * @param set: The set to be converted
  * @returns a map whose keys are the number 1
@@ -479,42 +423,4 @@ function setToMap<K extends Settable<K>>(set: UnorderedSet<K>): UnorderedMap<K, 
         ret.set(value, 1);
     });
     return ret;
-}
-
- /**
-  * Increases the numeric value associated to a key in an {@link UnorderedMap} object, if not present, it inserts it (with the value 1)
-  * @param key: value to update
-  * @param map: map
-  * @throws {@link error}
-  * Thrown if the associated value to the key is null or does not exist in the map
-  */
-function mapIncreaseOrInsert<K extends Settable<K>>(key: K, map: UnorderedMap<K, number>){
-    if(map.has(key)){
-        let value: number|null = map.get(key);
-        if(value === null || value === undefined)
-            throw new Error("Missing or null value in map associated with input key");
-        map.set(key, value+1);
-    }
-    else
-        map.set(key, 1);
-}
-
- /**
-  * Decreases the numeric value associated to a key in an {@link UnorderedMap} object, if the value drops to 0, it removes the entry
-  * The key must be in the map, otherwise an exception will be thrown
-  * @param key: key to remove
-  * @param map: map containing the key to be removed
-  * @throws @link{Error}
-  * Thrown if the key is not inserted in the map
-  */
-function mapDecreaseOrRemove<K extends Settable<K>>(key: K, map: UnorderedMap<K, number>){
-    if(!map.has(key))
-        throw new Error("Trying to remove an key that does not exist");
-    let value: number|null = map.get(key);
-    if(value === null || value === undefined)
-        throw new Error("Null value in map associated with input key");
-    else if(value > 1)
-        map.set(key, value-1);
-    else
-        map.remove(key);
 }

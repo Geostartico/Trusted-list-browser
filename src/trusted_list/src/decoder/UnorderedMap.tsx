@@ -1,6 +1,7 @@
 import { Node } from "./link";
 import { Entry } from "./entry";
 import { Settable } from "./settable";
+import { UnorderedSet } from "./UnorderedSet";
 
 export class UnorderedMap<K extends Settable<K>,V>{
     /**
@@ -190,4 +191,101 @@ export class UnorderedMap<K extends Settable<K>,V>{
         this.forEach((val : V, key : K) => ret.set(key, val));
         return ret
     }
+
+
+    /**
+    * Intersects a variable number of maps
+    * @param maps: comma separated map {@link UnorderedMap} maps
+    * @returns: {@link UnorderedSet} containing services of type {@link Service} commmon to all maps
+    * @throws {@link Error}
+    * Thrown if one of the input maps is null
+    */
+    static mapIntersect<K extends Settable<K>>(maps: Array<UnorderedMap<K, number> | null | undefined>): UnorderedSet<K>{
+
+        let ret = new UnorderedSet<K>(10);
+
+        // Return empty map if there are no input maps
+        if(maps.length < 1)
+            return ret;
+
+        // Throw error on null map and find the shortest map for faster search
+        let shortest_map = maps[0];
+        if(shortest_map === undefined || shortest_map === null)
+            throw new Error("Error, intersect on null maps");
+
+        for(let map of maps){
+            if(map === undefined || map === null)
+                throw new Error("Error, intersect on null maps");
+
+            if(map.getSize() < shortest_map.getSize())
+                shortest_map = map;
+        }
+
+        // If there is just one map, return a copy of it
+        if(maps.length === 1){
+            for(let service of shortest_map.keys())
+                ret.add(service);
+            return ret;
+        }
+
+        // Search for each filtered service of shortest map in other filtering maps
+        let all_maps_have_service: boolean;
+        for(let service of shortest_map.keys()){
+            all_maps_have_service = true;
+            for(let map of maps){
+                if(map === undefined || map === null)
+                    throw new Error("Error, intersect on null maps");
+                if(map === shortest_map)
+                    continue;
+                if(!map.has(service)){
+                    all_maps_have_service = false;
+                    break;
+                }
+            }
+            if(all_maps_have_service)
+                ret.add(service);
+        }
+
+        return ret;
+    }
+}
+
+// STATIC FUNCTIONS //
+
+ /**
+  * Increases the numeric value associated to a key in an {@link UnorderedMap} object, if not present, it inserts it (with the value 1)
+  * @param key: value to update
+  * @param map: map
+  * @throws {@link error}
+  * Thrown if the associated value to the key is null or does not exist in the map
+  */
+export function mapIncreaseOrInsert<K extends Settable<K>>(key: K, map: UnorderedMap<K, number>){
+    if(map.has(key)){
+        let value: number|null = map.get(key);
+        if(value === null || value === undefined)
+            throw new Error("Missing or null value in map associated with input key");
+        map.set(key, value+1);
+    }
+    else
+        map.set(key, 1);
+}
+
+ /**
+  * Decreases the numeric value associated to a key in an {@link UnorderedMap} object, if the value drops to 0, it removes the entry
+  * The key must be in the map, otherwise an exception will be thrown
+  * @param key: key to remove
+  * @param map: map containing the key to be removed
+  * @throws @link{Error}
+  * Thrown if the key is not inserted in the map
+  */
+export function mapDecreaseOrRemove<K extends Settable<K>>(key: K, map: UnorderedMap<K, number>){
+    if(!map.has(key))
+        throw new Error("Trying to remove an key that does not exist");
+    let value: number|null = map.get(key);
+    if(value === null || value === undefined)
+        throw new Error("Null value in map associated with input key");
+    else if(value > 1)
+        map.set(key, value-1);
+    else
+        map.remove(key);
 }
