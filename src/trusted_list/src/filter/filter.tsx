@@ -174,8 +174,8 @@ export class Filter{
     /**
      * @private
      * A map whose keys are {@link ItemType} enums representing the type of the corresponding service_sum
-     * Brief explanation (see more in the filter documentation): this {@link UnorderedSet}s are the cache for the
-     * affected services by each type of item (Provider, Status, Type and Country)
+     * This {@link UnorderedSet}s are the cache for the
+     * affected services by each type of item (Provider, Status, Type and Country). See more in the filter documentation)
      */
     private service_sums: Map<ItemType, UnorderedMap<Service, number>>;
 
@@ -192,13 +192,11 @@ export class Filter{
      */
     private readonly all_services: UnorderedMap<Service, number>;
 
-    private readonly all_items: Selection;
-
     /**
      * @private
-     * Type of the first applied rule
+     * This object contains all possible items for each category, except for services, that can be found in {@link all_services}
      */
-    private first_rule_type: ItemType;
+    private readonly all_items: Selection;
 
 
     constructor(service_list: Service[]){
@@ -231,9 +229,6 @@ export class Filter{
                 this.all_items.types.add(type);
             });
         });
-
-        // This is just a default initialization
-        this.first_rule_type = ItemType.Country;
     }
 
 
@@ -294,7 +289,7 @@ export class Filter{
     /**
      * Main filtering method, intersects each chached sum map (e.g. {@link countries_service_sum}) and updates the
      * {@link selected} map if some elemets are no longer selectable after a previous removal
-     * @returns: set of filtered services based on the rules
+     * @returns: set of filtered services based on the added rules
      */
     public getFiltered(): Selection{
 
@@ -337,6 +332,7 @@ export class Filter{
      * @param selectables: items that can be added to the filter as rules
      */
     private addSelectables(selectables: Selection){
+        // The set would be empty if the intersection with the other service_sums sets is empty
         this.all_items.getSets().forEach((set, item_type) => {
             set.forEach((item: any) => {
                 if(!selectables.has(item)){
