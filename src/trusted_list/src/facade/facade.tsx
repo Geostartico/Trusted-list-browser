@@ -34,11 +34,18 @@ export class Facade{
     }
 
     async setUp(onSetUpCompleted: Function) {
+        /*
         let tmp1 = await fetch("https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list")
                         .then(res => res.json());
         
         let tmp2 = await fetch("https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list")
                         .then(res => res.json());
+        */
+
+        let tmp1, tmp2 = (
+                            await this.fetcher.getJSON(("https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list")),
+                            await this.fetcher.getJSON(("https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list"))
+                         )
 
         let stuff = objectify(tmp1, tmp2);
         this.fetcher = new Fetcher()
