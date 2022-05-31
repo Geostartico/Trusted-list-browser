@@ -226,23 +226,31 @@ svg text {
 }
 
 .buttonSearchFilter {
-    background-color: var(--main-bg-color);
-    color: var(--main-text-color);
     border: 0;
-}
-
-.buttonSearchFilter:hover {
-    background-color: var(--main-text-color);
-    color: var(--main-bg-color);
+    background-color: var(--main-bg-color);
 }
 
 .inputText {
     background-color: var(--main-bg-color);
     color: var(--main-text-color);
     border: 1px solid var(--main-text-color);
-    border-radius: 0.3vw;
+    border-radius: 0.5vw;
+    height: 1.3vw;
+    width: 7vw;
 }
 
 textarea:focus, input:focus{
     outline: none;
+}
+
+.svgFilterSearch {
+    background-color: var(--main-bg-color);
+    width: 1.5vw;
+    height: 1.5vw;
+    fill: var(--main-text-color);
+}
+
+.svgFilterSearch:hover {
+    background-color: var(--main-text-color);
+    fill: var(--main-bg-color);
 }
