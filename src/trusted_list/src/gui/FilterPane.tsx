@@ -3,6 +3,7 @@ import { Country, Provider, Status, Type } from "../decoder/items";
 import { Item } from "../decoder/itemInterface"
 import { UnorderedMap } from '../decoder/UnorderedMap';
 import { SelectionType } from './Enums';
+import Search from './Search';
 
 /**
  * @param filters contain all the entries of the active filter
@@ -20,6 +21,7 @@ interface FilterProps {
 interface FilterState {
     filters: Item[];
     filtersType: SelectionType[];
+    textFilter : string;
 }
 
 class FilterPane extends Component<FilterProps, FilterState> {
@@ -32,8 +34,10 @@ class FilterPane extends Component<FilterProps, FilterState> {
         this.state = {
             filters: this.props.filters.keys(),
             filtersType: this.props.filters.entries().map((entry) => entry.getValue() ?? SelectionType.NotSelectable),
+            textFilter: ""
         };
-        console.log(this.state.filters);
+         
+        this.onModifyTextFilter = this.onModifyTextFilter.bind(this);
     }
 
     /**
@@ -44,8 +48,17 @@ class FilterPane extends Component<FilterProps, FilterState> {
         this.setState({
             filters: nextProps.filters.keys(),
             filtersType: nextProps.filters.entries().map((entry) => entry.getValue() ?? SelectionType.NotSelectable),
+            textFilter: "",
         });
         
+    }
+
+    onModifyTextFilter(newTextFilter: string) {
+
+        this.setState({
+            textFilter: newTextFilter,
+        });
+
     }
 
 
@@ -56,11 +69,17 @@ class FilterPane extends Component<FilterProps, FilterState> {
         return (
           <>
             <div className = 'filtersContainer'>
+                <Search 
+                    onMod={this.onModifyTextFilter} 
+                    textInBox={this.state.textFilter}
+                />
                 {
                     // loop each value in the array and create a proper div with:
                     //  + checkbox
                     //  + description
                     this.state.filters.map((val: Item, index: number) => {
+                        if(this.state.textFilter !== "" && !val.getText().toLowerCase().includes(this.state.textFilter.toLowerCase()))
+                            return;
                         return (
                             <div key={val.getText() + index} className='filterEntryContainer'>
                                 <label className="switch">

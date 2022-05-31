@@ -217,3 +217,32 @@ svg text {
 		stroke-dashoffset: -25%; stroke-dasharray: 50% 0; stroke-width: 0;
 	}
 }
+
+.textFilterContainer {
+    position: absolute;
+    display: flex;
+    top: 0;
+    right: 0.4vw;
+}
+
+.buttonSearchFilter {
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    border: 0;
+}
+
+.buttonSearchFilter:hover {
+    background-color: var(--main-text-color);
+    color: var(--main-bg-color);
+}
+
+.inputText {
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    border: 1px solid var(--main-text-color);
+    border-radius: 0.3vw;
+}
+
+textarea:focus, input:focus{
+    outline: none;
+}
