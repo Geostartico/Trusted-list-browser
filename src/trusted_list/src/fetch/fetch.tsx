@@ -13,7 +13,7 @@ export class Fetcher{
         	}
         	res.json();
         }).catch(error => {
-            return await this.fetch(url)
+            return await this.getJSON(url)
         });
 	}
 }
