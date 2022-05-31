@@ -142,7 +142,7 @@ export class Selection{
 }
 
  /**
-  * Flitering rule class, used to store the item to filter with with a forced type
+  * Flitering rule class, adapter used to store the item to filter with with a forced type
   */
 export class Rule {
     /**

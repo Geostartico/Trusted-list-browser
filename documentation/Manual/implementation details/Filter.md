@@ -13,7 +13,7 @@ This is a data class whose objects store the iformation about a set of entries o
 There is a different set for each type, each set is of type UnorderedSet (see [UnorderedSet]("Items/UnorderedSet")).
 
 ## Rule
-This class represents a criteria for the filter. It enforces the type of the filtered item to be of type Provider, Status, Type or Country.
+Rule objects are adapters, they represents a generic criteria for the filter. It enforces the type of the filtered item to be of a Provider, Status, Type or Country.
 
 ## Filter
 This class represents the filter and contains all the logic for the filtering.
