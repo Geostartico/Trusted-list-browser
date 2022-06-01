@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
 /**
- * @param onToggle is a callback function to be used when is performed an action o a entry
+ * @param onMod is a callback function to be used when is insered some text in the filter
+ * @param textInBox this stirng will be forced in the input box, 
+ * usefull when we want to change filter and erease the previous value
  */
 interface SearchProps {
     onMod: Function;
@@ -9,17 +11,19 @@ interface SearchProps {
 }
 
 /**
- * @param filters used to store the Item to be displayed
- * @param filtersType used to manage the states of the entries
+ * @param expand used to expand or reduce the filter input
  */
 interface SearchState {
     expand: boolean;
 }
 
+/**
+ * This component is used to search by name in the filter entries 
+ */
 class Search extends Component<SearchProps, SearchState> {
 
     /**
-     * @param props is used to set the state variables correctly
+     * Initially the search is not expanded
      */
     constructor(props: SearchProps) {  
         super(props);
@@ -27,15 +31,12 @@ class Search extends Component<SearchProps, SearchState> {
             expand: false
         };
         this.onToggle = this.onToggle.bind(this);
-        //this.handleChange = this.handleChange.bind(this);
     }
 
-    /*
-    componentWillReceiveProps(newProps: SearchProps) {
-        
-    }
-    */
-
+    /**
+     * When the button is pressed the input box have to be expanded or close
+     * If we want to close it we want also to delete the insered value in the box
+     */
     onToggle() {
         this.setState({
             expand: !this.state.expand,
@@ -44,16 +45,12 @@ class Search extends Component<SearchProps, SearchState> {
             this.props.onMod("");
     }
 
-    /*
-    handleChange(evet) {
-
-        this.props.onMod(event.);
-
-    }
-    */
-
     /**
-     * All the necessary entries will be created on the basis of the internal data of the state
+     * The Component will contain 
+     *  + the input box
+     *      + rendered based on the state of the component
+     *  + a button to expand or reduce the inputbox
+     *      + based on the state on the component will be renderd a search icon or an x
      */
     render() {
         return (

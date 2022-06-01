@@ -30,9 +30,17 @@ export class Facade{
         this.allProviders= new UnorderedSet(10);
         this.allTypes = new UnorderedSet(10);
         this.allStatuses = new UnorderedSet(10);
-        //this.setUp(onSetUpCompleted);
     }
 
+    /**
+     * This fuction is used to fetch all the data using the Fetcher object and than
+     * decode all the arrived information
+     *
+     * This is an async function becouse while we are waiting for the data the page
+     * instead will be rendered
+     *
+     * @param onSetUpCompleted this is a callback fuction used to advice the finish of the fetch and decode
+     */
     async setUp(onSetUpCompleted: Function) {
 
         let countryDict = await this.fetcher.getJSON(("https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list")).catch(err => {throw err});

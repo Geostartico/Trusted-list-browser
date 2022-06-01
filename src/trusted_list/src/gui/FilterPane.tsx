@@ -17,6 +17,7 @@ interface FilterProps {
 /**
  * @param filters used to store the Item to be displayed
  * @param filtersType used to manage the states of the entries
+ * @param textFilter used to filter the entries
  */
 interface FilterState {
     filters: Item[];
@@ -53,6 +54,9 @@ class FilterPane extends Component<FilterProps, FilterState> {
         
     }
 
+    /**
+     * Each time the text in the Search is modified the FilterPane has to be rerendered
+     */
     onModifyTextFilter(newTextFilter: string) {
 
         this.setState({
@@ -78,6 +82,7 @@ class FilterPane extends Component<FilterProps, FilterState> {
                     //  + checkbox
                     //  + description
                     this.state.filters.map((val: Item, index: number) => {
+                        {/* If a filter text is specified and the text in the entry does not contain the string than not render it */}
                         if(this.state.textFilter !== "" && !val.getText().toLowerCase().includes(this.state.textFilter.toLowerCase()))
                             return;
                         return (

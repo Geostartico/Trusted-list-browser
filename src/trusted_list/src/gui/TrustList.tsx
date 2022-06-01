@@ -83,6 +83,7 @@ class TrustList extends Component<TrustListProps, TrustListState> {
             TrustList.isLoading = true;
         }
 
+        // Call the setup of the facade and manage a possible error
         this.state.facade.setUp(this.onSetUpCompleted).catch(err => { 
             if(!TrustList.isError) {
                 toast.error(err.message); 

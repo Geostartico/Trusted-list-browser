@@ -33,3 +33,9 @@ each entry is expandable to make it possible to see the nested elements.
 Eech value will be shown in a different button and only if the attached value _expand_ is true
 the childrens will be also rendered inside a different ItemViewer.
 
+## Search
+
+Initially you can see only a little search icon, if this is pressed than an input box will be open,
+now the X stand for close the search
+
+Insered some text in the **FilterPane** will be shown only the entries that contain the specified string.
