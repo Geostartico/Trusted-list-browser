@@ -40,6 +40,8 @@ class Search extends Component<SearchProps, SearchState> {
         this.setState({
             expand: !this.state.expand,
         });
+        if(this.state.expand === true)
+            this.props.onMod("");
     }
 
     /*
