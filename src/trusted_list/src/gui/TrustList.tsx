@@ -149,7 +149,17 @@ class TrustList extends Component<TrustListProps, TrustListState> {
             map.set(item, SelectionType.Selectable)
         }
 
-        map.get(item) === SelectionType.Selected ? this.state.facade.updateAdd(item) : this.state.facade.updateRemove(item);
+        if (map.get(item) === SelectionType.Selected) { 
+            this.state.facade.updateAdd(item) 
+        } else { 
+            // if the facade does not allow to deselect the entry remake it selected
+            if (!this.state.facade.updateRemove(item)) {
+                map.set(item, SelectionType.Selected);
+                toast.error("Nope, that is no sense");
+                return;
+            }
+        }
+
         this.onChangeFilter(this.state.activeFilter);
     }
 
