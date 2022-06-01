@@ -51,6 +51,7 @@ class TrustList extends Component<TrustListProps, TrustListState> {
 
     // Used to manage the loading toast
     static isLoading: boolean = false;
+    static isError: boolean = false;
 
     /**
      * Initially all the information inside the status is null, 
@@ -66,7 +67,7 @@ class TrustList extends Component<TrustListProps, TrustListState> {
 
         this.state = {
             activeFilter: FilterType.Country,
-            facade: new Facade(this.onSetUpCompleted),
+            facade: new Facade(),
             activeFilterItems: null,
             viewItems: null,
             countryEntriesFilter: null,
@@ -75,10 +76,19 @@ class TrustList extends Component<TrustListProps, TrustListState> {
             providerEntriesFilter: null,
         };
 
+        TrustList.isError = false;
+        
         if(!TrustList.isLoading) {
             toast('🦄 Set up running!');
             TrustList.isLoading = true;
         }
+
+        this.state.facade.setUp(this.onSetUpCompleted).catch(err => { 
+            if(!TrustList.isError) {
+                toast.error(err.message); 
+                TrustList.isError = true;
+            }
+        })
     }
 
     /**
