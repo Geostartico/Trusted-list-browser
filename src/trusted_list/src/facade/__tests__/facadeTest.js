@@ -16,13 +16,10 @@ describe("facade test", () => {
         let tmpfetch = new Fetcher();
         all = await tmpfetch.getJSON("https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list");
         fac = new Facade();
-        fac.setUp(() => finished = true)
+        await fac.setUp(() => finished = true)
         all.forEach((elem) => {
             sum += elem.services.length;
-        }) 
-        while(!finished){
-            sleep(500);
-        }        
+        })       
     }, 1000000);
     it("should finish", () => {
         //console.log(fac.getView());
@@ -38,6 +35,6 @@ describe("facade test", () => {
     it("should remove an item", () =>{
         fac.updateRemove(curCount);
         assert.equal(fac.getSelected().countries.getSize(), 0);
-        assert.equal(fac.getView().services.getSize(), 0);
+        assert.equal(fac.getView().services.getSize(), sum);
     })
 })
