@@ -5,14 +5,19 @@ import {UnorderedSet} from "../UnorderedSet";
 
 
 describe('Unordered Set Test', function () {
-    let et = new UnorderedSet(8);
-    let t1 = new Test(1, 2);
-    let t2 = new Test(1, 2);
-    et.add(t1);
-    et.add(t2);
-    for(let i = 0; i < 11; i ++){
-        et.add(new Test(3, i));
-    }
+    let et = undefined;
+    let t1 = undefined;
+    beforeAll(() => {
+        et = new UnorderedSet(8);
+        t1 = new Test(1, 2);
+        let t2 = new Test(1, 2);
+        et.add(t1);
+        et.add(t2);
+        for(let i = 0; i < 11; i ++){
+            et.add(new Test(3, i));
+        }
+    });
+    
     it("should have unique elements", function () {
         assert.equal(et.getSize(), 12);
     })

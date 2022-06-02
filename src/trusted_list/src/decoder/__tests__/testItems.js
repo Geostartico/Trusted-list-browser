@@ -104,38 +104,45 @@ let countryDict = [
 ]
 
 describe('items', function () {
-  let coun = new Country(countryDict[0]["countryCode"])
-  let serviceTypes = new Array(serviceDict.length);
-  for(let i = 0; i < serviceTypes.length; i ++){
-    serviceTypes[i] = new Array();
-  }
-  for(let i = 0; i < serviceTypes.length; i ++){
-    serviceDict[i]["qServiceTypes"].forEach((elem) =>{
-      serviceTypes[i].push(new Type(elem))
-    })
-  }
-  
-  let prov = new Array();
-  for(let i = 0; i < serviceDict.length; i ++){
-    prov[i] = new Provider(serviceDict[i]["name"], serviceDict[i]["tspId"], serviceDict[i]["trustmark"], serviceTypes[i]);
-  }
+  let coun = undefined;
+  let prov = undefined;
+  let example = undefined;
+  let services = undefined;
+  beforeAll(() => {
+    coun = new Country(countryDict[0]["countryCode"])
+    let serviceTypes = new Array(serviceDict.length);
+    for(let i = 0; i < serviceTypes.length; i ++){
+      serviceTypes[i] = new Array();
+    }
+    for(let i = 0; i < serviceTypes.length; i ++){
+      serviceDict[i]["qServiceTypes"].forEach((elem) =>{
+        serviceTypes[i].push(new Type(elem))
+      })
+    }
+    
+    prov = new Array();
+    for(let i = 0; i < serviceDict.length; i ++){
+      prov[i] = new Provider(serviceDict[i]["name"], serviceDict[i]["tspId"], serviceDict[i]["trustmark"], serviceTypes[i]);
+    }
 
-  let services = new Array(serviceDict.length);
-  for(let i = 0; i < serviceDict.length; i ++){
-    services[i] = new Array();
-  }
+    services = new Array(serviceDict.length);
+    for(let i = 0; i < serviceDict.length; i ++){
+      services[i] = new Array();
+    }
 
-  for(let i = 0; i < serviceDict.length; i ++){
-    serviceDict[i]["services"].forEach((service_dict) => {
-      let serviceTypeArr  = new Array();
-      service_dict["qServiceTypes"].forEach((typestr) =>{
-      serviceTypeArr.push(new Type(typestr));
+    for(let i = 0; i < serviceDict.length; i ++){
+      serviceDict[i]["services"].forEach((service_dict) => {
+        let serviceTypeArr  = new Array();
+        service_dict["qServiceTypes"].forEach((typestr) =>{
+        serviceTypeArr.push(new Type(typestr));
+        });
+        services[i].push(new Service(service_dict["serviceName"], service_dict["serviceId"], serviceTypeArr, prov, new Status(service_dict["currentStatus"]), service_dict["type"], service_dict["tspId"], service_dict["tob"]));
       });
-      services[i].push(new Service(service_dict["serviceName"], service_dict["serviceId"], serviceTypeArr, prov, new Status(service_dict["currentStatus"]), service_dict["type"], service_dict["tspId"], service_dict["tob"]));
-    });
-    services[i].forEach((elem) => prov[i].addService(elem));
-    coun.addProvider(prov[i]);
-  }
+      services[i].forEach((elem) => prov[i].addService(elem));
+      coun.addProvider(prov[i]);
+    }
+  })
+  
   describe('Country constructor', function () {
     it('should construct the object', function () {
       assert.equal(coun.countryCode, "AT");

@@ -4,14 +4,10 @@ import { objectify } from '../decoder';
 import {Data} from "../../filter/data"
 import { UnorderedSet } from '../UnorderedSet';
 describe("decoder test with objectify function", () => {
-    let f = new Set();
-    /*Data.serviceDict.forEach((elem) => {
-        if(f.has(elem.name)){
-            console.log(elem.name);
-        }
-        f.add(elem.name);
-    })*/
-    let all = objectify(Data.countryDict, Data.serviceDict);
+    let all = undefined
+    beforeAll(() => {
+        all = objectify(Data.countryDict, Data.serviceDict);
+    })
     it("should have created the right amount of services", () =>{
         assert.equal(all.servicesArray.length, 3500);
     });

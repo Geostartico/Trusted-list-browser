@@ -5,14 +5,18 @@ import {UnorderedMap} from "../UnorderedMap";
 
 
 describe('Unordered Map Test', function () {
-    let et = new UnorderedMap(8);
-    let t1 = new Test(1, 2);
-    let t2 = new Test(1, 2);
-    et.set(t1, 2);
-    et.set(t2, 4);
-    for(let i = 0; i < 11; i ++){
-        et.set(new Test(3, i), i);
-    }
+    let et = undefined;
+    let t1 = undefined;
+    beforeAll(() => {
+        et = new UnorderedMap(8);
+        t1 = new Test(1, 2);
+        let t2 = new Test(1, 2);
+        et.set(t1, 2);
+        et.set(t2, 4);
+        for(let i = 0; i < 11; i ++){
+            et.set(new Test(3, i), i);
+        }
+    })
     it("should have unique elements", function () {
         assert.equal(et.getSize(), 12);
     })

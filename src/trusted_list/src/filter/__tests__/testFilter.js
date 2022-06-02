@@ -113,7 +113,7 @@ function testFilteredServices(all_services, items){
     }
 
     let filtered = my_filter.getFiltered();
-    console.log("Number of filtered services: ", filtered.services.getSize());
+    //console.log("Number of filtered services: ", filtered.services.getSize());
 
     all_services.forEach((service) => {
         let rules_matched = [true, true, true, true];
