@@ -15,14 +15,14 @@ describe("facade test", () => {
     beforeAll(async () => {
         let tmpfetch = new Fetcher();
         all = await tmpfetch.getJSON("https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list");
-        fac = new Facade(() => {
-            console.log("ciao");
-        });
+        fac = new Facade();
+        fac.setUp(() => finished = true)
         all.forEach((elem) => {
             sum += elem.services.length;
         }) 
-        //await sleep(30000); 
-        
+        while(!finished){
+            sleep(500);
+        }        
     }, 1000000);
     it("should finish", () => {
         //console.log(fac.getView());
