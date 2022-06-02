@@ -22,7 +22,7 @@ Application written in Typescript and React, whose purpose is to show the user a
 
 ### Prerequisites
 * npm 
-    ```
+    ```sh
     sudo apt install npm
     ```
 * typescript
