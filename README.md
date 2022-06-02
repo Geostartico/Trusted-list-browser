@@ -27,7 +27,6 @@ Application written in Typescript and React, whose purpose is to show the user a
 #### MacOS
 #### Debian/Ubuntu
 
-
 * Node.js
   ```sh
   curl -fsSL https://deb.nodesource.com/setup_18.x && sudo apt install -y nodejs
@@ -109,7 +108,7 @@ screenshots eventuali
 ⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
 ## License
-GPL?
+Distributed under the GPL License. See LICENSE.txt for more information.
 
 ## Table of Contents
 * [Getting Started](#getting-started)
