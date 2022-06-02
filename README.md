@@ -57,24 +57,22 @@ Application written in Typescript and React, whose purpose is to show the user a
 #### MacOS
 #### Debian/Ubuntu
 
-1. popi popi
+1. Open terminal and move to Trusted-list-browser/src/trusted_list/ folder
+2. run command 
     ```sh
-    popi popi
-    ```
-2. hop hop
-    ```
-    hop hop
-    ```
-3. fine
-    ```js
-    end
+    yarn install
     ```
 ## Usage
+Spiego in modo saccente come farlo partire ed usarlo
 
 ## Visuals
 screenshots eventuali
 
 ## Authors
+* [Giovanni Artico](https://github.com/Geostartico)
+* [Giulio Codutti](https://github.com/giulpig)
+* [Gabriele ](https://github.com/gabriele-0201)
+* [Andrea Lupo](https://github.com/LK-parrot)
 
 ## External packages
 + Added react-tostify
@@ -84,8 +82,18 @@ screenshots eventuali
 + test: https://create-react-app.dev/docs/running-tests/
     + yarn add @testing-library/react @testing-library/jest-dom
 
+## License
+Distributed under the GPL License. See LICENSE.txt for more information.
 
-
+## Table of Contents
+* [Getting Started](#getting-started)
+    * [Prerequisites](#prerequisites)
+    * [Installation](#installation)
+* [Usage](#usage)
+* [Visuals](#visuals)
+* [Authors](#authors)
+* [External Packages](#external-packages)
+* [License](#license)
 
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀
@@ -107,16 +115,4 @@ screenshots eventuali
 ⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
-## License
-Distributed under the GPL License. See LICENSE.txt for more information.
-
-## Table of Contents
-* [Getting Started](#getting-started)
-    * [Prerequisites](#prerequisites)
-    * [Installation](#installation)
-* [Usage](#usage)
-* [Visuals](#visuals)
-* [Authors](#authors)
-* [External Packages](#external-packages)
-* [License](#license)
 
