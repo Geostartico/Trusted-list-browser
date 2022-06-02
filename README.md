@@ -1,13 +1,55 @@
-# Trusted-list-browser
-Application written in Typescript and React
+# Trusted list server browser
+Application written in Typescript and React, whose purpose is to show the user a list of trusted servers based on the parameters selected by himself.
 
-## General info
-The purpose of the application is to show the user a list of trusted servers based on the parameters selected by himself. 
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#visuals">Visuals</a></li>
+    <li><a href="#external-packages">External package</a></li> 
+  </ol>
+</details>
 
-## Technologies
+## Getting Started
+
+### Prerequisites
+* npm 
+    ```
+    sudo apt install npm
+    ```
+* typescript
+* Node.js
+* yarn
 * 
+### Installation
+1. popi popi
+    ```sh
+    popi popi
+    ```
+2. hop hop
+    ```
+    hop hop
+    ```
+3. fine
+    ```js
+    end
+    ```
+## Usage
 
-## External package
+## Visuals
+screenshots eventuali
+
+## Authors
+
+## External packages
 + Added react-tostify
     + Used to manage on sreen notification, like request goes wrong or something like that
 + https://www.npmjs.com/package/allotment
@@ -39,4 +81,11 @@ The purpose of the application is to show the user a list of trusted servers bas
 ⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
 ## Table of Contents
-* [General info](#general-info)
+* [Getting Started](#getting-started)
+    * [Prerequisites](#prerequisites)
+    * [Installation](#installation)
+* [Usage](#usage)
+* [Visuals](#visuals)
+* [Authors](#authors)
+* [External Packages](#external-packages)
+
