@@ -23,16 +23,41 @@ Application written in Typescript and React, whose purpose is to show the user a
 ## Getting Started
 
 ### Prerequisites
+#### Windows
+#### MacOS
 #### Debian/Ubuntu
+
+
+* Node.js
+  ```sh
+  curl -fsSL https://deb.nodesource.com/setup_18.x && sudo apt install -y nodejs
+  ```
+    Also try command
+  ```sh
+  node --version
+  ```
+    to verify Node installed correctly
+    
 * npm 
     ```sh
     sudo apt install npm
     ```
+    
 * typescript
-* Node.js
+  ```sh
+  npm install -g typescript
+  ```
+  
 * yarn
-* da completare
+  ```sh
+  npm install --g yarn
+  ```
 ### Installation
+
+#### Windows
+#### MacOS
+#### Debian/Ubuntu
+
 1. popi popi
     ```sh
     popi popi
