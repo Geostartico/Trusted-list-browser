@@ -28,7 +28,7 @@ Application written in Typescript and React, whose purpose is to show the user a
 * typescript
 * Node.js
 * yarn
-* 
+* da completare
 ### Installation
 1. popi popi
     ```sh
