@@ -14,13 +14,16 @@ Application written in Typescript and React, whose purpose is to show the user a
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#visuals">Visuals</a></li>
+    <li><a href="#authors">Authors</a></li>
     <li><a href="#external-packages">External package</a></li> 
+    <li><a href="#license">License</a></li>
   </ol>
 </details>
 
 ## Getting Started
 
 ### Prerequisites
+#### Debian/Ubuntu
 * npm 
     ```sh
     sudo apt install npm
@@ -51,7 +54,7 @@ screenshots eventuali
 
 ## External packages
 + Added react-tostify
-    + Used to manage on sreen notification, like request goes wrong or something like that
+    + Used to manage on screen notification, like request goes wrong or something like that
 + https://www.npmjs.com/package/allotment
     + Used to manage split view panel
 + test: https://create-react-app.dev/docs/running-tests/
@@ -80,6 +83,9 @@ screenshots eventuali
 ⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
+## License
+GPL?
+
 ## Table of Contents
 * [Getting Started](#getting-started)
     * [Prerequisites](#prerequisites)
@@ -88,4 +94,5 @@ screenshots eventuali
 * [Visuals](#visuals)
 * [Authors](#authors)
 * [External Packages](#external-packages)
+* [License](#license)
 
