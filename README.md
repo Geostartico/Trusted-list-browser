@@ -1,5 +1,11 @@
 # Trusted-list-browser
-1 2 3 prova prova 123
+Application written in Typescript and React
+
+## General info
+The purpose of the application is to show the user a list of trusted servers based on the parameters selected by himself. 
+
+## Technologies
+* 
 
 ## External package
 + Added react-tostify
@@ -33,4 +39,4 @@
 ⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 
 ## Table of Contents
-[ToC](#external-package)
+* [General info](#general-info)
