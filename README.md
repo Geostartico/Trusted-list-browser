@@ -25,7 +25,24 @@ Application written in Typescript and React, whose purpose is to show the user a
 ### Prerequisites
 For all os and distros: to use this application you need STABLE INTERNET CONNECTION
 #### Windows
-#### MacOS
+* Node.js
+  1. Download node (LTS recommend) from [this page](https://nodejs.org/en/download/)
+  2. Run `node -v` command on terminal to verify node installed correctly
+    
+* typescript
+
+    Run the following command in the cmd:
+    
+    ```
+    npm install -g typescript
+    ```
+    
+    If you want to check for Typescript being installed, type `tsc -v` in the cmd and you should get back something like Version `X.X.X`
+  
+* yarn
+  
+  VERIFICARE
+  
 #### Linux
 ##### Debian/Ubuntu
 * Node.js
@@ -55,7 +72,6 @@ For all os and distros: to use this application you need STABLE INTERNET CONNECT
 ### Installation
 
 #### Windows
-#### MacOS
 #### Linux
 ##### Debian/Ubuntu
 
