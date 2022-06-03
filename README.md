@@ -57,7 +57,7 @@ Application written in Typescript and React, whose purpose is to show the user a
 #### MacOS
 #### Debian/Ubuntu
 
-1. Open terminal and move to Trusted-list-browser/src/trusted_list/ folder
+1. Open terminal and move (command `mv` ) to Trusted-list-browser/src/trusted_list/ folder
 2. run command 
     ```sh
     yarn install
@@ -71,7 +71,7 @@ screenshots eventuali
 ## Authors
 * [Giovanni Artico](https://github.com/Geostartico)
 * [Giulio Codutti](https://github.com/giulpig)
-* [Gabriele ](https://github.com/gabriele-0201)
+* [Gabriele Miotti](https://github.com/gabriele-0201)
 * [Andrea Lupo](https://github.com/LK-parrot)
 
 ## External packages
