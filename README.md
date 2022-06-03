@@ -66,7 +66,10 @@ Application written in Typescript and React, whose purpose is to show the user a
 Spiego in modo saccente come farlo partire ed usarlo
 
 ## Visuals
-screenshots eventuali
+
+<p align="center">
+  <img src="Mappa_skyrim.jpg" width="350"/>
+</p>
 
 ## Authors
 * [Giovanni Artico](https://github.com/Geostartico)
