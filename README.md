@@ -23,10 +23,11 @@ Application written in Typescript and React, whose purpose is to show the user a
 ## Getting Started
 
 ### Prerequisites
+For all os and distros: to use this application you need STABLE INTERNET CONNECTION
 #### Windows
 #### MacOS
-#### Debian/Ubuntu
-
+#### Linux
+##### Debian/Ubuntu
 * Node.js
   ```sh
   curl -fsSL https://deb.nodesource.com/setup_18.x && sudo apt install -y nodejs
@@ -55,7 +56,8 @@ Application written in Typescript and React, whose purpose is to show the user a
 
 #### Windows
 #### MacOS
-#### Debian/Ubuntu
+#### Linux
+##### Debian/Ubuntu
 
 1. Open terminal and move (command `mv` ) to Trusted-list-browser/src/trusted_list/ folder
 2. run command 
@@ -70,6 +72,7 @@ Application written in Typescript and React, whose purpose is to show the user a
    localhost
    ```
    And you should be connected to the server.
+   
 2. From GUI you can select and deselect items from the checkbox list that appears and application will show you a server trusted list based on your previous filter selection 
 
 ## Visuals
