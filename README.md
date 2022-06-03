@@ -63,13 +63,14 @@ Application written in Typescript and React, whose purpose is to show the user a
     yarn install
     ```
 ## Usage
-Move to Trusted-list-browser/src/trusted_list/ folder, then start program using `yarn start` command.
-Now application should start automatically on your default browser.
-If not, open your browser manually then type in the address bar:
-```
-localhost
-```
-And you should be connected to the server.
+1. Move to Trusted-list-browser/src/trusted_list/ folder, then start program using `yarn start` command.
+   Now application should start automatically on your default browser.
+   If not, open your browser manually then type in the address bar:
+   ```
+   localhost
+   ```
+   And you should be connected to the server.
+2. From GUI you can select and deselect items from the checkbox list that appears and application will show you a server trusted list based on your previous filter selection 
 
 ## Visuals
 
