@@ -10,7 +10,9 @@ export interface IgetView {
     "providers" : UnorderedSet<Provider>, 
     "services" : UnorderedSet<Service>,
 }
-
+/**
+ * class used to interface with the filtering and fetching subsystem
+ */
 export class Facade{
     private filter : Filter | undefined;
     private fetcher : Fetcher;
@@ -58,12 +60,20 @@ export class Facade{
 
         onSetUpCompleted();
     }
-
+    /**
+     * if the setUp wasn't run it won't work correctly
+     * @param item item to add to the selected
+     */
     updateAdd(item : Country | Type | Status | Provider){
         this.filter?.addRule(new Rule(item));
         if(this.filter === undefined) return;
         this.selection = this.filter.getFiltered();
     }
+    /**
+     * the method won't work correctly if setUp wasn't run
+     * @param item item to remove from the selected
+     * @returns true if the item could be deselected
+     */
     updateRemove(item : Country | Type | Status | Provider) : boolean{
         this.filter?.removeRule(new Rule(item));
 
@@ -80,22 +90,43 @@ export class Facade{
             return true;
         }
     }
+    /**
+     * 
+     * @returns selectable countries
+     */
     getSelectableCountries() : UnorderedSet<Country>{
         return this.selection.countries;
     }
+    /**
+     * 
+     * @returns the selectable providers
+     */
     getSelectableProviders() : UnorderedSet<Provider>{
         return this.selection.providers;
     }
+    /**
+     * 
+     * @returns selectable types
+     */
     getSelectableTypes() : UnorderedSet<Type>{
         return this.selection.types;
     }
+    /**
+     * 
+     * @returns selectable statuses
+     */
     getSelectableStatus() : UnorderedSet<Status>{
         return this.selection.statuses;
     }
+    /**
+     * 
+     * @returns returns the items to be viewed
+     */
     getView() : IgetView {
         let countries : UnorderedSet<Country> = new UnorderedSet<Country>(10); 
         let providers : UnorderedSet<Provider> = new UnorderedSet<Provider>(10);
         let services : UnorderedSet<Service> = this.selection.services;
+        //the filter only returns services, to facilitate the representation it gets the set of countries and providers to be shown
         services.forEach((elem : Service) => {
             let curCountry : Country | null = elem.getCountry(); 
             if(curCountry !== null){
@@ -109,6 +140,10 @@ export class Facade{
         })
         return {"countries" : countries, "providers" : providers, "services" : services};
     }
+    /**
+     * it won't work correctly if setUp wasn't run
+     * @returns the selected items
+     */
     getSelected() : IgetView{
         let temp = this.filter?.getSelected();
         if(temp?.countries !== undefined && temp.providers !== undefined && temp.services !== undefined){

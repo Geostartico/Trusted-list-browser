@@ -1,3 +1,6 @@
+/**
+ * interface used for items that are to be inserted in a set or a map
+ */
 export interface Settable<T>{
     /**
      * get the hashcode of the object

@@ -1,3 +1,6 @@
+/**
+ * linked list used for implementation of map and set
+ */
 export class Node<T>{
     /**
      * element of the node

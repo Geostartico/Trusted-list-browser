@@ -2,7 +2,10 @@ import { Node } from "./link";
 import { Entry } from "./entry";
 import { Settable } from "./settable";
 import { UnorderedSet } from "./UnorderedSet";
-
+/**
+ * unordered map created to have objects as keys
+ * @see Settable
+ */
 export class UnorderedMap<K extends Settable<K>,V>{
     /**
      * buckets of the map
@@ -24,7 +27,7 @@ export class UnorderedMap<K extends Settable<K>,V>{
     /**
      * get the bucket for the item
      * @param element
-     * @returns the bucket in which elemetn should reside
+     * @returns the bucket in which elemeng should reside
      */
     private getBucket(k : K) : number{
         return Math.abs(k.hashCode()%(this.buckets.length));
@@ -72,8 +75,9 @@ export class UnorderedMap<K extends Settable<K>,V>{
         return buck
     }
     /**
-     * constructs the unordered set
+     * constructs the unordered map
      * @param buckNum number of initial buckets
+     * @throws if the number of items is not strictly positive
      */
     constructor(buckNum : number){
         if(buckNum <= 0){

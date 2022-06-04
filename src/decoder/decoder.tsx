@@ -5,6 +5,7 @@ import { UnorderedSet } from "./UnorderedSet";
  * @param ctodict array with elements in the form {countryCode : "string", countryName : "string"}
  * @param jsondict array of providers in json format
  * @returns object in the form {"codeToObject": dictionary, "servicesArray": array}, with dictionary having the codes
+ * @throws if the objects passed are either null or undefined
  * as keys and as value the country objects, and array contrining services
  */
 export function objectify(ctodict : any, jsondict : any) : {"codeToObject": Map<string, Country>, "servicesArray": Array<Service>, "typeSet" : UnorderedSet<Type>, "statusSet" : UnorderedSet<Status>}{

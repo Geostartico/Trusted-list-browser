@@ -77,11 +77,17 @@ export class Type implements Settable<Type>, Item, Immutable{
      * @readonly
      */
     readonly name: string;
-
+    /**
+     * @private
+     */
     private services: UnorderedSet<Service>;
-
+    /**
+     * @readonly
+     */
     readonly item_type = ItemType.Type;
-
+    /**
+     * @private
+     */
     private immutable : boolean;
 
     /**
@@ -133,6 +139,7 @@ export class Type implements Settable<Type>, Item, Immutable{
     /**
      * adds a service to the Type
      * @param ser service to add
+     * @throws if the item is immutable
      */
     addService(ser : Service){
         if(this.immutable){
@@ -158,9 +165,13 @@ export class Status implements Settable<Status>, Item, Immutable{
      * @readonly
      */
     readonly name: string;
-
+    /**
+     * @readonly
+     */
     readonly item_type = ItemType.Status;
-
+    /**
+     * @private
+     */
     private immutable;
 
     /**
@@ -223,6 +234,7 @@ export class Status implements Settable<Status>, Item, Immutable{
     /**
      * adds a service to the status
      * @param ser service to add
+     * @throws if the object is immutable
      */
     addService(ser : Service){
         if(this.immutable){
@@ -248,7 +260,9 @@ export class Service implements Settable<Service>, Item, Immutable{
      * @readonly
      */
     readonly name : string;
-
+    /**
+     * @readonly
+     */
     readonly item_type = ItemType.Service;
 
     /**
@@ -291,7 +305,9 @@ export class Service implements Settable<Service>, Item, Immutable{
      * @private
      */
     private country? : Country;
-
+    /**
+     * @private
+     */
     private immutable : boolean;
     /**
      * Constructs a service Object
@@ -301,8 +317,8 @@ export class Service implements Settable<Service>, Item, Immutable{
      * @param pr provider of the server
      * @param aStatus url of the status
      * @param aType type of the service
-     * @param aTspId tspId of the server
-     * @param aTob tob of the server
+     * @param aTspId tspId of the service
+     * @param aTob tob of the service
      */
     constructor(aName: string, aServiceId: number, aServiceTypes: Type[], pr : Provider, aStatus : Status, aType : string, aTspId : number, aTob : string){
         this.name = aName;
@@ -384,6 +400,7 @@ export class Service implements Settable<Service>, Item, Immutable{
     /**
      * sets the Country of the Service to the service
      * @param aCountry the Country to set
+     * @throws if the object is immutable
      */
     addCountry(aCountry : Country) : void{
         if(this.immutable){
@@ -401,7 +418,9 @@ export class Provider implements Settable<Provider>, Item, Immutable{
      * @readonly
      */
     readonly name: string;
-
+    /**
+     * @readonly
+     */
     readonly item_type = ItemType.Provider;
 
     /**
@@ -435,7 +454,9 @@ export class Provider implements Settable<Provider>, Item, Immutable{
      * @private
      */
     private services: UnorderedSet<Service>;
-
+    /**
+     * @private
+     */
     private immutable : boolean;
     /**
      * constructor
@@ -551,6 +572,7 @@ export class Provider implements Settable<Provider>, Item, Immutable{
     /**
      * adds a service updating the instances of service tyes and status
      * @param aService service to add
+     * @throws if the object is immutable
      */
     addService(aService : Service){
         if(this.immutable){
@@ -749,6 +771,7 @@ export class Country implements Settable<Country>, Item, Immutable{
     /**
      * updates the Provider set adding it to the Country and updating the service and status map
      * @param provider provider to add
+     * @throws if the item is immutable
      */
     addProvider(provider : Provider) : void{
         if(this.immutable){

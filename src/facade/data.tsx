@@ -1,4 +1,6 @@
-
+/**
+ * data used before the fecther was implemented (or to be used in case the server doesn't work correctly)
+ */
 export class Data{
     static readonly countryDict : any = [
         {

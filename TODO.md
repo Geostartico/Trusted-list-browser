@@ -9,3 +9,5 @@
 - A voce rivedremo i desgin docs
 - Cambiare i messaggi di avviso (piu' formali) e i toast
 - AmogOS
+- aggiungere lista principali librerie usate (dipendenze ulteriori saranno specificate nel package.json)
+- specificare che se nei test non c'è verifica per valori null o undefined è perchè merda typescript controlla che i valori non possano essere null o undefined
