@@ -316,6 +316,12 @@ export class Service implements Settable<Service>, Item, Immutable{
         this.tob = aTob;
         this.immutable = false;
     }
+    getServices(): UnorderedSet<Service> {
+        let ret = new UnorderedSet<Service>(1);
+        ret.add(this);
+        return ret;
+    }
+    expand?: boolean | undefined;
 
     isImmutable(): boolean {
         return this.immutable;
@@ -635,6 +641,16 @@ export class Country implements Settable<Country>, Item, Immutable{
         this.providers = new UnorderedSet<Provider>(10);
         this.immutable = false;
     }
+    getServices(): UnorderedSet<Service> {
+        let ret = new UnorderedSet<Service>(10);
+        this.getProviders().forEach((provider: Provider) => {
+            provider.getServices().forEach((service: Service) => {
+                ret.add(service);
+            });
+        });
+        return ret;
+    }
+    expand?: boolean | undefined;
     isImmutable(): boolean {
         return this.immutable;
     }
