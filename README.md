@@ -1,5 +1,5 @@
 # Trusted list server browser
-Application written in Typescript and React, whose purpose is to show the user a list of trusted servers based on the parameters selected by himself.
+Application written in Typescript and React, whose purpose is to show the user a list of trusted servers based on the parameters selected by the user with a web-based fancy GUI.
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -24,21 +24,12 @@ Application written in Typescript and React, whose purpose is to show the user a
 
 ### Prerequisites
 For all os and distros: to use this application you need STABLE INTERNET CONNECTION
+
 #### Windows
 * Node.js
   1. Download node (LTS recommend) from [this page](https://nodejs.org/en/download/)
   2. Run `node -v` command on terminal to verify node installed correctly
-    
-* typescript
 
-    Run the following command in the cmd:
-    
-    ```
-    npm install -g typescript
-    ```
-    
-    If you want to check for Typescript being installed, type `tsc -v` in the cmd and you should get back something like Version `X.X.X`
-  
 * yarn
   
   Download yarn from [here](https://github.com/yarnpkg/yarn/releases/download/v1.22.4/yarn-1.22.4.msi)
@@ -75,10 +66,31 @@ For all os and distros: to use this application you need STABLE INTERNET CONNECT
   ```sh
   npm install --g yarn
   ```
+
+#### MacOS
+* Brew
+  ```sh
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ```
+* Node.js and npm
+  ```sh
+    brew install node
+  ```
+    Also try command
+  ```sh
+  node --version
+  npm --version
+  ```
+    to verify Node installed correctly
+
+* yarn
+    ```sh
+    npm install -g yarn
+    ```
 ### Installation
 
 1. Open terminal and move to Trusted-list-browser/src/trusted_list/ folder
-2. run command 
+2. run command
     ```
     yarn install
     ```
@@ -87,8 +99,8 @@ For all os and distros: to use this application you need STABLE INTERNET CONNECT
    Now application should start automatically on your default browser.
    If not, open your browser manually then type in the address bar `localhost`
    And you should be connected to the server.
-   
-2. From GUI you can select and deselect items from the checkbox list that appears and application will show you a server trusted list based on your previous filter selection 
+
+2. From GUI you can select and deselect items from the checkbox list that appears and application will show you a server trusted list based on your previous filter selection
 
 ## Visuals
 
