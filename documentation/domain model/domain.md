@@ -5,19 +5,19 @@
 - Providers
 - Countries
 - Types
+- statuses
 - Services
-- Selections
-- Interface
-- States of the services
-- items
+- Selected
+- Selectable
+- GUI application
 
 ## Description
 
-- the application shows the current selectable items, when selection is done logs them in the query
-- the query gives the selectable items given the previously selected categories of items from the application
+- the Gui application shows the current selectable items, and logs the selected items
+- the filter gives the selectable items given the selected items
 - the query contains the previously selected items and the currently selectable items based on previous choices
-- Provider contains its services, coyntry and type
-- Country contains providers and types
+- Provider contains its services, country (the types and statuses are inherited from the services)
+- Country contains providers (types and statuses are inherited from the providers
 - Service contains the state, type and country, and provider
-- State contains a description of itself
+- Status and Type contain the services in which they are contained
 ![Alt text](./Domain_diagram.svg)
