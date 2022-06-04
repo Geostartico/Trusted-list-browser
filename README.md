@@ -1,136 +1,46 @@
-# Trusted list server browser
-Application written in Typescript and React, whose purpose is to show the user a list of trusted servers based on the parameters selected by the user with a web-based fancy GUI.
+no# Getting Started with Create React App
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#visuals">Visuals</a></li>
-    <li><a href="#authors">Authors</a></li>
-    <li><a href="#external-packages">External package</a></li> 
-    <li><a href="#license">License</a></li>
-  </ol>
-</details>
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Getting Started
+## Available Scripts
 
-### Prerequisites
-For all os and distros: to use this application you need STABLE INTERNET CONNECTION
+In the project directory, you can run:
 
-#### Windows
-* Node.js
-  1. Download node (LTS recommend) from [this page](https://nodejs.org/en/download/)
-  2. Run `node -v` command on terminal to verify node installed correctly
+### `npm start`
 
-* yarn
-  
-  Download yarn from [here](https://github.com/yarnpkg/yarn/releases/download/v1.22.4/yarn-1.22.4.msi)
-  
-  Run following code on powershell to verify installation
-  
-  ```
-  yarn --version
-  ```
-  
-#### Linux
-##### Debian/Ubuntu
-* Node.js
-  ```sh
-  curl -fsSL https://deb.nodesource.com/setup_18.x && sudo apt install -y nodejs
-  ```
-    Also try command
-  ```sh
-  node --version
-  ```
-    to verify Node installed correctly
-    
-* npm 
-    ```sh
-    sudo apt install npm
-    ```
-    
-* typescript
-  ```sh
-  npm install -g typescript
-  ```
-  
-* yarn
-  ```sh
-  npm install --g yarn
-  ```
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-#### MacOS
-* Brew
-  ```sh
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  ```
-* Node.js and npm
-  ```sh
-    brew install node
-  ```
-    Also try command
-  ```sh
-  node --version
-  npm --version
-  ```
-    to verify Node installed correctly
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-* yarn
-    ```sh
-    npm install -g yarn
-    ```
-### Installation
+### `npm test`
 
-1. Open terminal and move to Trusted-list-browser/src/trusted_list/ folder
-2. run command
-    ```
-    yarn install
-    ```
-## Usage
-1. Move to Trusted-list-browser/src/trusted_list/ folder, then start program using `yarn start` command.
-   Now application should start automatically on your default browser.
-   If not, open your browser manually then type in the address bar `localhost`
-   And you should be connected to the server.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-2. From GUI you can select and deselect items from the checkbox list that appears and application will show you a server trusted list based on your previous filter selection
+### `npm run build`
 
-## Visuals
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-<p align="center">
-  <img src="Screenshots/Mappa_skyrim.jpg" width="350"/>
-</p>
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-## Authors
-* [Giovanni Artico](https://github.com/Geostartico)
-* [Giulio Codutti](https://github.com/giulpig)
-* [Gabriele Miotti](https://github.com/gabriele-0201)
-* [Andrea Lupo](https://github.com/LK-parrot)
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## External packages
-+ Added react-tostify
-    + Used to manage on screen notification, like request goes wrong or something like that
-+ https://www.npmjs.com/package/allotment
-    + Used to manage split view panel
-+ test: https://create-react-app.dev/docs/running-tests/
-    + yarn add @testing-library/react @testing-library/jest-dom
+### `npm run eject`
 
-## License
-Distributed under the GPL License. See LICENSE.txt for more information.
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-## Table of Contents
-* [Getting Started](#getting-started)
-    * [Prerequisites](#prerequisites)
-    * [Installation](#installation)
-* [Usage](#usage)
-* [Visuals](#visuals)
-* [Authors](#authors)
-* [External Packages](#external-packages)
-* [License](#license)
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
