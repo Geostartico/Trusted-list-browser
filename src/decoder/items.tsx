@@ -772,19 +772,3 @@ export class Country implements Settable<Country>, Item, Immutable{
         });
     }
 }
-/*
-let prov = new Provider("tu", 22, "fidati", ["no", "si", "forse"]);
-let ser = new Service("IO", 40, ["tante", "persone", "in", "in"], prov, "gone", "ww.google.com", 69, "nonono");
-console.log(ser.name);
-console.log(ser.serviceId);
-ser.getServiceTypes().forEach(element => {
-    console.log(element);
-});
-prov.addService(ser);
-prov.addService(new Service("VOI", 40, ["tante", "cani", "in", "in"], prov, "here", "ww.ebay.com", 70, "nono"));
-console.log(prov.name);
-console.log(prov.tspId);
-prov.getServiceTypes().forEach((num :number, str : string) => console.log(str));
-prov.getServices().forEach((sr) => {console.log(sr.name); console.log(sr.status)});
-let count = new Country("IT");
-count.addProvider(prov);*/

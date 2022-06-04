@@ -76,6 +76,9 @@ export class UnorderedMap<K extends Settable<K>,V>{
      * @param buckNum number of initial buckets
      */
     constructor(buckNum : number){
+        if(buckNum <= 0){
+            throw new Error("the dimension of the map must be strictly positive");
+        }
         this.size = 0;
         //initialises the buckets
         this.buckets = new Array<Node<Entry<K,V>>>(buckNum);
@@ -196,7 +199,7 @@ export class UnorderedMap<K extends Settable<K>,V>{
     /**
     * Intersects a variable number of maps
     * @param maps: comma separated map {@link UnorderedMap} maps
-    * @returns: {@link UnorderedSet} containing services of type {@link Service} commmon to all maps
+    * @returns: {@link UnorderedSet} containing keys commmon to all maps
     * @throws {@link Error}
     * Thrown if one of the input maps is null
     */

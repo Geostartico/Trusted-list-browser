@@ -22,7 +22,6 @@ describe("facade test", () => {
         })       
     }, 1000000);
     it("should finish", () => {
-        //console.log(fac.getView());
         assert.equal(fac.getView().services.getSize(), sum);
         assert.equal(finished, true);
     })
@@ -31,10 +30,22 @@ describe("facade test", () => {
         fac.updateAdd(curCount);
         assert.equal(fac.getSelected().countries.getSize(), 1);
         assert.equal(fac.getSelected().countries.values()[0].countryCode, curCount.countryCode);
+        fac.getView().services.forEach((elem) =>{
+            assert.equal(elem.getCountry().countryCode, curCount.countryCode);
+        })
     })
     it("should remove an item", () =>{
         fac.updateRemove(curCount);
         assert.equal(fac.getSelected().countries.getSize(), 0);
         assert.equal(fac.getView().services.getSize(), sum);
+    })
+    it("shouldn't remove an item if it makes the list empty", () => {
+        let tmp = fac.getSelectableCountries().values();
+        fac.updateAdd(tmp[0]);
+        fac.updateAdd(tmp[1]);
+        let tmpProv = tmp[0].getProviders().values()[0];
+        fac.updateAdd(tmpProv);
+        assert.equal(fac.updateRemove(tmp[0]), false);
+        assert.equal(fac.getSelected().countries.has(tmp[0]), true);
     })
 })

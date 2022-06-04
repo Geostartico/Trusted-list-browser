@@ -100,6 +100,10 @@ let countryDict = [
   {
     "countryCode": "AT",
     "countryName": "Austria"
+  },
+  {
+    "countryCode": "IT",
+    "countryName": "Italy"
   }
 ]
 
@@ -148,6 +152,18 @@ describe('items', function () {
       assert.equal(coun.countryCode, "AT");
     });
   });
+  describe("initialize a map from code to country", () => {
+    it("should associate the string to the right country", () =>{
+      let c = Country.initCodeToObjectMap(countryDict);
+      assert.equal(c.get("AT").countryCode, "AT");
+      assert.equal(c.get("IT").countryCode, "IT");
+    })
+    it("should associate the string to the right name", () =>{
+      Country.initCodeToStringMap(countryDict);
+      assert.equal(Country.codeToString.get("AT"), "Austria");
+      assert.equal(Country.codeToString.get("IT"), "Italy");
+    })
+  })
   describe('Provider constructor', function () {
     it('should construct the object', function () {
       assert.equal(prov[0].name, "A-Trust Gesellschaft für Sicherheitssysteme im elektronischen Datenverkehr GmbH");
@@ -168,6 +184,25 @@ describe('items', function () {
       assert.equal(example.provider, prov);
       assert.equal(example.getServiceTypes().has(new Type("QCertESig")), true);
     });
+  });
+  describe("testing immutability of items", () => {
+    it("should throw exception if the objects are immutable", () => {
+      let exampleser = services[0][0];
+      let examplecoun = exampleser.getCountry();
+      let exampleType = exampleser.getServiceTypes().values()[0];
+      let exampleStatus = exampleser.status;
+      let exampleProv = prov[0];
+      exampleser.makeImmutable();
+      examplecoun.makeImmutable();
+      exampleType.makeImmutable();
+      exampleStatus.makeImmutable();
+      expect(() => {exampleser.addCountry(examplecoun)}).toThrow();
+      expect(() => {examplecoun.addProvider(exampleProv)}).toThrow();
+      expect(() => {exampleType.addService(exampleser)}).toThrow();
+      expect(() => {exampleStatus.addService(exampleser)}).toThrow();
+      expect(() => {exampleProv.addCountry(examplecoun)}).toThrow();
+      expect(() => {exampleProv.addService(exampleser)}).toThrow();
+    })
   });
   describe("serviceTypes and status inheritance", () =>{
     it("should have the correct amount of serviceTypes", () => {
@@ -192,3 +227,5 @@ describe('items', function () {
     })
   });
 });
+
+
