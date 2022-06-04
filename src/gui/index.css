@@ -59,7 +59,6 @@ div {
     color: var(--main-bg-color);
 }
 
-
 .mainContainer {
     height: 90vh;
     display: flex;
@@ -76,7 +75,6 @@ div {
 .viewerInside {
     height: auto;
     color: var(--main-text-color);
-
     border: 1px solid var(--main-text-color);
     border-radius: 0.5vw;
     padding: 0.5vh;
@@ -179,12 +177,6 @@ input:checked + .slider:before {
 .Toastify__toast-body div {
     background: var(--toastify-color-light) !important;
 }
-
-/*
-.Toastify__toast-theme--light Toastify__toast-body div{
-    background: var(--toastify-color-light) !important;
-}
-*/
 
 .titleNameContainer {
     width: 100%;

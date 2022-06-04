@@ -23,7 +23,7 @@ export class Fetcher{
             }).then(res => {
                 response = res;
             }).catch(err => { 
-                if (i == 2)
+                if (i === 2)
                     throw err;
             });
 
