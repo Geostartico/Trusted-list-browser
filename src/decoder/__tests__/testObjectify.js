@@ -3,10 +3,13 @@ import {Country, Service, Type, Provider, Status} from "../items"
 import { objectify } from '../decoder';
 import {Data} from "../../filter/data"
 import { UnorderedSet } from '../UnorderedSet';
+const util = require('util')
+
+
 describe("decoder test with objectify function", () => {
     let all = undefined
     beforeAll(() => {
-        all = objectify(Data.countryDict, Data.serviceDict);
+        expect(() => all = objectify(Data.countryDict, Data.serviceDict)).not.toThrow();
     })
     it("should have created the right amount of services", () =>{
         assert.equal(all.servicesArray.length, 3500);
@@ -44,6 +47,12 @@ describe("decoder test with objectify function", () => {
         all.codeToObject.forEach((value, key) => {
             value.getProviders().forEach((elem) => {
                 sum += elem.getServices().getSize();
+                let curProv;
+                Data.serviceDict.forEach((prov) => {
+                    if(elem.name === prov.name && elem.tspId === prov.tspId){
+                        curProv = prov;
+                }})
+                assert.equal(curProv.services.length, elem.getServices().getSize());
             });
         })
         assert.equal(sum, 3500)
@@ -58,7 +67,7 @@ describe("decoder test with objectify function", () => {
             });
         });
     });
-    it("should crate services with the right provider", () =>{
+    it("should create services with the right provider", () =>{
         all.codeToObject.forEach((count, str) =>{
             count.getProviders().forEach((prov) => {
                 prov.getServices().forEach((ser) => {
@@ -85,4 +94,8 @@ describe("decoder test with objectify function", () => {
             })
         })
     });
+    it("should throw an error if the input is null or undefined", () => {
+        expect(() => objectify(null, null)).toThrow();
+        expect(() => objectify(undefined, undefined)).toThrow();
+    })
 });

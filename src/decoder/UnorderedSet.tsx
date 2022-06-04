@@ -85,6 +85,9 @@ export class UnorderedSet<T extends Settable<T>>{
      * @param buckNum number of initial buckets
      */
     constructor(buckNum : number){
+        if(buckNum <= 0){
+            throw new Error("dimension of the set must be strictly positive");
+        }
         this.size = 0;
         this.buckets = new Array<Node<T>>(buckNum);
         //initialises the buckets

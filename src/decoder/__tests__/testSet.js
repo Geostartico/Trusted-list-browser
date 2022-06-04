@@ -8,7 +8,7 @@ describe('Unordered Set Test', function () {
     let et = undefined;
     let t1 = undefined;
     beforeAll(() => {
-        et = new UnorderedSet(8);
+        expect(() => {et = new UnorderedSet(8)}).not.toThrow();
         t1 = new Test(1, 2);
         let t2 = new Test(1, 2);
         et.add(t1);
@@ -17,7 +17,10 @@ describe('Unordered Set Test', function () {
             et.add(new Test(3, i));
         }
     });
-    
+    it("shouldn't let to construct a map of dimension 0", () => {
+        expect(() => new UnorderedSet(0)).toThrow()
+        expect(() => new UnorderedSet(-1)).toThrow()
+    })
     it("should have unique elements", function () {
         assert.equal(et.getSize(), 12);
     })

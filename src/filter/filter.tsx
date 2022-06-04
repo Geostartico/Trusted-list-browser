@@ -203,7 +203,7 @@ export class Filter{
 
         this.selected = new Selection();
 
-        this.all_services = new UnorderedMap<Service, number>(service_list.length);
+        this.all_services = new UnorderedMap<Service, number>(service_list.length + 1);
 
         this.all_items = new Selection();
 
