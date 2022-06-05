@@ -18,7 +18,6 @@ export class Fetcher{
                     throw new Error("Something Went Wrong during Fetch");
                 }
 
-
 	            return res.json();
             }).then(res => {
                 response = res;
