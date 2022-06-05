@@ -1,4 +1,7 @@
-# System Test
+
+# Test
+
+## System test
 
 ## Test case 1
 
@@ -71,3 +74,15 @@
   3) the selected services are viewed
 
 - execution variables: different initial configurations and different orders of deselection may lead to different results
+
+## Unit tests
+
+- unit tests are contained in directories named "\_\_tests\_\_" under the following directories in src:
+  - decoder
+  - facade
+  - fetch
+  - filter
+- no unit tests are made on the gui as they would be rather difficult to define in a testing framework
+- tests are written using the jest framework for typescript testing
+- most of the tests don't test the possibility of passing a undefined or null variable. This is because typescript won't let the user pass a undefined or null reference unless explicitly specified in the function definition or if it has a parameter with "any" type. note: javascript lets you pass undefined or null values because it doesn't have typechecking, thus in the test is perfectly valid to pass undefined or null values. This doesn't happen in the actual code as it is entirely written in typescript
+- To run tests one must run yarn test on the main repository directory and press "a" if needed.

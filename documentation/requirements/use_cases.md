@@ -17,11 +17,11 @@
 
 ## User-stories
 
-1. a user can choose how to sort the services based on type country, status and provider
+1. a user can choose between type, country, status and provider to filter the services
 
-2. a user can choose to select one or more objects from the list
+2. a user can choose to select one or more objects from the list to filter the services
 
-3. a user can deselection an item from the list of items
+3. a user can deselection an item from the list of items to undo a filtering option
 
 4. the user is shown the available services based on the items they previously selected
 
@@ -39,7 +39,7 @@
 
 - actors:user, trusted-list server
 
-- pre-condition: no selections were made
+- pre-condition: the program started properly
 
 - acceptance criteria: the program shows the selected list of all the elements of a specific criteria
 
@@ -49,7 +49,7 @@ actors: user, trusted list server
 - actions:
   - the user selects a category
 
-### USE CASE 2: selecting an item(generalized for providers, countries, types, state)
+### USE CASE 2: selecting an item (generalized for providers, countries, types, state)
 
 - description: In order to view only specific items the user must have the possibility to filter the items by selecting an item using the given criteria. The items available afterwards must be coherent with the current selections, with rules defined by the filtering algorithm
 
@@ -63,31 +63,33 @@ actors: user, trusted list server
 
   - the user selects the items on the list
 
-  - items non-related to the selection are removed
+  - the user views the correct services
 
 ### USE CASE 3: Remove selection from selected items
 
-- description: the user must be able to remove a filtering item a in order to show the items that do not fit the specific criteria, therefore changing the set of selectable items
+- description: the user must be able to remove a filtering item a in order to show the items that do not fit the specific criteria, therefore changing the set of selectable items. if the deselection makes the list of services empty the user must be notified and the deselection mustn't be finalised
 
 - actors:user, trusted-list server
 
 - precondition: the user has already filtered the items by a criteria
 
-- acceptance criteria: the item is no longer selected and the selectable items are coherent with currently selected items or the item isn't selected because it would make the selected list empty(given the rules defined by the filtering algorithm)
+- acceptance criteria:
+  - if the item was deselectable: the item is no longer selected and the selectable items are coherent with currently selected items
+  - if the item wasn't deselectable: the item isn't deselected because it would make the selected list empty(given the rules defined by the filtering algorithm) and the user is notified
 
 - actions:
   - via the interface the user is able to remove the selection from a specific item
+  - the user is notified if the deselection wasn't possible
 
 ### USE CASE 4: viewing the services
 
-- description: the user is able to visualize the services given the filtered criteria they have chosen, therefore getting the infrmation relating to the item.
+- description: the user is able to visualize the services given the filtered criteria they have chosen, therefore getting the information relating to the item.
 
 - actors:user, trusted-list server
 
-- precondition: none
+- precondition: the program was initialised correctly
 
 - acceptance criteria: the services (eventually filtered given the criteria) are shown
 
 - actions:
-
-  - either none (the interface always shows the services) or the interface is given a listener to show only the services
+  - none
