@@ -7,7 +7,7 @@ This document is intended as a summary of the tests methods and results, more in
 * [System testing](./systemTest/systemTest.md)
 
 ### Test results
-`
+```
  🟢PASS  src/fetch/__tests__/testFetcher.js
  🟢PASS  src/decoder/__tests__/testItems.js
  🟢PASS  src/decoder/__tests__/testSet.js
@@ -21,4 +21,4 @@ Tests:       51 passed, 51 total
 Snapshots:   0 total
 Time:        11.345 s
 Ran all test suites.
-`
+```
