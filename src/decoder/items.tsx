@@ -69,6 +69,16 @@ export enum ItemType {
 }
 
 /**
+ * These rapresents all the four possible type of filters
+ */
+export enum FilterType {
+    Country, 
+    Type, 
+    Status, 
+    Provider,
+};
+
+/**
  * Represents a service type
  */
 export class Type implements Settable<Type>, Item, Immutable{

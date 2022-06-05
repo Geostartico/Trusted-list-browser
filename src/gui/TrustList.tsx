@@ -6,7 +6,8 @@ import { Allotment } from "allotment";
 import { Facade, IgetView } from '../facade/facade';
 import { UnorderedSet } from '../decoder/UnorderedSet';
 import { Country, Provider, Status, Type } from "../decoder/items";
-import { FilterType, SelectionType } from "./Enums";
+import { SelectionType } from "./Enums";
+import { FilterType } from "../decoder/items"
 import { Settable } from '../decoder/settable';
 import { UnorderedMap } from '../decoder/UnorderedMap';
 import { toast } from 'react-toastify';
