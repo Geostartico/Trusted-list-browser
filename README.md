@@ -66,8 +66,13 @@ For all os and distros: to use this application you need STABLE INTERNET CONNECT
   ```sh
   npm install --g yarn
   ```
+##### AmogOS
+
+* If you are using the supreme OS (i.e. amogOS, of course) you can follow the instructions for Debian
+
 
 #### MacOS
+
 * Brew
   ```sh
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -108,7 +113,11 @@ For all os and distros: to use this application you need STABLE INTERNET CONNECT
   <img src="Screenshots/Mappa_skyrim.jpg" width="350"/>
 </p>
 
-## Authors
+## Additional documentation
+- [System design](./documentation/system_design.md)
+- [System and unit tests](./documentation/tests.md)
+
+## Authorsng
 * [Giovanni Artico](https://github.com/Geostartico)
 * [Giulio Codutti](https://github.com/giulpig)
 * [Gabriele Miotti](https://github.com/gabriele-0201)
