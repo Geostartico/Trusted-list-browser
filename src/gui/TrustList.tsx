@@ -80,7 +80,7 @@ class TrustList extends Component<TrustListProps, TrustListState> {
         TrustList.isError = false;
         
         if(!TrustList.isLoading) {
-            toast('🦄 Set up running!');
+            toast('🦄 Set-up running!');
             TrustList.isLoading = true;
         }
 
@@ -100,14 +100,14 @@ class TrustList extends Component<TrustListProps, TrustListState> {
 
         // Create the maps that store all the entries
         this.setState({
-            countryEntriesFilter: this.createEntryFilterSet(this.state.facade.getSelectableCountries()),
-            typeEntriesFilter: this.createEntryFilterSet(this.state.facade.getSelectableTypes()),
-            statusEntriesFilter: this.createEntryFilterSet(this.state.facade.getSelectableStatus()),
-            providerEntriesFilter: this.createEntryFilterSet(this.state.facade.getSelectableProviders()),
+            countryEntriesFilter: this.createEntryFilterSet(this.state.facade.getSelectable(FilterType.Country) as UnorderedSet<Country>),
+            typeEntriesFilter: this.createEntryFilterSet(this.state.facade.getSelectable(FilterType.Type) as UnorderedSet<Type>),
+            statusEntriesFilter: this.createEntryFilterSet(this.state.facade.getSelectable(FilterType.Status) as UnorderedSet<Status>),
+            providerEntriesFilter: this.createEntryFilterSet(this.state.facade.getSelectable(FilterType.Provider) as UnorderedSet<Provider>),
             viewItems: this.state.facade.getView(),
         }, () => {
 
-            toast('🦄 Set up Done!');
+            toast('🦄 Set-up done!');
             TrustList.isLoading = false;
 
         });
@@ -167,7 +167,7 @@ class TrustList extends Component<TrustListProps, TrustListState> {
             // if the facade does not allow to deselect the entry remake it selected
             if (!this.state.facade.updateRemove(item)) {
                 map.set(item, SelectionType.Selected);
-                toast.error("Nope, that is no sense");
+                toast.error("Un-unselectable item!");
                 return;
             }
         }
@@ -187,22 +187,22 @@ class TrustList extends Component<TrustListProps, TrustListState> {
         switch(selectedFilter) {
             case FilterType.Country:
                 if(this.state.countryEntriesFilter === null) return;
-                filtersSet = this.state.facade.getSelectableCountries();
+                filtersSet = this.state.facade.getSelectable(FilterType.Country) as UnorderedSet<Country>;
                 map = this.state.countryEntriesFilter;
             break;
             case FilterType.Status:
                 if(this.state.statusEntriesFilter === null) return;
-                filtersSet = this.state.facade.getSelectableStatus();
+                filtersSet = this.state.facade.getSelectable(FilterType.Status) as UnorderedSet<Status>;
                 map = this.state.statusEntriesFilter;
             break;
             case FilterType.Provider:
                 if(this.state.providerEntriesFilter === null) return;
-                filtersSet = this.state.facade.getSelectableProviders();
+                filtersSet = this.state.facade.getSelectable(FilterType.Provider) as UnorderedSet<Provider>;
                 map = this.state.providerEntriesFilter;
             break;
             case FilterType.Type:
                 if(this.state.typeEntriesFilter === null) return;
-                filtersSet = this.state.facade.getSelectableTypes();
+                filtersSet = this.state.facade.getSelectable(FilterType.Type) as UnorderedSet<Type>
                 map = this.state.typeEntriesFilter;
             break;
         }

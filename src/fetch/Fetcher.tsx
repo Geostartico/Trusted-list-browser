@@ -3,7 +3,7 @@ export class Fetcher{
 	async getJSON (url: string) {
     
         if(!window.navigator.onLine)
-            throw new Error("Not Connected")
+            throw new Error("Not Connected!")
 
         let response = null;
 
