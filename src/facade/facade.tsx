@@ -1,7 +1,7 @@
 import {Filter, Rule, Selection} from "../filter/filter"
 import { Data } from "./data";
 import { objectify } from "../decoder/decoder";
-import { Country, Provider, Service, Status, Type } from "../decoder/items";
+import { Country, Provider, Service, Status, Type, FilterType } from "../decoder/items";
 import { UnorderedSet } from "../decoder/UnorderedSet";
 import { Fetcher } from "../fetch/Fetcher";
 
@@ -117,6 +117,15 @@ export class Facade{
      */
     getSelectableStatus() : UnorderedSet<Status>{
         return this.selection.statuses;
+    }
+    getSelectable(type : FilterType) : UnorderedSet<Status | Provider | Type |Country>{
+        switch(type){
+            case FilterType.Country : {return this.getSelectableCountries()};
+            case FilterType.Provider : {return this.getSelectableProviders()};
+            case FilterType.Type : {return this.getSelectableTypes()};
+            case FilterType.Status : {return this.getSelectableStatus()};
+
+        }
     }
     /**
      * 
