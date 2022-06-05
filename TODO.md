@@ -4,7 +4,6 @@
 - Add control in decoder for undefined or null (per Gio)
 - Correct WARNINGS
 - Do a table of contents for docs in README.md
-    - A file for system design...
     - Mancano pallini verdi
 - Generate docs
 - Rileggere codice, commenti e docs
