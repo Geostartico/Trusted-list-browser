@@ -299,10 +299,10 @@ export class Filter{
         this.convertEmptyToFull();
 
 
-        let filtered: UnorderedSet<Service> = UnorderedMap.mapIntersect(new Array(this.service_sums.get(ItemType.Country),
-                                                                                  this.service_sums.get(ItemType.Provider),
-                                                                                  this.service_sums.get(ItemType.Type),
-                                                                                  this.service_sums.get(ItemType.Status)));
+        let filtered: UnorderedSet<Service> = UnorderedMap.mapIntersect([this.service_sums.get(ItemType.Country),
+                                                                         this.service_sums.get(ItemType.Provider),
+                                                                         this.service_sums.get(ItemType.Type),
+                                                                         this.service_sums.get(ItemType.Status)]);
 
         filtered.forEach((service: Service) => {
             selectables.services.add (service);
