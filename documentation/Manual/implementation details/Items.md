@@ -30,7 +30,8 @@ In order for the filering to be easier we decided to implement an object oriente
 
 ## Services
 
-- Collection of Types with a status
+- Collection of Types
+- contains a status
 
 ### the Containers issue
 
@@ -62,4 +63,4 @@ In order for the filering to be easier we decided to implement an object oriente
 ### objectify function
 
 - function to convert from the dictionary of provider objects returned from the query to actual item objects
-- even though the objects provide modifying methods we made sure to only use them on creation of these so that the debugging is easier and the behaviour of the objects consistent.
+- even though the objects provide modifying methods we made sure to only use them on creation of these and to make them immutable so that the debugging is easier and the behaviour of the objects consistent.
