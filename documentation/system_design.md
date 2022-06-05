@@ -8,13 +8,13 @@ This document is intended as a summary of the system documentation, more informa
 
 ### Design
 
-* [Domain model](./domain model/domain.md)
-* [Class design model](./class design model/class_model_diagram.md)
+* [Domain model](./domain_model/domain.md)
+* [Class design model](./class_design_model/class_model_diagram.md)
 * Data structure definitions
-    * [raw json format](./data structure/raw_json.md)
-    * [fromatting procedure](./data structure/dictionaryToObjects_structure.md)
-    * [formatted json structure](./data structure/formatted_json.md)
+    * [raw json format](./data_structure/raw_json.md)
+    * [fromatting procedure](./data_structure/dictionaryToObjects_structure.md)
+    * [formatted json structure](./data_structure/formatted_json.md)
 * Behaviour
     * [cross subsystem behaviour](./behaviour/cross_subsytem/cross_subsystem.md)
-    * [internal behaviour](./behaviour/internal behaviour/internal_behaviour.md)
+    * [internal behaviour](./behaviour/internal_behaviour/internal_behaviour.md)
 
