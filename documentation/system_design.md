@@ -12,8 +12,6 @@ This document is intended as a summary of the system documentation, more informa
 * [Class design model](./class_design_model/class_model_diagram.md)
 * Data structure definitions
     * [raw json format](./data_structure/raw_json.md)
-    * [fromatting procedure](./data_structure/dictionaryToObjects_structure.md)
-    * [formatted json structure](./data_structure/formatted_json.md)
 * Behaviour
     * [cross subsystem behaviour](./behaviour/cross_subsytem/cross_subsystem.md)
     * [internal behaviour](./behaviour/internal_behaviour/internal_behaviour.md)
