@@ -2,7 +2,6 @@ import { strict as assert } from 'node:assert';
 const util = require('util')
 
 import {Filter, Rule} from "../filter";
-import {UnorderedMap, UnorderedSet} from "../../decoder/decoder";
 import {Data} from "../data";
 import {objectify} from "../../decoder/decoder";
 
@@ -14,20 +13,25 @@ let all_services_length = all_services.length;
 describe('Filter module tests', function() {
 
     describe('Filter class tests', function() {
+
         describe('Filter construction', function() {
+
             it('should construct the Filter object', function(){
                 myFilter = new Filter([]);
                 myFilter = new Filter(all_services);
             });
-            it('sould have nothing selected', function(){
+
+            it('should have nothing selected', function(){
                 for(let map of [myFilter.selected.providers, myFilter.selected.statuses, myFilter.selected.countries, myFilter.selected.types]){
                     assert.equal(map.getSize(), 0);
                 }
             });
+
             it('should return all services when I apply no filter (comparing the number of entries)', function(){
                 assert.equal(myFilter.getFiltered().services.getSize(), all_services_length);
             });
         });
+
         describe('Adding and removing rules', function() {
             myFilter = new Filter(all_services);
             var added_rules = [];
@@ -45,10 +49,12 @@ describe('Filter module tests', function() {
                 added_rules.push(new Rule(all_services[getRandomServiceIndex()].getServiceTypes().values()[0]));
                 expect(() => myFilter.addRule(added_rules[3])).not.toThrow();
             });
+
             it('should throw an error when inserting a null or undefined key', function(){
                 expect(() => myFilter.addRule(new Rule(null))).toThrow();
                 expect(() => myFilter.addRule(new Rule(undefined))).toThrow();
             });
+
             it('should remove the rule with no error', function(){
                 added_rules.push(new Rule(all_services[getRandomServiceIndex()].status));
                 expect(() => myFilter.removeRule(added_rules[0])).not.toThrow();
@@ -62,6 +68,7 @@ describe('Filter module tests', function() {
                 added_rules.push(new Rule(all_services[getRandomServiceIndex()].getServiceTypes().values()[0]));
                 expect(() => myFilter.removeRule(added_rules[3])).not.toThrow();
             });
+
             it('should throw an error when removing an unexistent rule', function(){
                 expect(() => myFilter.removeRule(new Rule(null))).toThrow();
                 expect(() => myFilter.removeRule(new Rule(undefined))).toThrow();
@@ -81,18 +88,12 @@ describe('Filter module tests', function() {
         });
 
         describe('Checking filtered services', function() {
-            it('should filter as expected', function() {
+            it('should follow the filtering rules', function() {
                 for(let i=0; i<10; i+=1)
                     expect(() => testFilteredServices(all_services, genRandomItems())).not.toThrow();
             });
         });
     });
-    //describe('Static functions testing', function(){
-    //    it('should add an elemen to the map with no error', function(){
-    //        let my_map = new UnorderedMap();
-    //        my_map.set(all_services);
-    //    });
-    //});
 });
 
 ///////////// Helper functions ///////////////
@@ -101,6 +102,9 @@ function getRandomServiceIndex(){
     return Math.floor(Math.random() * all_services_length);
 }
 
+/**
+ * Function to test fitered services, it does the filtering and checks the filtered services
+ */
 function testFilteredServices(all_services, items){
     let my_filter = new Filter(all_services);
     let rules = [];
@@ -113,7 +117,6 @@ function testFilteredServices(all_services, items){
     }
 
     let filtered = my_filter.getFiltered();
-    //console.log("Number of filtered services: ", filtered.services.getSize());
 
     all_services.forEach((service) => {
         let rules_matched = [true, true, true, true];
@@ -139,7 +142,6 @@ function testFilteredServices(all_services, items){
                 expect(number_matched).toBe(how_many_items);
             }
             catch (error){
-                //console.log(util.inspect(service, {showHidden: false, depth: 1, colors: false}));
                 console.log(util.inspect(rules, {showHidden: false, depth: 2, colors: false}));
             }
             expect(number_matched).toBe(how_many_items);
@@ -150,6 +152,9 @@ function testFilteredServices(all_services, items){
     });
 }
 
+/**
+ * Generates random rules and returns the number of types of elements (e.g. there could be only Providers rules so the sum would be 1)
+ */
 function genRandomItems(){
     let rules = [];
     let types_present = [false, false, false, false];

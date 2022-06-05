@@ -1,5 +1,6 @@
 # FATE STA COSA STRONZI
 
+- In test do beforeAll
 - Add control in decoder for undefined or null (per Gio)
 - Correct WARNINGS
 - Do a table of contents for docs in README.md

@@ -247,7 +247,7 @@ export class Filter{
         this.active_filtering_types.add(rule.filtering_item.item_type);
         //console.log(this.active_filtering_types);
 
-        this.getServicesFromItem(rule.filtering_item).forEach((service: Service) => {
+        rule.filtering_item.getServices().forEach((service: Service) => {
             const service_sum_map = this.service_sums.get(rule.filtering_item.item_type);
             if(service_sum_map === null || service_sum_map === undefined)
                 throw new Error("Null or undefined sum map");
@@ -270,7 +270,7 @@ export class Filter{
         if(this.active_filtering_types.has(rule.filtering_item.item_type) && this.selected.getSet(rule.filtering_item.item_type)?.getSize() === 0)
             this.active_filtering_types.delete(rule.filtering_item.item_type)
 
-        this.getServicesFromItem(rule.filtering_item).forEach((service: Service) => {
+        rule.filtering_item.getServices().forEach((service: Service) => {
             const service_sum_map = this.service_sums.get(rule.filtering_item.item_type);
             if(service_sum_map === null || service_sum_map === undefined)
                 throw new Error("Null or undefined sum map");
@@ -341,7 +341,7 @@ export class Filter{
                         if(item.item_type !== item_type)
                             maps.push(map);
                     });
-                    maps.push(setToMap(this.getServicesFromItem(item)));
+                    maps.push(setToMap(item.getServices()));
                     if(UnorderedMap.mapIntersect(maps).getSize() > 0){
                         selectables.add(item);
                     }
@@ -352,36 +352,6 @@ export class Filter{
         this.selected.getSets().forEach((set, item_type) => {
             set.forEach((item: any) => selectables.add(item));
         });
-    }
-
-    /**
-     * @private
-     * Returns a map of all {@link Service} objects that have the property specified in the rule parameter
-     * @param item: the item that you want to get the affected services of
-     * @returns: {@link UnorderedSet} containing all affected services
-     */
-    private getServicesFromItem(item: Status|Provider|Country|Type): UnorderedSet<Service>{
-
-        switch(item.item_type){
-            case ItemType.Country: {
-                let ret = new UnorderedSet<Service>(10);
-                item.getProviders().forEach((provider: Provider) => {
-                    provider.getServices().forEach((service: Service) => {
-                        ret.add(service);
-                    });
-                });
-                return ret;
-            }
-            case ItemType.Provider: {
-                return item.getServices();
-            }
-            case ItemType.Status: {
-                return item.getServices();
-            }
-            case ItemType.Type: {
-                return item.getServices();
-            }
-        }
     }
 
     /**
