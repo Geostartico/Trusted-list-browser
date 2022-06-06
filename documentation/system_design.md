@@ -9,10 +9,12 @@ This document is intended as a summary of the system documentation, more informa
 ### Design
 
 * [Domain model](./domain_model/domain.md)
-* [Class design model](./class_design_model/class_model_diagram.md)
-* Data structure definitions
-    * [raw json format](./data_structure/raw_json.md)
 * Behaviour
+    * [external behaviour](./behaviour/external_behaviour/external_behaviour.md)
     * [cross subsystem behaviour](./behaviour/cross_subsytem/cross_subsystem.md)
     * [internal behaviour](./behaviour/internal_behaviour/internal_behaviour.md)
+* Data structure definitions
+    * [raw json format](./data_structure/raw_json.md)
+
+* [Class design model](./class_design_model/class_model_diagram.md)
 
