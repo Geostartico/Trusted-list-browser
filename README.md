@@ -94,19 +94,27 @@ For all os and distros: to use this application you need STABLE INTERNET CONNECT
     ```
 ### Installation
 
-1. Open terminal and move to Trusted-list-browser/src/trusted_list/ folder
+1. Open terminal and move to Trusted-list-browser folder
 2. run command
     ```
     yarn install
     ```
 ## Usage
-1. Move to Trusted-list-browser/src/trusted_list/ folder, then start program using `yarn start` command.
+1. Move to Trusted-list-browser folder, then start program using `yarn start` command.
    Now application should start automatically on your default browser.
    If not, open your browser manually then type in the address bar `localhost`
    And you should be connected to the server.
 
 2. From GUI you can select and deselect items from the checkbox list that appears and application will show you a server trusted list based on your previous filter selection
 
+### how to build
+
+if you want to build run from the Trusted-list-browser directory:
+    ```
+    yarn build
+    yarn add serve
+    yarn serve build
+    ```
 ## Visuals
 
 ![Screenshot](Screenshots/screenWebsite.png)
