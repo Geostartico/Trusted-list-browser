@@ -122,6 +122,7 @@ if you want to build run from the Trusted-list-browser directory:
 ## Additional documentation
 - [System design](./documentation/system_design.md)
 - [System and unit tests](./documentation/tests.md)
+- [Code documentation](http://htmlpreview.github.io/?https://github.com/Geostartico/Trusted-list-browser/blob/main/documentation/ts_docs/index.html)
 
 ## Authorsng
 * [Giovanni Artico](https://github.com/Geostartico)
