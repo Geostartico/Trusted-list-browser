@@ -14,7 +14,7 @@ Application written in Typescript and React, whose purpose is to show the user a
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#visuals">Visuals</a></li>
-    <li><a href="#authors">Authors</a></li>
+    <li><a href="#authorsng">Authors</a></li>
     <li><a href="#external-packages">External package</a></li> 
     <li><a href="#license">License</a></li>
   </ol>
@@ -138,6 +138,6 @@ Distributed under the GPL License. See LICENSE.txt for more information.
     * [Installation](#installation)
 * [Usage](#usage)
 * [Visuals](#visuals)
-* [Authors](#authors)
+* [Authors](#authorsng)
 * [External Packages](#external-packages)
 * [License](#license)
