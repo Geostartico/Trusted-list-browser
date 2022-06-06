@@ -13,13 +13,14 @@ activate "Decoder"
 "Backend" -> "Decoder": send encoded json
 "Decoder" -> "Backend": send services and countries list
 deactivate "Decoder"
-
 "Backend" -> "User Interface": send selectable items
-"User Interface" -> "Backend": send selection
-activate "Filtering System"
-"Backend" -> "Filtering System": send service list and filtering rules
-"Filtering System" -> "Backend": send filtered service list and selectable items
-"Backend" -> "User Interface": send selectable items
-deactivate "Filtering System"
+loop
+  "User Interface" -> "Backend": send selection
+  activate "Filtering System"
+  "Backend" -> "Filtering System": send service list and filtering rules
+  "Filtering System" -> "Backend": send filtered service list and selectable items
+  "Backend" -> "User Interface": send selectable items
+  deactivate "Filtering System"
+end
 
 @enduml
