@@ -8,9 +8,4 @@
 
 - When the program is opened the user has the choice to view **Countries**, **Type**, **Provider**, **Status** list or the types of services list. In this case there is a **category listener**, which changes the viewed list.
 
-## Filtering behaviour
-
-- when an item is deselected or selected the **item selection listener** logs it to the selected list
-- when the current selection is completed the **send option listener** notificates the **GUI facade** which send the selected list to the **filter** which filters based on the items type and returns the next batch of selectables, iterating until the services are shown
-
 ![Alt text](./internal_behaviour.svg)

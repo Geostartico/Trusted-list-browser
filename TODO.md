@@ -11,12 +11,12 @@ OUTPUT RIUNIONE:
 - aggiungere lista principali librerie usate (dipendenze ulteriori saranno specificate nel package.json) (ricontrollare)
 
 -> Giovanni:
-    + mettere a posto errore di battitura nelgi use story e doppio type nel draw
-    + rimuovere providere dal primo use case
-    + domain model rivedere (state 2 times and add filtered)
-    * togliere filtering behaviour from internal behaviour
-    * cazzo ho sbagliato la freccia, nel cambio di categoria
-    * remoe rectangle from addSelecctable function call
+    - mettere a posto errore di battitura nelgi use story e doppio type nel draw
+    - rimuovere providere dal primo use case
+    - domain model rivedere (state 2 times and add filtered)
+    - togliere filtering behaviour from internal behaviour
+    -  cazzo ho sbagliato la freccia, nel cambio di categoria
+    - remoe rectangle from addSelecctable function call
 -> Gab
     * Togliere nomi file
 -> Andrea

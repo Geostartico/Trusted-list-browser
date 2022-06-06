@@ -21,7 +21,7 @@
 
 2. a user can choose to select one or more objects from the list to filter the services
 
-3. a user can deselection an item from the list of items to undo a filtering option
+3. a user can deselect an item from the list of items to undo a filtering option
 
 4. the user is shown the available services based on the items they previously selected
 
@@ -35,7 +35,7 @@
 
 ### USE CASE 1: visualising a list of a certain category of items
 
-- description: the user is able to change to choose which category of items to visualise via the interface, thus making able to select items from different categories. In particular, if no selections were made, no filtering was done, therefore all the elements in the provider list must be shown.
+- description: the user is able to change to choose which category of items to visualise via the interface, thus making able to select items from different categories. In particular, if no selections were made, no filtering was done, therefore all the elements in the list must be shown.
 
 - actors:user, trusted-list server
 

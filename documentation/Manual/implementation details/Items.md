@@ -37,12 +37,12 @@ In order for the filering to be easier we decided to implement an object oriente
 
 - The typescript standard library does contain the Map and Set classes, however they aren't implement for OOP, as there is no way for these containers to consider two identical objects the same object if the two don't point to the same memeory area.
 - This could have created issues along the way and made it difficult to debug the code
-- We therefore decided to implement an ***UnorderedMap** and an **UnorderedSet**
+- We therefore decided to implement an **UnorderedMap** and an **UnorderedSet**
 - The items that are to be contained must implement the interface **Settable**, which provide methods(**hashCode** and **isEqualTo**) to get the hashcode and check if two items are identical.
 
 ### the immutability issue
 
-- typescript doesn't support any type of object immutability in its syntax, unlike other languages like rust or c++
+- typescript doesn't support any type of object immutability in its syntax, unlike other languages like **rust** or c++
 - since the objects are used as complex data rather than objects with a behaviour, it would have been difficult to not pass them to other classes.
 - We've decided to implement the Immutable interface, which makes it possible to lock some features of an object after the **makeImmutable()** call.
 - this way the obejcts can also be passed to the front-end and used with the item interface, and also passed back to the back-end in order to specify the filtering easily and univocally, without the risk of altering the objects, which might be assumed as copies of objects contained in the back-end, saving also on efficiency
