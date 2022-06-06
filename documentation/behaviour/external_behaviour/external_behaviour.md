@@ -1,8 +1,7 @@
 # Search Trusted Server list scenario:
+Actors: User and Server
 
-There are 2 actors: The User and the Server
-
-This is the external behaviour:
+External behaviour:
 
 1. User starts program.
 2. System sends JSON request to the Server
