@@ -109,9 +109,7 @@ For all os and distros: to use this application you need STABLE INTERNET CONNECT
 
 ## Visuals
 
-<p align="center">
-  <img src="Screenshots/screenWebsite.png" width="350"/>
-</p>
+![Screenshot](Screenshots/screenWebsite.png)
 
 ## Additional documentation
 - [System design](./documentation/system_design.md)
