@@ -22,9 +22,6 @@ OUTPUT RIUNIONE:
 -> Andrea
     * rename server into external
     * add deselect to eternal
--> Giulio
-    * Add loop in interaction cross\_subsystem
-
 
 # PRESENTATION:
 
