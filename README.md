@@ -110,7 +110,7 @@ For all os and distros: to use this application you need STABLE INTERNET CONNECT
 ## Visuals
 
 <p align="center">
-  <img src="Screenshots/Mappa_skyrim.jpg" width="350"/>
+  <img src="Screenshots/screenWebsite.png" width="350"/>
 </p>
 
 ## Additional documentation
