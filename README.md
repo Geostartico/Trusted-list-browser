@@ -110,7 +110,8 @@ For all os and distros: to use this application you need STABLE INTERNET CONNECT
 ### how to build
 
 if you want to build run from the Trusted-list-browser directory:
-    ```
+
+    ```sh
     yarn build
     yarn add serve
     yarn serve build
