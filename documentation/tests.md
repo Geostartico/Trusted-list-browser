@@ -1,7 +1,7 @@
 
 # Test docs
 
-This document is intended as a summary of the tests methods and results, more information is stored inside the internal folders of the [documentation folder](.) and the "__test__" folders inside each module
+This document is intended as a summary of the tests methods and results, more information is stored inside the internal folders of the [documentation folder](.) and the "__tests__" folders inside each module
 
 ### System testing
 
@@ -22,4 +22,8 @@ Tests:       51 passed, 51 total
 Snapshots:   0 total
 Time:        11.345 s
 Ran all test suites.
+```
+- to run tests, from the main directory:
+```
+ yarn test
 ```
