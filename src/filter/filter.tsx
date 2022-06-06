@@ -245,7 +245,6 @@ export class Filter{
         this.selected.add(rule.filtering_item);
 
         this.active_filtering_types.add(rule.filtering_item.item_type);
-        //console.log(this.active_filtering_types);
 
         rule.filtering_item.getServices().forEach((service: Service) => {
             const service_sum_map = this.service_sums.get(rule.filtering_item.item_type);

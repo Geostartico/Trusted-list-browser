@@ -138,12 +138,6 @@ function testFilteredServices(all_services, items){
             number_matched += bool;
 
         if(filtered.services.has(service)){
-            try{
-                expect(number_matched).toBe(how_many_items);
-            }
-            catch (error){
-                console.log(util.inspect(rules, {showHidden: false, depth: 2, colors: false}));
-            }
             expect(number_matched).toBe(how_many_items);
         }
         else{

@@ -15,7 +15,7 @@ describe('fetcher', function() {
 
         it('Should return Error', async function() {
             await expect(
-                fetcher.getJSON().catch(err => {throw err})
+                fetcher.getJSON(wrongUrl).catch(err => {throw err})
             ).rejects.toThrow();
         })
 
